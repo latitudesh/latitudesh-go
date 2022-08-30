@@ -52,7 +52,7 @@ func TestAccServerBasic(t *testing.T) {
 		Data: ServerCreateData{
 			Type: testServerType,
 			Attributes: ServerCreateAttributes{
-				Project:         strconv.Itoa(4070),
+				Project:         projectID,
 				Plan:            testPlan(),
 				Site:            testSite(),
 				OperatingSystem: testOS,

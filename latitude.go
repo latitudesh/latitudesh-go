@@ -19,7 +19,6 @@ import (
 const (
 	authTokenEnvVar = "LATITUDE_AUTH_TOKEN"
 	baseURL         = "https://api.maxihost.com"
-	//mediaType                    = "application/json"
 	debugEnvVar                  = "LATITUDE_DEBUG"
 	expectedAPIContentTypePrefix = "application/vnd.maxihost.v2+json"
 )
@@ -270,7 +269,7 @@ func NewClient() (*Client, error) {
 	if apiToken == "" {
 		return nil, fmt.Errorf("you must export %s", authTokenEnvVar)
 	}
-	c := NewClientWithAuth("packngo lib", apiToken, nil)
+	c := NewClientWithAuth("latitude lib", apiToken, nil)
 	return c, nil
 
 }
