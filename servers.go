@@ -2,13 +2,12 @@ package latitude
 
 import (
 	"path"
-	"strconv"
 )
 
 const serverBasePath = "/servers"
 
 type ServerService interface {
-	List(ProjectID int, opts *ListOptions) ([]ServerData, *Response, error)
+	List(ProjectID string, opts *ListOptions) ([]ServerData, *Response, error)
 	Get(ServerID string, opts *GetOptions) (*ServerGetResponse, *Response, error)
 	Create(*ServerCreateRequest) (*Server, *Response, error)
 	Update(string, *ServerUpdateRequest) (*Server, *Response, error)
@@ -111,9 +110,9 @@ type ServerServiceOp struct {
 }
 
 // List returns servers on a project
-func (s *ServerServiceOp) List(projectID int, opts *ListOptions) (servers []ServerData, resp *Response, err error) {
+func (s *ServerServiceOp) List(projectID string, opts *ListOptions) (servers []ServerData, resp *Response, err error) {
 	opts = opts.Including("plan")
-	endpointPath := path.Join(projectBasePath, strconv.Itoa(projectID), serverBasePath)
+	endpointPath := path.Join(projectBasePath, projectID, serverBasePath)
 	apiPathQuery := opts.WithQuery(endpointPath)
 
 	for {

@@ -2,7 +2,6 @@ package latitude
 
 import (
 	"path"
-	"strconv"
 )
 
 const projectBasePath = "/projects"
@@ -10,10 +9,10 @@ const projectBasePath = "/projects"
 // ProjectService interface defines available project methods
 type ProjectService interface {
 	List(listOpt *ListOptions) ([]ProjectData, *Response, error)
-	Get(int, *GetOptions) (*Project, *Response, error)
+	Get(string, *GetOptions) (*Project, *Response, error)
 	Create(*ProjectCreateRequest) (*Project, *Response, error)
-	Update(int, *ProjectUpdateRequest) (*Project, *Response, error)
-	Delete(int) (*Response, error)
+	Update(string, *ProjectUpdateRequest) (*Project, *Response, error)
+	Delete(string) (*Response, error)
 }
 
 // Project represents a Latitude project
@@ -23,7 +22,7 @@ type Project struct {
 }
 
 type ProjectData struct {
-	ID         int               `json:"id,string"`
+	ID         string               `json:"id"`
 	Type       string            `json:"type"`
 	Attributes ProjectAttributes `json:"attributes"`
 }
@@ -68,7 +67,7 @@ type ProjectUpdateRequest struct {
 }
 
 type ProjectUpdateData struct {
-	ID         int                     `json:"id,string"`
+	ID         string                     `json:"id"`
 	Type       string                  `json:"type"`
 	Attributes ProjectCreateAttributes `json:"attributes"`
 }
@@ -105,8 +104,8 @@ func (s *ProjectServiceOp) List(opts *ListOptions) (projects []ProjectData, resp
 }
 
 // Get returns a project by id
-func (s *ProjectServiceOp) Get(projectID int, opts *GetOptions) (*Project, *Response, error) {
-	endpointPath := path.Join(projectBasePath, strconv.Itoa(projectID))
+func (s *ProjectServiceOp) Get(projectID string, opts *GetOptions) (*Project, *Response, error) {
+	endpointPath := path.Join(projectBasePath, projectID)
 	apiPathQuery := opts.WithQuery(endpointPath)
 	project := new(Project)
 	resp, err := s.client.DoRequest("GET", apiPathQuery, nil, project)
@@ -129,8 +128,8 @@ func (s *ProjectServiceOp) Create(createRequest *ProjectCreateRequest) (*Project
 }
 
 // Update updates a project
-func (s *ProjectServiceOp) Update(projectID int, updateRequest *ProjectUpdateRequest) (*Project, *Response, error) {
-	apiPath := path.Join(projectBasePath, strconv.Itoa(projectID))
+func (s *ProjectServiceOp) Update(projectID string, updateRequest *ProjectUpdateRequest) (*Project, *Response, error) {
+	apiPath := path.Join(projectBasePath, projectID)
 	project := new(Project)
 
 	resp, err := s.client.DoRequest("PATCH", apiPath, updateRequest, project)
@@ -142,8 +141,8 @@ func (s *ProjectServiceOp) Update(projectID int, updateRequest *ProjectUpdateReq
 }
 
 // Delete deletes a project
-func (s *ProjectServiceOp) Delete(projectID int) (*Response, error) {
-	apiPath := path.Join(projectBasePath, strconv.Itoa(projectID))
+func (s *ProjectServiceOp) Delete(projectID string) (*Response, error) {
+	apiPath := path.Join(projectBasePath, projectID)
 
 	return s.client.DoRequest("DELETE", apiPath, nil, nil)
 }

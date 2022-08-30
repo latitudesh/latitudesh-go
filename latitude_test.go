@@ -68,7 +68,7 @@ func randString8() string {
 
 // setupWithProject returns a client, project id, and teardown function
 // configured for a new project with a test recorder for the named test
-func setupWithProject(t *testing.T) (*Client, int, func()) {
+func setupWithProject(t *testing.T) (*Client, string, func()) {
 	c, stopRecord := setup(t)
 	rs := testProjectPrefix + randString8()
 	pcr := ProjectCreateRequest{
