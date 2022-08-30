@@ -1,2 +1,2 @@
 # latitude-api-client
-A Go library for Latitude JSON:API 
+A Go library for Latitude REST API
