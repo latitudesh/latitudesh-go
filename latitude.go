@@ -17,8 +17,8 @@ import (
 )
 
 const (
-	authTokenEnvVar = "LATITUDE_AUTH_TOKEN"
-	baseURL         = "https://api.maxihost.com"
+	authTokenEnvVar              = "LATITUDE_AUTH_TOKEN"
+	baseURL                      = "https://api.maxihost.com"
 	debugEnvVar                  = "LATITUDE_DEBUG"
 	expectedAPIContentTypePrefix = "application/vnd.maxihost.v2+json"
 )
@@ -68,6 +68,7 @@ type Client struct {
 
 	Projects ProjectService
 	Servers  ServerService
+	SSHKeys  SSHKeyService
 }
 
 type requestDoer interface {
@@ -295,6 +296,7 @@ func NewClientWithBaseURL(apiKey string, httpClient *http.Client, apiBaseURL str
 	c := &Client{client: httpClient, BaseURL: u, APIKey: apiKey}
 	c.Projects = &ProjectServiceOp{client: c}
 	c.Servers = &ServerServiceOp{client: c}
+	c.SSHKeys = &SSHKeyServiceOp{client: c}
 	c.debug = os.Getenv(debugEnvVar) != ""
 
 	return c, nil

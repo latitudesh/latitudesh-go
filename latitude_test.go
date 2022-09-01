@@ -15,12 +15,14 @@ import (
 )
 
 const (
-	apiURLEnvVar       = "LATITUDE_API_URL"
-	latitudeAccTestVar = "LATITUDE_TEST_ACTUAL_API"
-	testProjectPrefix  = "LATITUDE_TEST_PROJECT_"
-	testPlanVar        = "LATITUDE_TEST_PLAN"
-	testSiteVar        = "LATITUDE_TEST_SITE"
-	testRecorderEnv    = "LATITUDE_TEST_RECORDER"
+	apiURLEnvVar           = "LATITUDE_API_URL"
+	latitudeAccTestVar     = "LATITUDE_TEST_ACTUAL_API"
+	testProjectPrefix      = "LATITUDE_TEST_PROJECT_"
+	testPlanVar            = "LATITUDE_TEST_PLAN"
+	testSiteVar            = "LATITUDE_TEST_SITE"
+	testOperatingSystemVar = "LATITUDE_TEST_OS"
+	testSSHKeyVar          = "LATITUDE_TEST_SSH_KEY"
+	testRecorderEnv        = "LATITUDE_TEST_RECORDER"
 
 	testRecorderRecord   = "record"
 	testRecorderPlay     = "play"
@@ -28,9 +30,10 @@ const (
 	recorderDefaultMode  = recorder.ModeDisabled
 
 	// defaults should be available to most users
-	testSiteDefault = "NY2"
-	testPlanDefault = "c3-medium-x86"
-	testOS          = "ubuntu_20_04_x64_lts"
+	testSiteDefault            = "MI1"
+	testPlanDefault            = "c2-medium-x86"
+	testSSHKeyDefault          = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQZtz6DPH4Y04vYLdOch5xOzDY7cdGWpYjBFx5H7ZzieVoRwartZAVTGX4qFT9aoyCuuE6qXYcTj6G1CdO5fb8iOtU6K3FdzVyw/WQ/c4sCehEL+wbYrOnXJSYMhLsUAFhZ69tTdmQSgctbv44yP32Z4xiE4zc/Bk465F3u4Zi1Jj883fyAgzahTWXOxpmvYAEuS6Qv6w4yJc6giiGFVYmu+N6h9j348UgbpToYiCSnSM4iNa9fs7sBGufOa9FuXtggPfXtpyk9f05AhkKEjPlCXcDNAq0GsvN2QEx3tYw6i5ze0qehv6EBAtwx3PLrj636O6IgSh0DgrZBih9NBov"
+	testOperatingSystemDefault = "ubuntu_20_04_x64_lts"
 )
 
 func testPlan() string {
@@ -42,11 +45,27 @@ func testPlan() string {
 }
 
 func testSite() string {
-	envMet := os.Getenv(testSiteDefault)
-	if envMet != "" {
-		return envMet
+	envSite := os.Getenv(testSiteVar)
+	if envSite != "" {
+		return envSite
 	}
 	return testSiteDefault
+}
+
+func testOperatingSystem() string {
+	envOS := os.Getenv(testOperatingSystemVar)
+	if envOS != "" {
+		return envOS
+	}
+	return testOperatingSystemDefault
+}
+
+func testSSHKey() string {
+	envPlan := os.Getenv(testSSHKeyVar)
+	if envPlan != "" {
+		return envPlan
+	}
+	return testSSHKeyDefault
 }
 
 func randString8() string {

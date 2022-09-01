@@ -55,7 +55,7 @@ func TestAccServerBasic(t *testing.T) {
 				Project:         projectID,
 				Plan:            testPlan(),
 				Site:            testSite(),
-				OperatingSystem: testOS,
+				OperatingSystem: testOperatingSystem(),
 				Hostname:        hn,
 			},
 		},

@@ -22,7 +22,7 @@ type Project struct {
 }
 
 type ProjectData struct {
-	ID         string               `json:"id"`
+	ID         string            `json:"id"`
 	Type       string            `json:"type"`
 	Attributes ProjectAttributes `json:"attributes"`
 }
@@ -67,7 +67,7 @@ type ProjectUpdateRequest struct {
 }
 
 type ProjectUpdateData struct {
-	ID         string                     `json:"id"`
+	ID         string                  `json:"id"`
 	Type       string                  `json:"type"`
 	Attributes ProjectCreateAttributes `json:"attributes"`
 }
