@@ -68,6 +68,6 @@ func TestAccSSHKeyBasic(t *testing.T) {
 	}
 
 	if len(kl) != 1 {
-		t.Fatalf("Device List should contain exactly one device, was: %v", kl)
+		t.Fatalf("SSH key List should contain exactly one key, was: %v", kl)
 	}
 }

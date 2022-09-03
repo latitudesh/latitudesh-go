@@ -2,7 +2,6 @@ package latitude
 
 import (
 	"fmt"
-	"strconv"
 	"testing"
 	"time"
 )
@@ -12,9 +11,9 @@ const (
 )
 
 func waitServerActive(t *testing.T, c *Client, id string) *ServerGetResponse {
-	// 15 minutes = 180 * 5sec-retry
+	// 15 minutes = 180 * 15sec-retry
 	for i := 0; i < 180; i++ {
-		<-time.After(5 * time.Second)
+		<-time.After(15 * time.Second)
 		d, _, err := c.Servers.Get(id, nil)
 		if err != nil {
 			t.Fatal(err)
@@ -75,6 +74,7 @@ func TestAccServerBasic(t *testing.T) {
 		t.Fatal("Server should have an ID")
 	}
 
+	// TODO: API endpoint for server update currently not working
 	// Update newly created server
 	/*rs := randString8()
 	sur := ServerUpdateRequest{
@@ -100,6 +100,6 @@ func TestAccServerBasic(t *testing.T) {
 	}
 
 	if len(dl) != 1 {
-		t.Fatalf("Device List should contain exactly one device, was: %v", dl)
+		t.Fatalf("Server List should contain exactly one server, was: %v", dl)
 	}
 }
