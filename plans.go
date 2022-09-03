@@ -9,17 +9,16 @@ const planBasePath = "/plans"
 
 // PlanService interface defines available plan methods
 type PlanService interface {
-	List(listOpt *ListOptions) ([]PlanData, *Response, error)
+	List(listOpt *ListOptions) ([]Plan, *Response, error)
 	Get(string, *GetOptions) (*Plan, *Response, error)
 }
 
 // Plan represents a Latitude plan
-type Plan struct {
+type PlanRoot struct {
 	Data PlanData `json:"data"`
 	Meta meta     `json:"meta"`
 }
 
-// Plan represents a Latitude plan
 type PlanListResponse struct {
 	Data []PlanData `json:"data"`
 	Meta meta       `json:"meta"`
@@ -32,12 +31,12 @@ type PlanData struct {
 }
 
 type PlanAttributes struct {
-	Name      string             `json:"name"`
-	Slug      string             `json:"slug"`
-	Line      string             `json:"line"`
-	Features  PlanFeatures       `json:"features"`
-	Specs     PlanSpecs          `json:"specs"`
-	Available []PlanAvailability `json:"available_in"`
+	Name          string             `json:"name"`
+	Slug          string             `json:"slug"`
+	Line          string             `json:"line"`
+	Features      PlanFeatures       `json:"features"`
+	Specs         PlanSpecs          `json:"specs"`
+	Availablility []PlanAvailability `json:"available_in"`
 }
 
 type PlanFeatures struct {
@@ -47,9 +46,6 @@ type PlanFeatures struct {
 }
 
 type PlanSpecs struct {
-	Name   string      `json:"name"`
-	Slug   string      `json:"slug"`
-	Line   string      `json:"line"`
 	CPUs   []PlanCPU   `json:"cpus"`
 	Memory PlanMemory  `json:"memory"`
 	Drives []PlanDrive `json:"drives"`
@@ -64,7 +60,7 @@ type PlanCPU struct {
 }
 
 type PlanMemory struct {
-	// Sometime total is return as a string and sometimes as an int
+	// Sometimes total is returned as a string and sometimes as an int
 	Total json.Number `json:"total"`
 }
 
@@ -110,26 +106,60 @@ type PricingBRL struct {
 	Month float64 `json:"month"`
 }
 
+type Plan struct {
+	ID           string             `json:"id"`
+	Type         string             `json:"type"`
+	Name         string             `json:"name"`
+	Slug         string             `json:"slug"`
+	Line         string             `json:"line"`
+	Features     PlanFeatures       `json:"features"`
+	Specs        PlanSpecs          `json:"specs"`
+	Availibility []PlanAvailability `json:"availibility"`
+}
+
 // PlanServiceOp implements PlanService
 type PlanServiceOp struct {
 	client requestDoer
 }
 
+
+// Flatten latitude API data structures
+func NewFlatPlan(pd PlanData) Plan {
+	return Plan{
+		pd.ID,
+		pd.Type,
+		pd.Attributes.Name,
+		pd.Attributes.Line,
+		pd.Attributes.Slug,
+		pd.Attributes.Features,
+		pd.Attributes.Specs,
+		pd.Attributes.Availablility,
+	}
+}
+
+func NewFlatPlanList(pd []PlanData) []Plan {
+	var res []Plan
+	for _, plan := range pd {
+		res = append(res, NewFlatPlan(plan))
+	}
+	return res
+}
+
 // List returns a list of plans
-func (s *PlanServiceOp) List(opts *ListOptions) (plans []PlanData, resp *Response, err error) {
+func (s *PlanServiceOp) List(opts *ListOptions) (plans []Plan, resp *Response, err error) {
 	apiPathQuery := opts.WithQuery(planBasePath)
 
 	for {
-		subset := new(PlanListResponse)
+		res := new(PlanListResponse)
 
-		resp, err = s.client.DoRequest("GET", apiPathQuery, nil, subset)
+		resp, err = s.client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
 
-		plans = append(plans, subset.Data...)
+		plans = append(plans, NewFlatPlanList(res.Data)...)
 
-		if apiPathQuery = nextPage(subset.Meta, opts); apiPathQuery != "" {
+		if apiPathQuery = nextPage(res.Meta, opts); apiPathQuery != "" {
 			continue
 		}
 
@@ -141,10 +171,12 @@ func (s *PlanServiceOp) List(opts *ListOptions) (plans []PlanData, resp *Respons
 func (s *PlanServiceOp) Get(planID string, opts *GetOptions) (*Plan, *Response, error) {
 	endpointPath := path.Join(planBasePath, planID)
 	apiPathQuery := opts.WithQuery(endpointPath)
-	plan := new(Plan)
+	plan := new(PlanRoot)
 	resp, err := s.client.DoRequest("GET", apiPathQuery, nil, plan)
 	if err != nil {
 		return nil, resp, err
 	}
-	return plan, resp, err
+
+	flatPlan := NewFlatPlan(plan.Data)
+	return &flatPlan, resp, err
 }
