@@ -101,3 +101,18 @@ func TestAccPlanBasic(t *testing.T) {
 		}
 	}
 }
+
+func TestAccPlanFilter(t *testing.T) {
+	skipUnlessAcceptanceTestsAllowed(t)
+	c, stopRecord := setup(t)
+	defer stopRecord()
+
+	pl, _, err := c.Plans.List(new(GetOptions).Filter("slug", testPlanDefault))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(pl) != 1 {
+		t.Fatalf("Filtered plan list should contain one plan: returned %d", len(pl))
+	}
+}
