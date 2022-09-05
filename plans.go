@@ -77,7 +77,7 @@ type PlanNIC struct {
 
 type PlanAvailability struct {
 	Region  Region  `json:"region"`
-	Sites   []Site  `json:"site"`
+	Sites   []Site  `json:"sites"`
 	Pricing Pricing `json:"pricing"`
 }
 
@@ -90,7 +90,7 @@ type Site struct {
 	ID         int    `json:"id"`
 	Name       string `json:"name"`
 	InStock    bool   `json:"in_stock"`
-	StockLevel string `json:"stock+_level"`
+	StockLevel string `json:"stock_level"`
 }
 
 type Pricing struct {
