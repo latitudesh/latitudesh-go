@@ -111,7 +111,7 @@ func (g *GetOptions) CopyOrNew() *GetOptions {
 }
 
 func (g *GetOptions) Filter(key, value string) *GetOptions {
-	return g.AddParam(key, value)
+	return g.AddParam(fmt.Sprintf("filter[%s]", key), value)
 }
 
 // AddParam adds key=value to URL path

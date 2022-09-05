@@ -65,13 +65,13 @@ type PlanMemory struct {
 }
 
 type PlanDrive struct {
-	Count int    `json:"total"`
+	Count int    `json:"count"`
 	Size  string `json:"size"`
 	Type  string `json:"type"`
 }
 
 type PlanNIC struct {
-	Count int    `json:"total"`
+	Count int    `json:"count"`
 	Type  string `json:"type"`
 }
 
