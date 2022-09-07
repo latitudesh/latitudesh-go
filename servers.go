@@ -7,14 +7,14 @@ import (
 const serverBasePath = "/servers"
 
 type ServerService interface {
-	List(ProjectID string, opts *ListOptions) ([]ServerData, *Response, error)
-	Get(ServerID string, opts *GetOptions) (*ServerGetResponse, *Response, error)
+	List(ProjectID string, opts *ListOptions) ([]Server, *Response, error)
+	Get(ServerID string, opts *GetOptions) (*Server, *Response, error)
 	Create(*ServerCreateRequest) (*Server, *Response, error)
 	Update(string, *ServerUpdateRequest) (*Server, *Response, error)
 	Delete(serverID string, force bool) (*Response, error)
 }
 
-type Server struct {
+type ServerRoot struct {
 	Data ServerData `json:"data"`
 	Meta meta       `json:"meta"`
 }
@@ -41,8 +41,8 @@ type ServerSpecs struct {
 }
 
 type ServerListResponse struct {
-	Servers []ServerData `json:"data"`
-	Meta    meta         `json:"meta"`
+	Data []ServerGetData `json:"data"`
+	Meta meta            `json:"meta"`
 }
 
 type ServerGetResponse struct {
@@ -109,23 +109,58 @@ type ServerServiceOp struct {
 	client requestDoer
 }
 
+type Server struct {
+	ID          string      `json:"id"`
+	Hostname    string      `json:"hostname"`
+	Label       string      `json:"label"`
+	Role        string      `json:"role"`
+	Status      string      `json:"status"`
+	PrimaryIPv4 string      `json:"primary_ipv4"`
+	IMPIStatus  string      `json:"impi_status"`
+	CreatedAt   string      `json:"created_at"`
+	Specs       ServerSpecs `json:"specs"`
+}
+
+// Flatten latitude API data structures
+func NewFlatServer(sd ServerGetData) Server {
+	return Server{
+		sd.ID,
+		sd.Attributes.Hostname,
+		sd.Attributes.Label,
+		sd.Attributes.Role,
+		sd.Attributes.Status,
+		sd.Attributes.PrimaryIPv4,
+		sd.Attributes.IMPIStatus,
+		sd.Attributes.CreatedAt,
+		sd.Attributes.Specs,
+	}
+}
+
+func NewFlatServerList(sd []ServerGetData) []Server {
+	var res []Server
+	for _, server := range sd {
+		res = append(res, NewFlatServer(server))
+	}
+	return res
+}
+
 // List returns servers on a project
-func (s *ServerServiceOp) List(projectID string, opts *ListOptions) (servers []ServerData, resp *Response, err error) {
+func (s *ServerServiceOp) List(projectID string, opts *ListOptions) (servers []Server, resp *Response, err error) {
 	opts = opts.Including("plan")
 	endpointPath := path.Join(projectBasePath, projectID, serverBasePath)
 	apiPathQuery := opts.WithQuery(endpointPath)
 
 	for {
-		subset := new(ServerListResponse)
+		res := new(ServerListResponse)
 
-		resp, err = s.client.DoRequest("GET", apiPathQuery, nil, subset)
+		resp, err = s.client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
 
-		servers = append(servers, subset.Servers...)
+		servers = append(servers, NewFlatServerList(res.Data)...)
 
-		if apiPathQuery = nextPage(subset.Meta, opts); apiPathQuery != "" {
+		if apiPathQuery = nextPage(res.Meta, opts); apiPathQuery != "" {
 			continue
 		}
 
@@ -134,7 +169,7 @@ func (s *ServerServiceOp) List(projectID string, opts *ListOptions) (servers []S
 }
 
 // Get returns a server by id
-func (s *ServerServiceOp) Get(serverID string, opts *GetOptions) (*ServerGetResponse, *Response, error) {
+func (s *ServerServiceOp) Get(serverID string, opts *GetOptions) (*Server, *Response, error) {
 	endpointPath := path.Join(serverBasePath, serverID)
 	apiPathQuery := opts.WithQuery(endpointPath)
 	server := new(ServerGetResponse)
@@ -142,7 +177,9 @@ func (s *ServerServiceOp) Get(serverID string, opts *GetOptions) (*ServerGetResp
 	if err != nil {
 		return nil, resp, err
 	}
-	return server, resp, err
+
+	flatServer := NewFlatServer(server.Data)
+	return &flatServer, resp, err
 }
 
 // Create creates a new server
