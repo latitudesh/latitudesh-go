@@ -10,7 +10,7 @@ const (
 	testServerType = "servers"
 )
 
-func waitServerActive(t *testing.T, c *Client, id string) *ServerGetResponse {
+func waitServerActive(t *testing.T, c *Client, id string) *Server {
 	// 15 minutes = 180 * 15sec-retry
 	for i := 0; i < 180; i++ {
 		<-time.After(15 * time.Second)
@@ -19,10 +19,10 @@ func waitServerActive(t *testing.T, c *Client, id string) *ServerGetResponse {
 			t.Fatal(err)
 			return nil
 		}
-		if d.Data.Attributes.Status == "on" {
+		if d.Status == "on" {
 			return d
 		}
-		if d.Data.Attributes.Status == "failed" {
+		if d.Status == "failed" {
 			t.Fatal(fmt.Errorf("device %s provisioning failed", id))
 			return nil
 		}
@@ -64,13 +64,13 @@ func TestAccServerBasic(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer deleteServer(t, c, s.Data.ID, false)
+	defer deleteServer(t, c, s.ID, false)
 
-	sID := s.Data.ID
+	sID := s.ID
 
 	sgr := waitServerActive(t, c, sID)
 
-	if len(sgr.Data.ID) == 0 {
+	if len(sgr.ID) == 0 {
 		t.Fatal("Server should have an ID")
 	}
 

@@ -122,7 +122,6 @@ type PlanServiceOp struct {
 	client requestDoer
 }
 
-
 // Flatten latitude API data structures
 func NewFlatPlan(pd PlanData) Plan {
 	return Plan{
