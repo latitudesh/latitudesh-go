@@ -32,8 +32,8 @@ func waitServerActive(t *testing.T, c *Client, id string) *Server {
 	return nil
 }
 
-func deleteServer(t *testing.T, c *Client, id string, force bool) {
-	if _, err := c.Servers.Delete(id, force); err != nil {
+func deleteServer(t *testing.T, c *Client, id string) {
+	if _, err := c.Servers.Delete(id); err != nil {
 		t.Fatal(err)
 	}
 }
@@ -64,7 +64,7 @@ func TestAccServerBasic(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer deleteServer(t, c, s.ID, false)
+	defer deleteServer(t, c, s.ID)
 
 	sID := s.ID
 

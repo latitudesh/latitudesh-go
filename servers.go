@@ -11,7 +11,7 @@ type ServerService interface {
 	Get(ServerID string, opts *GetOptions) (*Server, *Response, error)
 	Create(*ServerCreateRequest) (*Server, *Response, error)
 	Update(string, *ServerUpdateRequest) (*Server, *Response, error)
-	Delete(serverID string, force bool) (*Response, error)
+	Delete(serverID string) (*Response, error)
 }
 
 type ServerRoot struct {
@@ -72,10 +72,6 @@ type ServerCreateRequest struct {
 	Data ServerCreateData `json:"data"`
 }
 
-func (s ServerCreateRequest) String() string {
-	return Stringify(s)
-}
-
 type ServerCreateData struct {
 	Type       string                 `json:"type"`
 	Attributes ServerCreateAttributes `json:"attributes"`
@@ -98,10 +94,6 @@ type ServerUpdateData struct {
 	ID         string                 `json:"id"`
 	Type       string                 `json:"type"`
 	Attributes ServerCreateAttributes `json:"attributes"`
-}
-
-func (p ServerUpdateRequest) String() string {
-	return Stringify(p)
 }
 
 // ServerServiceOp implements ServerService
@@ -146,9 +138,8 @@ func NewFlatServerList(sd []ServerGetData) []Server {
 
 // List returns servers on a project
 func (s *ServerServiceOp) List(projectID string, opts *ListOptions) (servers []Server, resp *Response, err error) {
-	opts = opts.Including("plan")
-	endpointPath := path.Join(projectBasePath, projectID, serverBasePath)
-	apiPathQuery := opts.WithQuery(endpointPath)
+	opts = opts.Filter("project", projectID)
+	apiPathQuery := opts.WithQuery(serverBasePath)
 
 	for {
 		res := new(ServerListResponse)
@@ -184,31 +175,33 @@ func (s *ServerServiceOp) Get(serverID string, opts *GetOptions) (*Server, *Resp
 
 // Create creates a new server
 func (s *ServerServiceOp) Create(createRequest *ServerCreateRequest) (*Server, *Response, error) {
-	server := new(Server)
+	server := new(ServerGetResponse)
 
 	resp, err := s.client.DoRequest("POST", serverBasePath, createRequest, server)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return server, resp, err
+	flatServer := NewFlatServer(server.Data)
+	return &flatServer, resp, err
 }
 
 // Update updates a server
 func (s *ServerServiceOp) Update(serverID string, updateRequest *ServerUpdateRequest) (*Server, *Response, error) {
 	apiPath := path.Join(projectBasePath, serverID)
-	server := new(Server)
+	server := new(ServerGetResponse)
 
 	resp, err := s.client.DoRequest("PATCH", apiPath, updateRequest, server)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return server, resp, err
+	flatServer := NewFlatServer(server.Data)
+	return &flatServer, resp, err
 }
 
 // Delete deletes a server
-func (s *ServerServiceOp) Delete(serverID string, force bool) (*Response, error) {
+func (s *ServerServiceOp) Delete(serverID string) (*Response, error) {
 	apiPath := path.Join(serverBasePath, serverID)
 
 	return s.client.DoRequest("DELETE", apiPath, nil, nil)
