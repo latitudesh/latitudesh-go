@@ -3,6 +3,7 @@ package latitude
 import (
 	"encoding/json"
 	"path"
+	"strconv"
 )
 
 const planBasePath = "/plans"
@@ -61,7 +62,32 @@ type PlanCPU struct {
 
 type PlanMemory struct {
 	// Sometimes total is returned as a string and sometimes as an int
-	Total json.Number `json:"total"`
+	Total string `json:"total"`
+}
+
+func (p *PlanMemory) UnmarshalJSON(b []byte) error {
+	var objMap map[string]*json.RawMessage
+	err := json.Unmarshal(b, &objMap)
+	if err != nil {
+		return err
+	}
+
+	var total string
+	err = json.Unmarshal(*objMap["total"], &total)
+	if err != nil {
+		// total is an int
+		var totalInt int
+		err = json.Unmarshal(*objMap["total"], &totalInt)
+		if err != nil {
+			return err
+		}
+		ts := strconv.Itoa(totalInt)
+		p.Total = ts
+	} else {
+		p.Total = total
+	}
+
+	return nil
 }
 
 type PlanDrive struct {
@@ -76,12 +102,12 @@ type PlanNIC struct {
 }
 
 type PlanAvailability struct {
-	Region  Region  `json:"region"`
-	Sites   []Site  `json:"sites"`
-	Pricing Pricing `json:"pricing"`
+	Region  PlanRegion `json:"region"`
+	Sites   []Site     `json:"sites"`
+	Pricing Pricing    `json:"pricing"`
 }
 
-type Region struct {
+type PlanRegion struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`
 }
