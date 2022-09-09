@@ -83,6 +83,7 @@ type ServerCreateAttributes struct {
 	Site            string `json:"site,omitempty"`
 	OperatingSystem string `json:"operating_system,omitempty"`
 	Hostname        string `json:"hostname"`
+	SSHKeys         []int  `json:"ssh_keys,omitempty"`
 }
 
 // ServerUpdateRequest type used to update a Latitude server
