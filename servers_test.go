@@ -1,36 +1,12 @@
 package latitude
 
 import (
-	"fmt"
 	"testing"
-	"time"
 )
 
 const (
 	testServerType = "servers"
 )
-
-func waitServerActive(t *testing.T, c *Client, id string) *Server {
-	// 15 minutes = 180 * 15sec-retry
-	for i := 0; i < 180; i++ {
-		<-time.After(15 * time.Second)
-		d, _, err := c.Servers.Get(id, nil)
-		if err != nil {
-			t.Fatal(err)
-			return nil
-		}
-		if d.Status == "on" {
-			return d
-		}
-		if d.Status == "failed" {
-			t.Fatal(fmt.Errorf("device %s provisioning failed", id))
-			return nil
-		}
-	}
-
-	t.Fatal(fmt.Errorf("device %s is still not active after timeout", id))
-	return nil
-}
 
 func deleteServer(t *testing.T, c *Client, id string) {
 	if _, err := c.Servers.Delete(id); err != nil {
@@ -65,14 +41,6 @@ func TestAccServerBasic(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer deleteServer(t, c, s.ID)
-
-	sID := s.ID
-
-	sgr := waitServerActive(t, c, sID)
-
-	if len(sgr.ID) == 0 {
-		t.Fatal("Server should have an ID")
-	}
 
 	// TODO: API endpoint for server update currently not working
 	// Update newly created server
