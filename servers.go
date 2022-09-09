@@ -1,7 +1,9 @@
 package latitude
 
 import (
+	"fmt"
 	"path"
+	"time"
 )
 
 const serverBasePath = "/servers"
@@ -137,6 +139,25 @@ func NewFlatServerList(sd []ServerGetData) []Server {
 	return res
 }
 
+func waitServerActive(s *ServerServiceOp, id string) (*Server, error) {
+	// 15 minutes = 180 * 15sec-retry
+	for i := 0; i < 180; i++ {
+		<-time.After(15 * time.Second)
+		s, _, err := s.Get(id, nil)
+		if err != nil {
+			return nil, err
+		}
+		if s.Status == "on" {
+			return s, nil
+		}
+		if s.Status == "failed" {
+			return nil, fmt.Errorf("device %s provisioning failed", id)
+		}
+	}
+
+	return nil, fmt.Errorf("device %s is still not active after timeout", id)
+}
+
 // List returns servers on a project
 func (s *ServerServiceOp) List(projectID string, opts *ListOptions) (servers []Server, resp *Response, err error) {
 	opts = opts.Filter("project", projectID)
@@ -184,6 +205,7 @@ func (s *ServerServiceOp) Create(createRequest *ServerCreateRequest) (*Server, *
 	}
 
 	flatServer := NewFlatServer(server.Data)
+	waitServerActive(s, flatServer.ID)
 	return &flatServer, resp, err
 }
 
