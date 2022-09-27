@@ -1,4 +1,4 @@
-module github.com/capturealpha/latitude-api-client
+module github.com/maxihost/latitudesh-go
 
 go 1.18
 
