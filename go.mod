@@ -1,4 +1,4 @@
-module github.com/maxihost/latitudesh-go
+module github.com/latitudesh/latitudesh-go
 
 go 1.18
 
