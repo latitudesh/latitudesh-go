@@ -20,7 +20,6 @@ const (
 	authTokenEnvVar              = "LATITUDE_AUTH_TOKEN"
 	baseURL                      = "https://api.maxihost.com"
 	debugEnvVar                  = "LATITUDE_DEBUG"
-	expectedAPIContentTypePrefix = "application/vnd.maxihost.v2+json"
 )
 
 // meta contains pagination information
@@ -120,7 +119,6 @@ func (c *Client) NewRequest(method, path string, body interface{}) (*http.Reques
 	req.Close = true
 
 	req.Header.Add("Authorization", c.APIKey)
-	req.Header.Add("Accept", expectedAPIContentTypePrefix)
 	req.Header.Add("User-Agent", c.UserAgent)
 	if req.Method != "GET" {
 		req.Header.Add("Content-Type", "application/json")
