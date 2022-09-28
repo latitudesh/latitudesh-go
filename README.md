@@ -1,7 +1,7 @@
 # latitudesh-go
 [![GoDoc](https://godoc.org/github.com/latitudesh/latitudesh-go?status.svg)](https://godoc.org/github.com/latitudesh/latitudesh-go)
 
-latitude-shgo is a Go client library for accessing the Latitude.sh API.
+latitudesh-go is a Go client library for accessing the Latitude.sh API.
 
 You can view the API docs here: https://docs.latitude.sh/reference
 
