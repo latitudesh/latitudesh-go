@@ -12,10 +12,9 @@
 name: release
 on:
   push:
-    branches: [ main ]
-
-  pull_request:
-    branches: [ main ]
+    # run only against tags
+    tags:
+      - '*'
 
 permissions:
   contents: write
