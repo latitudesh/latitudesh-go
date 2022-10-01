@@ -105,10 +105,10 @@ func setupWithProject(t *testing.T) (*Client, string, func()) {
 		t.Fatal(err)
 	}
 
-	return c, p.Data.ID, func() {
-		_, err := c.Projects.Delete(p.Data.ID)
+	return c, p.ID, func() {
+		_, err := c.Projects.Delete(p.ID)
 		if err != nil {
-			panic(fmt.Errorf("while deleting %s: %s", p.Data.Attributes.Name, err))
+			panic(fmt.Errorf("while deleting %s: %s", p.Name, err))
 		}
 		stopRecord()
 	}
@@ -147,10 +147,10 @@ func projectTeardown(c *Client) {
 	}
 	for _, p := range ps {
 		fmt.Println(p.ID)
-		if strings.HasPrefix(p.Attributes.Name, testProjectPrefix) {
+		if strings.HasPrefix(p.Name, testProjectPrefix) {
 			_, err := c.Projects.Delete(p.ID)
 			if err != nil {
-				panic(fmt.Errorf("while deleting %s: %s", p.Attributes.Name, err))
+				panic(fmt.Errorf("while deleting %s: %s", p.Name, err))
 			}
 		}
 	}

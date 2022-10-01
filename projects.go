@@ -8,15 +8,14 @@ const projectBasePath = "/projects"
 
 // ProjectService interface defines available project methods
 type ProjectService interface {
-	List(listOpt *ListOptions) ([]ProjectData, *Response, error)
+	List(listOpt *ListOptions) ([]Project, *Response, error)
 	Get(string, *GetOptions) (*Project, *Response, error)
 	Create(*ProjectCreateRequest) (*Project, *Response, error)
 	Update(string, *ProjectUpdateRequest) (*Project, *Response, error)
 	Delete(string) (*Response, error)
 }
 
-// Project represents a Latitude project
-type Project struct {
+type ProjectRoot struct {
 	Data ProjectData `json:"data"`
 	Meta meta        `json:"meta"`
 }
@@ -24,10 +23,20 @@ type Project struct {
 type ProjectData struct {
 	ID         string            `json:"id"`
 	Type       string            `json:"type"`
-	Attributes ProjectAttributes `json:"attributes"`
+	Attributes ProjectGetAttributes `json:"attributes"`
 }
 
-type ProjectAttributes struct {
+type ProjectListResponse struct {
+	Data []ProjectData `json:"data"`
+	Meta     meta          `json:"meta"`
+}
+
+type ProjectGetResponse struct {
+	Data ProjectData `json:"data"`
+	Meta meta          `json:"meta"`
+}
+
+type ProjectGetAttributes struct {
 	Name          string `json:"name"`
 	Slug          string `json:"slug"`
 	Description   string `json:"description"`
@@ -36,18 +45,9 @@ type ProjectAttributes struct {
 	Environment   string `json:"environment"`
 }
 
-type ProjectListResponse struct {
-	Projects []ProjectData `json:"data"`
-	Meta     meta          `json:"meta"`
-}
-
 // ProjectCreateRequest type used to create a Latitude project
 type ProjectCreateRequest struct {
 	Data ProjectCreateData `json:"data"`
-}
-
-func (p ProjectCreateRequest) String() string {
-	return Stringify(p)
 }
 
 type ProjectCreateData struct {
@@ -72,30 +72,57 @@ type ProjectUpdateData struct {
 	Attributes ProjectCreateAttributes `json:"attributes"`
 }
 
-func (p ProjectUpdateRequest) String() string {
-	return Stringify(p)
-}
-
 // ProjectServiceOp implements ProjectService
 type ProjectServiceOp struct {
 	client requestDoer
 }
 
+type Project struct {
+	ID          string      `json:"id"`
+	Name    string      `json:"name"`
+	Slug       string      `json:"slug"`
+	Description        string      `json:"description"`
+	BillingType      string      `json:"billing_type"`
+	BillingMethod string      `json:"billing_method"`
+	Environment  string      `json:"environment"`
+}
+
+// Flatten latitude API data structures
+func NewFlatProject(pd ProjectData) Project {
+	return Project{
+		pd.ID,
+		pd.Attributes.Name,
+		pd.Attributes.Slug,
+		pd.Attributes.Description,
+		pd.Attributes.BillingType,
+		pd.Attributes.BillingMethod,
+		pd.Attributes.Environment,
+	}
+}
+
+func NewFlatProjectList(pd []ProjectData) []Project {
+	var res []Project
+	for _, project := range pd {
+		res = append(res, NewFlatProject(project))
+	}
+	return res
+}
+
 // List returns a list of projects
-func (s *ProjectServiceOp) List(opts *ListOptions) (projects []ProjectData, resp *Response, err error) {
+func (s *ProjectServiceOp) List(opts *ListOptions) (projects []Project, resp *Response, err error) {
 	apiPathQuery := opts.WithQuery(projectBasePath)
 
 	for {
-		subset := new(ProjectListResponse)
+		res := new(ProjectListResponse)
 
-		resp, err = s.client.DoRequest("GET", apiPathQuery, nil, subset)
+		resp, err = s.client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
 
-		projects = append(projects, subset.Projects...)
+		projects = append(projects, NewFlatProjectList(res.Data)...)
 
-		if apiPathQuery = nextPage(subset.Meta, opts); apiPathQuery != "" {
+		if apiPathQuery = nextPage(res.Meta, opts); apiPathQuery != "" {
 			continue
 		}
 
@@ -107,37 +134,41 @@ func (s *ProjectServiceOp) List(opts *ListOptions) (projects []ProjectData, resp
 func (s *ProjectServiceOp) Get(projectID string, opts *GetOptions) (*Project, *Response, error) {
 	endpointPath := path.Join(projectBasePath, projectID)
 	apiPathQuery := opts.WithQuery(endpointPath)
-	project := new(Project)
+	project := new(ProjectGetResponse)
 	resp, err := s.client.DoRequest("GET", apiPathQuery, nil, project)
 	if err != nil {
 		return nil, resp, err
 	}
-	return project, resp, err
+
+	flatProject := NewFlatProject(project.Data)
+	return &flatProject, resp, err
 }
 
 // Create creates a new project
 func (s *ProjectServiceOp) Create(createRequest *ProjectCreateRequest) (*Project, *Response, error) {
-	project := new(Project)
+	project := new(ProjectGetResponse)
 
 	resp, err := s.client.DoRequest("POST", projectBasePath, createRequest, project)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return project, resp, err
+	flatProject := NewFlatProject(project.Data)
+	return &flatProject, resp, err
 }
 
 // Update updates a project
 func (s *ProjectServiceOp) Update(projectID string, updateRequest *ProjectUpdateRequest) (*Project, *Response, error) {
 	apiPath := path.Join(projectBasePath, projectID)
-	project := new(Project)
+	project := new(ProjectGetResponse)
 
 	resp, err := s.client.DoRequest("PATCH", apiPath, updateRequest, project)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return project, resp, err
+	flatProject := NewFlatProject(project.Data)
+	return &flatProject, resp, err
 }
 
 // Delete deletes a project
