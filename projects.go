@@ -21,19 +21,19 @@ type ProjectRoot struct {
 }
 
 type ProjectData struct {
-	ID         string            `json:"id"`
-	Type       string            `json:"type"`
+	ID         string               `json:"id"`
+	Type       string               `json:"type"`
 	Attributes ProjectGetAttributes `json:"attributes"`
 }
 
 type ProjectListResponse struct {
 	Data []ProjectData `json:"data"`
-	Meta     meta          `json:"meta"`
+	Meta meta          `json:"meta"`
 }
 
 type ProjectGetResponse struct {
 	Data ProjectData `json:"data"`
-	Meta meta          `json:"meta"`
+	Meta meta        `json:"meta"`
 }
 
 type ProjectGetAttributes struct {
@@ -78,13 +78,13 @@ type ProjectServiceOp struct {
 }
 
 type Project struct {
-	ID          string      `json:"id"`
-	Name    string      `json:"name"`
-	Slug       string      `json:"slug"`
-	Description        string      `json:"description"`
-	BillingType      string      `json:"billing_type"`
-	BillingMethod string      `json:"billing_method"`
-	Environment  string      `json:"environment"`
+	ID            string `json:"id"`
+	Name          string `json:"name"`
+	Slug          string `json:"slug"`
+	Description   string `json:"description"`
+	BillingType   string `json:"billing_type"`
+	BillingMethod string `json:"billing_method"`
+	Environment   string `json:"environment"`
 }
 
 // Flatten latitude API data structures
