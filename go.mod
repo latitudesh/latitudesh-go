@@ -1,6 +1,6 @@
-module github.com/capturealpha/latitude-api-client
+module github.com/latitudesh/latitudesh-go
 
-go 1.18
+go 1.17
 
 require github.com/dnaeon/go-vcr v1.2.0
 
