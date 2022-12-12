@@ -32,15 +32,15 @@ func TestAccProjectBasic(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if p.Data.Attributes.Name != rs {
-		t.Fatalf("Expected new project name to be %s, not %s", rs, p.Data.Attributes.Name)
+	if p.Name != rs {
+		t.Fatalf("Expected new project name to be %s, not %s", rs, p.Name)
 	}
 
 	// Update newly created project
 	rs = testProjectPrefix + randString8()
 	pur := ProjectUpdateRequest{
 		Data: ProjectUpdateData{
-			ID:   p.Data.ID,
+			ID:   p.ID,
 			Type: testProjectType,
 			Attributes: ProjectCreateAttributes{
 				Name:        rs,
@@ -48,25 +48,25 @@ func TestAccProjectBasic(t *testing.T) {
 			},
 		},
 	}
-	p, _, err = c.Projects.Update(p.Data.ID, &pur)
+	p, _, err = c.Projects.Update(p.ID, &pur)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if p.Data.Attributes.Name != rs {
-		t.Fatalf("Expected the name of the updated project to be %s, not %s", rs, p.Data.Attributes.Name)
+	if p.Name != rs {
+		t.Fatalf("Expected the name of the updated project to be %s, not %s", rs, p.Name)
 	}
 
 	// Get newly updated project
-	gotProject, _, err := c.Projects.Get(p.Data.ID, nil)
+	gotProject, _, err := c.Projects.Get(p.ID, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if gotProject.Data.Attributes.Name != rs {
-		t.Fatalf("Expected the name of the GOT project to be %s, not %s", rs, gotProject.Data.Attributes.Name)
+	if gotProject.Name != rs {
+		t.Fatalf("Expected the name of the GOT project to be %s, not %s", rs, gotProject.Name)
 	}
 
 	// Delete newly created project
-	_, err = c.Projects.Delete(p.Data.ID)
+	_, err = c.Projects.Delete(p.ID)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -86,6 +86,6 @@ func TestAccListProjects(t *testing.T) {
 	}
 
 	for _, proj := range projs {
-		fmt.Println(proj.ID, proj.Attributes.Name)
+		fmt.Println(proj.ID, proj.Name)
 	}
 }
