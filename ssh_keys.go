@@ -7,26 +7,35 @@ import (
 const sshKeyBasePath = "/ssh_keys"
 
 type SSHKeyService interface {
-	List(projectID string, opts *ListOptions) ([]SSHKeyData, *Response, error)
-	Get(sshKeyID string, projectID string, opts *GetOptions) (*SSHKeyGetResponse, *Response, error)
+	List(projectID string, opts *ListOptions) ([]SSHKey, *Response, error)
+	Get(sshKeyID string, projectID string, opts *GetOptions) (*SSHKey, *Response, error)
 	Create(projectID string, request *SSHKeyCreateRequest) (*SSHKey, *Response, error)
 	Update(sshKeyID string, projectID string, request *SSHKeyUpdateRequest) (*SSHKey, *Response, error)
 	Delete(sshKeyID string, projectID string) (*Response, error)
 }
 
-// SSHKey represents a Latitude SSH key
-type SSHKey struct {
-	Data SSHKeyData `json:"data"`
+type SSHKeyRoot struct {
+	Data ServerData `json:"data"`
 	Meta meta       `json:"meta"`
 }
 
 type SSHKeyData struct {
-	ID         string           `json:"id"`
-	Type       string           `json:"type"`
-	Attributes SSHKeyAttributes `json:"attributes"`
+	ID         string              `json:"id"`
+	Type       string              `json:"type"`
+	Attributes SSHKeyGetAttributes `json:"attributes"`
 }
 
-type SSHKeyAttributes struct {
+type SSHKeyListResponse struct {
+	Data []SSHKeyData `json:"data"`
+	Meta meta         `json:"meta"`
+}
+
+type SSHKeyGetResponse struct {
+	Data SSHKeyData `json:"data"`
+	Meta meta       `json:"meta"`
+}
+
+type SSHKeyGetAttributes struct {
 	Name        string `json:"name"`
 	PublicKey   string `json:"public_key"`
 	Fingerprint string `json:"fingerprint"`
@@ -34,29 +43,9 @@ type SSHKeyAttributes struct {
 	UpdatedAt   string `json:"updated_at"`
 }
 
-type SSHKeyListResponse struct {
-	SSHKeys []SSHKeyData `json:"data"`
-	Meta    meta         `json:"meta"`
-}
-
-type SSHKeyGetResponse struct {
-	Data SSHKeyGetData `json:"data"`
-	Meta meta          `json:"meta"`
-}
-
-type SSHKeyGetData struct {
-	ID         string           `json:"id"`
-	Type       string           `json:"type"`
-	Attributes SSHKeyAttributes `json:"attributes"`
-}
-
 // SSHKeyCreateRequest type used to create a Latitude SSH key
 type SSHKeyCreateRequest struct {
 	Data SSHKeyCreateData `json:"data"`
-}
-
-func (s SSHKeyCreateRequest) String() string {
-	return Stringify(s)
 }
 
 type SSHKeyCreateData struct {
@@ -84,30 +73,56 @@ type SSHKeyUpdateAttributes struct {
 	Name string `json:"name"`
 }
 
-func (p SSHKeyUpdateRequest) String() string {
-	return Stringify(p)
-}
-
 // SSHKeyServiceOp implements SSHKeyService
 type SSHKeyServiceOp struct {
 	client requestDoer
 }
 
+// SSHKey represents a Latitude SSH key
+type SSHKey struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	PublicKey   string `json:"public_key"`
+	Fingerprint string `json:"fingerprint"`
+	CreatedAt   string `json:"created_at"`
+	UpdatedAt   string `json:"updated_at"`
+}
+
+// Flatten latitude API data structures
+func NewFlatSSHKey(sd SSHKeyData) SSHKey {
+	return SSHKey{
+		sd.ID,
+		sd.Attributes.Name,
+		sd.Attributes.PublicKey,
+		sd.Attributes.Fingerprint,
+		sd.Attributes.CreatedAt,
+		sd.Attributes.UpdatedAt,
+	}
+}
+
+func NewFlatSSHKeyList(sd []SSHKeyData) []SSHKey {
+	var res []SSHKey
+	for _, ssh_key := range sd {
+		res = append(res, NewFlatSSHKey(ssh_key))
+	}
+	return res
+}
+
 // List returns a list of SSH Keys
-func (s *SSHKeyServiceOp) List(projectID string, opts *ListOptions) (sshKeys []SSHKeyData, resp *Response, err error) {
+func (s *SSHKeyServiceOp) List(projectID string, opts *ListOptions) (sshKeys []SSHKey, resp *Response, err error) {
 	endpointPath := path.Join(projectBasePath, projectID, sshKeyBasePath)
 	apiPathQuery := opts.WithQuery(endpointPath)
 
 	for {
-		subset := new(SSHKeyListResponse)
+		res := new(SSHKeyListResponse)
 
-		resp, err = s.client.DoRequest("GET", apiPathQuery, nil, subset)
+		resp, err = s.client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
-		sshKeys = append(sshKeys, subset.SSHKeys...)
+		sshKeys = append(sshKeys, NewFlatSSHKeyList(res.Data)...)
 
-		if apiPathQuery = nextPage(subset.Meta, opts); apiPathQuery != "" {
+		if apiPathQuery = nextPage(res.Meta, opts); apiPathQuery != "" {
 			continue
 		}
 
@@ -116,7 +131,7 @@ func (s *SSHKeyServiceOp) List(projectID string, opts *ListOptions) (sshKeys []S
 }
 
 // Get returns an SSH key by id
-func (s *SSHKeyServiceOp) Get(sshKeyID string, projectID string, opts *GetOptions) (*SSHKeyGetResponse, *Response, error) {
+func (s *SSHKeyServiceOp) Get(sshKeyID string, projectID string, opts *GetOptions) (*SSHKey, *Response, error) {
 	endpointPath := path.Join(projectBasePath, projectID, sshKeyBasePath, sshKeyID)
 	apiPathQuery := opts.WithQuery(endpointPath)
 	sshKey := new(SSHKeyGetResponse)
@@ -124,33 +139,37 @@ func (s *SSHKeyServiceOp) Get(sshKeyID string, projectID string, opts *GetOption
 	if err != nil {
 		return nil, resp, err
 	}
-	return sshKey, resp, err
+
+	flatSSHKey := NewFlatSSHKey(sshKey.Data)
+	return &flatSSHKey, resp, err
 }
 
 // Create creates a new SSH key
 func (s *SSHKeyServiceOp) Create(projectID string, createRequest *SSHKeyCreateRequest) (*SSHKey, *Response, error) {
 	endpointPath := path.Join(projectBasePath, projectID, sshKeyBasePath)
-	sshKey := new(SSHKey)
+	sshKey := new(SSHKeyGetResponse)
 
 	resp, err := s.client.DoRequest("POST", endpointPath, createRequest, sshKey)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return sshKey, resp, err
+	flatSSHKey := NewFlatSSHKey(sshKey.Data)
+	return &flatSSHKey, resp, err
 }
 
 // Update updates an SSH key
 func (s *SSHKeyServiceOp) Update(sshKeyID string, projectID string, updateRequest *SSHKeyUpdateRequest) (*SSHKey, *Response, error) {
 	apiPath := path.Join(projectBasePath, projectID, sshKeyBasePath, sshKeyID)
-	sshKey := new(SSHKey)
+	sshKey := new(SSHKeyGetResponse)
 
 	resp, err := s.client.DoRequest("PATCH", apiPath, updateRequest, sshKey)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return sshKey, resp, err
+	flatSSHKey := NewFlatSSHKey(sshKey.Data)
+	return &flatSSHKey, resp, err
 }
 
 // Delete deletes an SSH Key

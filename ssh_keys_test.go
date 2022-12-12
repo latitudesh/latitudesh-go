@@ -37,10 +37,10 @@ func TestAccSSHKeyBasic(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer deleteSSHKey(t, c, k.Data.ID, projectID)
+	defer deleteSSHKey(t, c, k.ID, projectID)
 
-	if k.Data.Attributes.Name != keyName {
-		t.Fatalf("Expected new SSH key name to be %s, not %s", keyName, k.Data.Attributes.Name)
+	if k.Name != keyName {
+		t.Fatalf("Expected new SSH key name to be %s, not %s", keyName, k.Name)
 	}
 
 	// Update newly created SSH key
