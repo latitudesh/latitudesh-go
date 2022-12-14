@@ -17,9 +17,9 @@ import (
 )
 
 const (
-	authTokenEnvVar              = "LATITUDE_AUTH_TOKEN"
-	baseURL                      = "https://api.maxihost.com"
-	debugEnvVar                  = "LATITUDE_DEBUG"
+	authTokenEnvVar = "LATITUDE_AUTH_TOKEN"
+	baseURL         = "https://api.maxihost.com"
+	debugEnvVar     = "LATITUDE_DEBUG"
 )
 
 // meta contains pagination information
@@ -78,6 +78,7 @@ type Client struct {
 	Projects ProjectService
 	Servers  ServerService
 	SSHKeys  SSHKeyService
+	UserData UserDataService
 	Plans    PlanService
 	Regions  RegionService
 }
@@ -307,6 +308,7 @@ func NewClientWithBaseURL(apiKey string, httpClient *http.Client, apiBaseURL str
 	c.Projects = &ProjectServiceOp{client: c}
 	c.Servers = &ServerServiceOp{client: c}
 	c.SSHKeys = &SSHKeyServiceOp{client: c}
+	c.UserData = &UserDataServiceOp{client: c}
 	c.Plans = &PlanServiceOp{client: c}
 	c.Regions = &RegionServiceOp{client: c}
 	c.debug = os.Getenv(debugEnvVar) != ""
