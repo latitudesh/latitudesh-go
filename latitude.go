@@ -18,7 +18,7 @@ import (
 
 const (
 	authTokenEnvVar = "LATITUDE_AUTH_TOKEN"
-	baseURL         = "http://localhost:3001"
+	baseURL         = "https://api.maxihost.com"
 	debugEnvVar     = "LATITUDE_DEBUG"
 )
 
