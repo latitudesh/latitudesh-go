@@ -212,7 +212,7 @@ func (s *ServerServiceOp) Create(createRequest *ServerCreateRequest) (*Server, *
 
 // Update updates a server
 func (s *ServerServiceOp) Update(serverID string, updateRequest *ServerUpdateRequest) (*Server, *Response, error) {
-	apiPath := path.Join(projectBasePath, serverID)
+	apiPath := path.Join(serverBasePath, serverID)
 	server := new(ServerGetResponse)
 
 	resp, err := s.client.DoRequest("PATCH", apiPath, updateRequest, server)
