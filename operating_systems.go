@@ -2,9 +2,9 @@ package latitude
 
 const operatingSystemBasePath = "/plans/operating_systems"
 
-// RegionService interface defines available region methods
-type OperatinSystemService interface {
-	List(listOpt *ListOptions) ([]Region, *Response, error)
+// OperatingSystemService interface defines available region methods
+type OperatingSystemService interface {
+	List(listOpt *ListOptions) ([]OperatingSystem, *Response, error)
 }
 
 type OperatingSystemListResponse struct {
@@ -76,7 +76,7 @@ func NewFlatOperatingSystemList(osd []OperatingSystemData) []OperatingSystem {
 	return res
 }
 
-// List returns a list of regions
+// List returns a list of Operating Systems
 func (os *OperatingSystemServiceOp) List(opts *ListOptions) (operatingSystems []OperatingSystem, resp *Response, err error) {
 	apiPathQuery := opts.WithQuery(operatingSystemBasePath)
 
