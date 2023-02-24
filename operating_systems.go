@@ -2,7 +2,7 @@ package latitude
 
 const operatingSystemBasePath = "/plans/operating_systems"
 
-// OperatingSystemService interface defines available region methods
+// OperatingSystemService interface defines available Operating Systems methods
 type OperatingSystemService interface {
 	List(listOpt *ListOptions) ([]OperatingSystem, *Response, error)
 }

@@ -15,7 +15,7 @@ func TestAccOperatingSystemBasic(t *testing.T) {
 	}
 
 	if len(osl) == 0 {
-		t.Fatalf("Operating System List should contain at least one plan")
+		t.Fatalf("Operating System List should contain at least one OS")
 	}
 
 	OsTest := OperatingSystem{
