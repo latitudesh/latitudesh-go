@@ -75,12 +75,13 @@ type Client struct {
 	ConsumerToken string
 	APIKey        string
 
-	Projects ProjectService
-	Servers  ServerService
-	UserData UserDataService
-	SSHKeys  SSHKeyService
-	Plans    PlanService
-	Regions  RegionService
+	Projects         ProjectService
+	Servers          ServerService
+	UserData         UserDataService
+	SSHKeys          SSHKeyService
+	Plans            PlanService
+	OperatingSystems OperatingSystemService
+	Regions          RegionService
 }
 
 type requestDoer interface {
@@ -310,6 +311,7 @@ func NewClientWithBaseURL(apiKey string, httpClient *http.Client, apiBaseURL str
 	c.SSHKeys = &SSHKeyServiceOp{client: c}
 	c.UserData = &UserDataServiceOp{client: c}
 	c.Plans = &PlanServiceOp{client: c}
+	c.OperatingSystems = &OperatingSystemServiceOp{client: c}
 	c.Regions = &RegionServiceOp{client: c}
 	c.debug = os.Getenv(debugEnvVar) != ""
 
