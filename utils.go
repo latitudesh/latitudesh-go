@@ -136,7 +136,7 @@ func ValidateIpxe(createServer *ServerCreateRequest) error {
 		return nil
 	}
 	if createServer.Data.Attributes.IpxeUrl == "" {
-		return fmt.Errorf("An iPXE script URL is needed when deploying with iPXE.")
+		return fmt.Errorf("iPXE script URL is needed when deploying with iPXE.")
 	}
 	return nil
 }
