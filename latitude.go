@@ -82,6 +82,7 @@ type Client struct {
 	Plans            PlanService
 	OperatingSystems OperatingSystemService
 	Regions          RegionService
+	Teams            TeamService
 }
 
 type requestDoer interface {
@@ -310,6 +311,7 @@ func NewClientWithBaseURL(apiKey string, httpClient *http.Client, apiBaseURL str
 	c.Servers = &ServerServiceOp{client: c}
 	c.SSHKeys = &SSHKeyServiceOp{client: c}
 	c.UserData = &UserDataServiceOp{client: c}
+	c.Teams = &TeamServiceOp{client: c}
 	c.Plans = &PlanServiceOp{client: c}
 	c.OperatingSystems = &OperatingSystemServiceOp{client: c}
 	c.Regions = &RegionServiceOp{client: c}
