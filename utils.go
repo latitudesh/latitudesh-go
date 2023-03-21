@@ -129,3 +129,14 @@ func ValidateUUID(uuid string) error {
 	}
 	return nil
 }
+
+// Validates if iPXE Url is provided when ipxe deploying with iPXE.
+func ValidateIpxe(createServer *ServerCreateRequest) error {
+	if createServer.Data.Attributes.OperatingSystem != "ipxe" {
+		return nil
+	}
+	if createServer.Data.Attributes.IpxeUrl == "" {
+		return fmt.Errorf("An iPXE script URL is needed when deploying with iPXE.")
+	}
+	return nil
+}
