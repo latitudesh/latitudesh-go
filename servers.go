@@ -201,11 +201,6 @@ func (s *ServerServiceOp) Get(serverID string, opts *GetOptions) (*Server, *Resp
 func (s *ServerServiceOp) Create(createRequest *ServerCreateRequest) (*Server, *Response, error) {
 	server := new(ServerGetResponse)
 
-	err := ValidateIpxe(createRequest)
-	if err != nil {
-		return nil, nil, err
-	}
-
 	resp, err := s.client.DoRequest("POST", serverBasePath, createRequest, server)
 	if err != nil {
 		return nil, resp, err
