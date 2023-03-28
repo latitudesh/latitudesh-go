@@ -207,7 +207,7 @@ func (s *ServerServiceOp) Create(createRequest *ServerCreateRequest) (*Server, *
 	}
 
 	flatServer := NewFlatServer(server.Data)
-	waitServerActive(s, flatServer.ID)
+	_, err = waitServerActive(s, flatServer.ID)
 	return &flatServer, resp, err
 }
 
