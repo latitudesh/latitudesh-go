@@ -59,14 +59,18 @@ type ServerGetData struct {
 }
 
 type ServerGetAttributes struct {
-	Hostname    string      `json:"hostname"`
-	Label       string      `json:"label"`
-	Role        string      `json:"role"`
-	PrimaryIPv4 string      `json:"primary_ipv4"`
-	Status      string      `json:"status"`
-	IMPIStatus  string      `json:"impi_status"`
-	CreatedAt   string      `json:"created_at"`
-	Specs       ServerSpecs `json:"specs"`
+	Hostname        string                `json:"hostname"`
+	Label           string                `json:"label"`
+	Role            string                `json:"role"`
+	PrimaryIPv4     string                `json:"primary_ipv4"`
+	Status          string                `json:"status"`
+	IMPIStatus      string                `json:"impi_status"`
+	CreatedAt       string                `json:"created_at"`
+	Specs           ServerSpecs           `json:"specs"`
+	Project         ServerProject         `json:"project"`
+	OperatingSystem ServerOperatingSystem `json:"operating_system"`
+	Plan            ServerPlan            `json:"plan"`
+	Region          ServerRegion          `json:"region"`
 }
 
 // ServerCreateRequest type used to create a Latitude server
@@ -107,15 +111,46 @@ type ServerServiceOp struct {
 }
 
 type Server struct {
-	ID          string      `json:"id"`
-	Hostname    string      `json:"hostname"`
-	Label       string      `json:"label"`
-	Role        string      `json:"role"`
-	Status      string      `json:"status"`
-	PrimaryIPv4 string      `json:"primary_ipv4"`
-	IMPIStatus  string      `json:"impi_status"`
-	CreatedAt   string      `json:"created_at"`
-	Specs       ServerSpecs `json:"specs"`
+	ID              string                `json:"id"`
+	Hostname        string                `json:"hostname"`
+	Label           string                `json:"label"`
+	Role            string                `json:"role"`
+	Status          string                `json:"status"`
+	PrimaryIPv4     string                `json:"primary_ipv4"`
+	IMPIStatus      string                `json:"impi_status"`
+	CreatedAt       string                `json:"created_at"`
+	Specs           ServerSpecs           `json:"specs"`
+	Project         ServerProject         `json:"project"`
+	OperatingSystem ServerOperatingSystem `json:"operating_system"`
+	Plan            ServerPlan            `json:"plan"`
+	Region          ServerRegion          `json:"region"`
+}
+
+type ServerProject struct {
+	ID   int64  `json:"id"`
+	Name string `json:"name"`
+}
+
+type ServerRegion struct {
+	City    string     `json:"city"`
+	Country string     `json:"country"`
+	Site    ServerSite `json:"site"`
+}
+
+type ServerSite struct {
+	Name     string `json:"name"`
+	Slug     string `json:"slug"`
+	Facility string `json:"facility"`
+}
+
+type ServerPlan struct {
+	Name string `json:"name"`
+}
+
+type ServerOperatingSystem struct {
+	Name    string `json:"name"`
+	Slug    string `json:"slug"`
+	Version string `json:"version"`
 }
 
 // Flatten latitude API data structures
@@ -130,6 +165,10 @@ func NewFlatServer(sd ServerGetData) Server {
 		sd.Attributes.IMPIStatus,
 		sd.Attributes.CreatedAt,
 		sd.Attributes.Specs,
+		sd.Attributes.Project,
+		sd.Attributes.OperatingSystem,
+		sd.Attributes.Plan,
+		sd.Attributes.Region,
 	}
 }
 
