@@ -43,6 +43,8 @@ type ProjectGetAttributes struct {
 	BillingType   string `json:"billing_type"`
 	BillingMethod string `json:"billing_method"`
 	Environment   string `json:"environment"`
+	CreatedAt     string `json:"created_at"`
+	UpdatedAt     string `json:"updated_at"`
 }
 
 // ProjectCreateRequest type used to create a Latitude project
@@ -85,6 +87,8 @@ type Project struct {
 	BillingType   string `json:"billing_type"`
 	BillingMethod string `json:"billing_method"`
 	Environment   string `json:"environment"`
+	CreatedAt     string `json:"created_at"`
+	UpdatedAt     string `json:"updated_at"`
 }
 
 // Flatten latitude API data structures
@@ -97,6 +101,8 @@ func NewFlatProject(pd ProjectData) Project {
 		pd.Attributes.BillingType,
 		pd.Attributes.BillingMethod,
 		pd.Attributes.Environment,
+		pd.Attributes.CreatedAt,
+		pd.Attributes.UpdatedAt,
 	}
 }
 
