@@ -145,6 +145,7 @@ type ServerSite struct {
 
 type ServerPlan struct {
 	Name string `json:"name"`
+	Slug string `json:"slug"`
 }
 
 type ServerOperatingSystem struct {
