@@ -18,7 +18,7 @@ import (
 
 const (
 	authTokenEnvVar      = "LATITUDE_AUTH_TOKEN"
-	baseURL              = "https://api.maxihost.com"
+	baseURL              = "https://api.latitude.sh"
 	debugEnvVar          = "LATITUDE_DEBUG"
 	userAgentForSDK      = "Latitude-Go-SDK"
 	userAgentForProvider = "Latitude-Terraform-Provider"
