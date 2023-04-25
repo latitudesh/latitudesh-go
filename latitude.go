@@ -17,10 +17,14 @@ import (
 )
 
 const (
-	authTokenEnvVar = "LATITUDE_AUTH_TOKEN"
-	baseURL         = "https://api.maxihost.com"
-	debugEnvVar     = "LATITUDE_DEBUG"
+	authTokenEnvVar      = "LATITUDE_AUTH_TOKEN"
+	baseURL              = "https://api.latitude.sh"
+	debugEnvVar          = "LATITUDE_DEBUG"
+	userAgentForSDK      = "Latitude-Go-SDK"
+	userAgentForProvider = "Latitude-Terraform-Provider"
 )
+
+var currentVersion = "0.2.0"
 
 // meta contains pagination information
 type meta struct {
@@ -123,7 +127,14 @@ func (c *Client) NewRequest(method, path string, body interface{}) (*http.Reques
 	req.Close = true
 
 	req.Header.Add("Authorization", c.APIKey)
-	req.Header.Add("User-Agent", c.UserAgent)
+
+	// set User-Agent value for SDK or terraform-provider
+	userAgent := c.UserAgent
+	if !strings.Contains(userAgent, userAgentForProvider) {
+		userAgent = fmt.Sprintf("%s/%s", userAgentForSDK, currentVersion)
+	}
+	req.Header.Add("User-Agent", userAgent)
+
 	if req.Method != "GET" {
 		req.Header.Add("Content-Type", "application/json")
 	}
