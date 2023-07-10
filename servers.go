@@ -91,6 +91,7 @@ type ServerCreateAttributes struct {
 	Hostname        string `json:"hostname"`
 	SSHKeys         []int  `json:"ssh_keys,omitempty"`
 	UserData        int    `json:"user_data,omitempty"`
+	Raid            string `json:"raid,omitempty"`
 	IpxeUrl         string `json:"ipxe_url,omitempty"`
 }
 
