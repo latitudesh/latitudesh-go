@@ -11,16 +11,16 @@ type VirtualNetworkServiceOp struct {
 }
 
 type VirtualNetworkData struct {
-	ID               string                   `json:"id"`
-	Type             string                   `json:"type"`
-	Attributes       VirtualNetworkAttributes `json:"attributes"`
-	AssignmentsCount int                      `json:"assignments_count"`
+	ID         string                   `json:"id"`
+	Type       string                   `json:"type"`
+	Attributes VirtualNetworkAttributes `json:"attributes"`
 }
 
 type VirtualNetworkAttributes struct {
-	Vid         int                  `json:"vid"`
-	Description string               `json:"description"`
-	Region      VirtualNetworkRegion `json:"region"`
+	Vid              int                  `json:"vid"`
+	Description      string               `json:"description"`
+	Region           VirtualNetworkRegion `json:"region"`
+	AssignmentsCount int                  `json:"assignments_count"`
 }
 
 type VirtualNetworkRegion struct {
@@ -67,7 +67,7 @@ func NewFlatVirtualNetwork(vnd VirtualNetworkData) VirtualNetwork {
 		vnd.Attributes.Region.Site.Name,
 		vnd.Attributes.Region.Site.Slug,
 		vnd.Attributes.Region.Site.Facility,
-		vnd.AssignmentsCount,
+		vnd.Attributes.AssignmentsCount,
 	}
 }
 

@@ -29,7 +29,7 @@ func TestAccVirtualNetworkBasic(t *testing.T) {
 		SiteName:         "Dallas",
 		SiteSlug:         "DAL",
 		Facility:         "Cologix",
-		AssignmentsCount: 0,
+		AssignmentsCount: 3,
 	}
 
 	// Check Virtual Network data
