@@ -86,6 +86,7 @@ type Client struct {
 	Plans            PlanService
 	OperatingSystems OperatingSystemService
 	VirtualNetworks  VirtualNetworkService
+	VlanAssignments  VlanAssignmentService
 	Regions          RegionService
 	Teams            TeamService
 	Bandwidth        BandwidthService
@@ -330,6 +331,7 @@ func NewClientWithBaseURL(apiKey string, httpClient *http.Client, apiBaseURL str
 	c.OperatingSystems = &OperatingSystemServiceOp{client: c}
 	c.Regions = &RegionServiceOp{client: c}
 	c.VirtualNetworks = &VirtualNetworkServiceOp{client: c}
+	c.VlanAssignments = &VlanAssignmentServiceOp{client: c}
 	c.debug = os.Getenv(debugEnvVar) != ""
 
 	return c, nil

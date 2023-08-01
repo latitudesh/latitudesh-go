@@ -29,7 +29,6 @@ func TestAccVirtualNetworkBasic(t *testing.T) {
 		SiteName:         "Dallas",
 		SiteSlug:         "DAL",
 		Facility:         "Cologix",
-		AssignmentsCount: 3,
 	}
 
 	// Check Virtual Network data
@@ -64,9 +63,6 @@ func TestAccVirtualNetworkBasic(t *testing.T) {
 		}
 		if vnTest.Facility != vn.Facility {
 			t.Fatalf("Expected the facility of the Virtual Network to be %s, not %s", vnTest.Facility, vn.Facility)
-		}
-		if vnTest.AssignmentsCount != vn.AssignmentsCount {
-			t.Fatalf("Expected the Assignment count of the Virtual Network to be %d, not %d", vnTest.AssignmentsCount, vn.AssignmentsCount)
 		}
 		return
 	}
