@@ -1,5 +1,7 @@
 package latitude
 
+import "path"
+
 const vlanAssignmentBasePath = "/virtual_networks/assignments"
 
 type VlanAssignmentService interface {
@@ -17,7 +19,7 @@ type VlanAssignmentData struct {
 }
 
 type VlanAssignmentAttributes struct {
-	VirtualNetworkId int        `json:"virtual_network_id"`
+	VlanAssignmentId int        `json:"virtual_network_id"`
 	Vid              int        `json:"vid"`
 	Description      string     `json:"description"`
 	Status           string     `json:"status"`
@@ -34,7 +36,7 @@ type VlanServer struct {
 type VlanAssignment struct {
 	ID               string `json:"id"`
 	Type             string `json:"type"`
-	VirtualNetworkID int    `json:"virtual_network_id"`
+	VlanAssignmentID int    `json:"virtual_network_id"`
 	Vid              int    `json:"vid"`
 	Description      string `json:"description"`
 	Status           string `json:"status"`
@@ -49,11 +51,21 @@ type VlanAssignmentListResponse struct {
 	Meta meta                 `json:"meta"`
 }
 
+type VlanAssignmentGetResponse struct {
+	Data VlanAssignmentData `json:"data"`
+	Meta meta               `json:"meta"`
+}
+
+type VlanAssignmentCreateRequest struct {
+	ServerID         int `json:"server_id"`
+	VirtualNetworkID int `json:"virtual_network_id"`
+}
+
 func NewFlatVlanAssignment(vnd VlanAssignmentData) VlanAssignment {
 	return VlanAssignment{
 		vnd.ID,
 		vnd.Type,
-		vnd.Attributes.VirtualNetworkId,
+		vnd.Attributes.VlanAssignmentId,
 		vnd.Attributes.Vid,
 		vnd.Attributes.Description,
 		vnd.Attributes.Status,
@@ -90,4 +102,22 @@ func (vn *VlanAssignmentServiceOp) List(opts *ListOptions) (vlanAssignments []Vl
 		}
 		return
 	}
+}
+
+func (s *VlanAssignmentServiceOp) Assign(createRequest *VlanAssignmentCreateRequest) (*VlanAssignment, *Response, error) {
+	vLan := new(VlanAssignmentGetResponse)
+
+	resp, err := s.client.DoRequest("POST", vlanAssignmentBasePath, createRequest, vLan)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	flatVlanAssignment := NewFlatVlanAssignment(vLan.Data)
+	return &flatVlanAssignment, resp, err
+}
+
+func (s *VlanAssignmentServiceOp) Delete(vlanAssignmentID string) (*Response, error) {
+	apiPath := path.Join(vlanAssignmentBasePath, vlanAssignmentID)
+
+	return s.client.DoRequest("DELETE", apiPath, nil, nil)
 }

@@ -1,5 +1,7 @@
 package latitude
 
+import "path"
+
 const virtualNetworkBasePath = "/virtual_networks"
 
 type VirtualNetworkService interface {
@@ -55,6 +57,32 @@ type VirtualNetworkListResponse struct {
 	Meta meta                 `json:"meta"`
 }
 
+type VirtualNetworkGetResponse struct {
+	Data VirtualNetworkData `json:"data"`
+	Meta meta               `json:"meta"`
+}
+
+type VirtualNetworkCreateAttributes struct {
+	Description string `json:"description"`
+	Site        string `json:"site"`
+	Project     string `json:"project"`
+}
+
+type VirtualNetworkCreateRequest struct {
+	Type       string                         `json:"type"`
+	Attributes VirtualNetworkCreateAttributes `json:"attributes"`
+}
+
+type VirtualNetworkUpdateRequest struct {
+	Data ServerUpdateData `json:"data"`
+}
+
+type VirtualNetworkUpdateData struct {
+	ID          string `json:"id"`
+	Type        string `json:"type"`
+	Description string `json:"description"`
+}
+
 func NewFlatVirtualNetwork(vnd VirtualNetworkData) VirtualNetwork {
 	return VirtualNetwork{
 		vnd.ID,
@@ -97,4 +125,52 @@ func (vn *VirtualNetworkServiceOp) List(opts *ListOptions) (virtualNetworks []Vi
 		}
 		return
 	}
+}
+
+// Get returns a server by id
+func (s *VirtualNetworkServiceOp) Get(virtualNetworkID string, opts *GetOptions) (*VirtualNetwork, *Response, error) {
+	endpointPath := path.Join(virtualNetworkBasePath, virtualNetworkID)
+	apiPathQuery := opts.WithQuery(endpointPath)
+	virtualNetwork := new(VirtualNetworkGetResponse)
+	resp, err := s.client.DoRequest("GET", apiPathQuery, nil, virtualNetwork)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	flatVirtualNetwork := NewFlatVirtualNetwork(virtualNetwork.Data)
+	return &flatVirtualNetwork, resp, err
+}
+
+// Create creates a new virtual network
+func (s *VirtualNetworkServiceOp) Create(createRequest *VirtualNetworkCreateRequest) (*VirtualNetwork, *Response, error) {
+	vLan := new(VirtualNetworkGetResponse)
+
+	resp, err := s.client.DoRequest("POST", virtualNetworkBasePath, createRequest, vLan)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	flatVirtualNetwork := NewFlatVirtualNetwork(vLan.Data)
+	return &flatVirtualNetwork, resp, err
+}
+
+// Update updates a virtual network
+func (s *VirtualNetworkServiceOp) Update(virtualNetworkID string, updateRequest *VirtualNetworkUpdateRequest) (*VirtualNetwork, *Response, error) {
+	apiPath := path.Join(virtualNetworkBasePath, virtualNetworkID)
+	virtualNetwork := new(VirtualNetworkGetResponse)
+
+	resp, err := s.client.DoRequest("PATCH", apiPath, updateRequest, virtualNetwork)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	flatVirtualNetwork := NewFlatVirtualNetwork(virtualNetwork.Data)
+	return &flatVirtualNetwork, resp, err
+}
+
+// Delete deletes a virtual network
+func (s *VirtualNetworkServiceOp) Delete(virtualNetworkID string) (*Response, error) {
+	apiPath := path.Join(virtualNetworkBasePath, virtualNetworkID)
+
+	return s.client.DoRequest("DELETE", apiPath, nil, nil)
 }
