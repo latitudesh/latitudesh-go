@@ -6,6 +6,8 @@ const vlanAssignmentBasePath = "/virtual_networks/assignments"
 
 type VlanAssignmentService interface {
 	List(listOpt *ListOptions) ([]VlanAssignment, *Response, error)
+	Assign(assignRequest *VlanAssignRequest) (*VlanAssignment, *Response, error)
+	Delete(VlanAssignmentID string) (*Response, error)
 }
 
 type VlanAssignmentServiceOp struct {
@@ -36,7 +38,7 @@ type VlanServer struct {
 type VlanAssignment struct {
 	ID               string `json:"id"`
 	Type             string `json:"type"`
-	VlanAssignmentID int    `json:"virtual_network_id"`
+	VirtualNetworkID int    `json:"virtual_network_id"`
 	Vid              int    `json:"vid"`
 	Description      string `json:"description"`
 	Status           string `json:"status"`
@@ -56,7 +58,16 @@ type VlanAssignmentGetResponse struct {
 	Meta meta               `json:"meta"`
 }
 
-type VlanAssignmentCreateRequest struct {
+type VlanAssignRequest struct {
+	Data VlanAssignData `json:"data"`
+}
+
+type VlanAssignData struct {
+	Type       string               `json:"type"`
+	Attributes VlanAssignAttributes `json:"attributes"`
+}
+
+type VlanAssignAttributes struct {
 	ServerID         int `json:"server_id"`
 	VirtualNetworkID int `json:"virtual_network_id"`
 }
@@ -104,10 +115,10 @@ func (vn *VlanAssignmentServiceOp) List(opts *ListOptions) (vlanAssignments []Vl
 	}
 }
 
-func (s *VlanAssignmentServiceOp) Assign(createRequest *VlanAssignmentCreateRequest) (*VlanAssignment, *Response, error) {
+func (s *VlanAssignmentServiceOp) Assign(assignRequest *VlanAssignRequest) (*VlanAssignment, *Response, error) {
 	vLan := new(VlanAssignmentGetResponse)
 
-	resp, err := s.client.DoRequest("POST", vlanAssignmentBasePath, createRequest, vLan)
+	resp, err := s.client.DoRequest("POST", vlanAssignmentBasePath, assignRequest, vLan)
 	if err != nil {
 		return nil, resp, err
 	}
