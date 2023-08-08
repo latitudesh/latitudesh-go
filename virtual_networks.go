@@ -6,6 +6,10 @@ const virtualNetworkBasePath = "/virtual_networks"
 
 type VirtualNetworkService interface {
 	List(listOpt *ListOptions) ([]VirtualNetwork, *Response, error)
+	Get(virtualNetworkID string, getOpt *GetOptions) (*VirtualNetwork, *Response, error)
+	Create(createRequest *VirtualNetworkCreateRequest) (*VirtualNetwork, *Response, error)
+	Update(virtualNetworkID string, updateRequest *VirtualNetworkUpdateRequest) (*VirtualNetwork, *Response, error)
+	Delete(virtualNetworkID string) (*Response, error)
 }
 
 type VirtualNetworkServiceOp struct {
@@ -62,24 +66,32 @@ type VirtualNetworkGetResponse struct {
 	Meta meta               `json:"meta"`
 }
 
+type VirtualNetworkCreateRequest struct {
+	Data VirtualNetworkCreateData `json:"data"`
+}
+
+type VirtualNetworkCreateData struct {
+	Type       string                         `json:"type"`
+	Attributes VirtualNetworkCreateAttributes `json:"attributes"`
+}
+
 type VirtualNetworkCreateAttributes struct {
 	Description string `json:"description"`
 	Site        string `json:"site"`
 	Project     string `json:"project"`
 }
 
-type VirtualNetworkCreateRequest struct {
-	Type       string                         `json:"type"`
-	Attributes VirtualNetworkCreateAttributes `json:"attributes"`
-}
-
 type VirtualNetworkUpdateRequest struct {
-	Data ServerUpdateData `json:"data"`
+	Data VirtualNetworkUpdateData `json:"data"`
 }
 
 type VirtualNetworkUpdateData struct {
-	ID          string `json:"id"`
-	Type        string `json:"type"`
+	ID         string                         `json:"id"`
+	Type       string                         `json:"type"`
+	Attributes VirtualNetworkUpdateAttributes `json:"attributes"`
+}
+
+type VirtualNetworkUpdateAttributes struct {
 	Description string `json:"description"`
 }
 

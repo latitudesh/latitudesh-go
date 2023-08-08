@@ -19,16 +19,16 @@ func TestAccVirtualNetworkBasic(t *testing.T) {
 	}
 
 	vnTest := VirtualNetwork{
-		ID:               "2054",
-		Type:             "virtual_networks",
-		Vid:              2011,
-		Description:      "ceph",
-		City:             "Dallas",
-		Country:          "United States",
-		SiteId:           3,
-		SiteName:         "Dallas",
-		SiteSlug:         "DAL",
-		Facility:         "Cologix",
+		ID:          "2054",
+		Type:        "virtual_networks",
+		Vid:         2011,
+		Description: "ceph",
+		City:        "Dallas",
+		Country:     "United States",
+		SiteId:      3,
+		SiteName:    "Dallas",
+		SiteSlug:    "DAL",
+		Facility:    "Cologix",
 	}
 
 	// Check Virtual Network data
