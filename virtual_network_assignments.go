@@ -1,11 +1,16 @@
 package latitude
 
-import "path"
+import (
+	"errors"
+	"net/http"
+	"path"
+)
 
 const vlanAssignmentBasePath = "/virtual_networks/assignments"
 
 type VlanAssignmentService interface {
 	List(listOpt *ListOptions) ([]VlanAssignment, *Response, error)
+	Get(VlanAssignmentID string) (*VlanAssignment, *Response, error)
 	Assign(assignRequest *VlanAssignRequest) (*VlanAssignment, *Response, error)
 	Delete(VlanAssignmentID string) (*Response, error)
 }
@@ -113,6 +118,26 @@ func (vn *VlanAssignmentServiceOp) List(opts *ListOptions) (vlanAssignments []Vl
 		}
 		return
 	}
+}
+
+func (s *VlanAssignmentServiceOp) Get(vlanAssignmentID string) (*VlanAssignment, *Response, error) {
+	vlans, resp, err := s.List(nil)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	for _, vlan := range vlans {
+		if vlan.ID == vlanAssignmentID {
+			return &vlan, resp, nil
+		}
+	}
+
+	resp.Status = "404 Not Found"
+	resp.StatusCode = http.StatusNotFound
+
+	notFoundErr := errors.New("ERROR\nStatus: 404\nSpecified Record Not Found")
+
+	return nil, resp, notFoundErr
 }
 
 func (s *VlanAssignmentServiceOp) Assign(assignRequest *VlanAssignRequest) (*VlanAssignment, *Response, error) {
