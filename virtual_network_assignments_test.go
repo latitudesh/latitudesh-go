@@ -1,13 +1,81 @@
 package latitude
 
 import (
+	"strconv"
 	"testing"
 )
 
 func TestAccVlanAssignmentBasic(t *testing.T) {
 	skipUnlessAcceptanceTestsAllowed(t)
-	c, stopRecord := setup(t)
-	defer stopRecord()
+	c, projectID, teardown := setupWithProject(t)
+	defer teardown()
+
+	hn := randString8()
+	scr := ServerCreateRequest{
+		Data: ServerCreateData{
+			Type: testServerType,
+			Attributes: ServerCreateAttributes{
+				Project:         projectID,
+				Plan:            testPlan(),
+				Site:            testSite(),
+				OperatingSystem: testOperatingSystem(),
+				Hostname:        hn,
+			},
+		},
+	}
+
+	s, _, err := c.Servers.Create(&scr)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer deleteServer(t, c, s.ID)
+
+	createRequest := VirtualNetworkCreateRequest{
+		Data: VirtualNetworkCreateData{
+			Type: "virtual_network",
+			Attributes: VirtualNetworkCreateAttributes{
+				Description: "Testing golang client",
+				Site:        testSite(),
+				Project:     projectID,
+			},
+		},
+	}
+	vn, _, err := c.VirtualNetworks.Create(&createRequest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer c.VirtualNetworks.Delete(vn.ID)
+
+	serverID, err := strconv.Atoi(s.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	vnID, err := strconv.Atoi(vn.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assignRequest := VlanAssignRequest{
+		Data: VlanAssignData{
+			Type: "virtual_network_assignment",
+			Attributes: VlanAssignAttributes{
+				ServerID:         serverID,
+				VirtualNetworkID: vnID,
+			},
+		},
+	}
+
+	assign, _, err := c.VlanAssignments.Assign(&assignRequest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer c.VlanAssignments.Delete(assign.ID)
+
+	vaTest, _, err := c.VlanAssignments.Get(assign.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	val, _, err := c.VlanAssignments.List(nil)
 	if err != nil {
@@ -16,19 +84,6 @@ func TestAccVlanAssignmentBasic(t *testing.T) {
 
 	if len(val) == 0 {
 		t.Fatalf("Vlan Assignment List should contain at least one virtual network")
-	}
-
-	vaTest := VlanAssignment{
-		ID:               "1189",
-		Type:             "virtual_network_assignment",
-		VirtualNetworkID: 2054,
-		Vid:              2011,
-		Description:      "ceph",
-		Status:           "connected",
-		ServerID:         22892,
-		ServerHostname:   "leo-ceph-2",
-		ServerLabel:      "224S602585",
-		ServerStatus:     "on",
 	}
 
 	// Check Vlan Assignment data

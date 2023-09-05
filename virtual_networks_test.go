@@ -6,8 +6,46 @@ import (
 
 func TestAccVirtualNetworkBasic(t *testing.T) {
 	skipUnlessAcceptanceTestsAllowed(t)
-	c, stopRecord := setup(t)
-	defer stopRecord()
+	c, projectID, teardown := setupWithProject(t)
+	defer teardown()
+
+	// Create Virtual Network
+	createRequest := VirtualNetworkCreateRequest{
+		Data: VirtualNetworkCreateData{
+			Type: "virtual_network",
+			Attributes: VirtualNetworkCreateAttributes{
+				Description: "Testing Virtual Network via golang client",
+				Site:        testSite(),
+				Project:     projectID,
+			},
+		},
+	}
+
+	vnNew, _, err := c.VirtualNetworks.Create(&createRequest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer c.VirtualNetworks.Delete(vnNew.ID)
+
+	updateRequest := VirtualNetworkUpdateRequest{
+		Data: VirtualNetworkUpdateData{
+			ID:   vnNew.ID,
+			Type: "virtual_networks",
+			Attributes: VirtualNetworkUpdateAttributes{
+				Description: "Updating Virtual Network via golang client",
+			},
+		},
+	}
+
+	_, _, err = c.VirtualNetworks.Update(vnNew.ID, &updateRequest)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	vnTest, _, err := c.VirtualNetworks.Get(vnNew.ID, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	vnl, _, err := c.VirtualNetworks.List(nil)
 	if err != nil {
@@ -16,19 +54,6 @@ func TestAccVirtualNetworkBasic(t *testing.T) {
 
 	if len(vnl) == 0 {
 		t.Fatalf("Virtual Network List should contain at least one virtual network")
-	}
-
-	vnTest := VirtualNetwork{
-		ID:          "2054",
-		Type:        "virtual_networks",
-		Vid:         2011,
-		Description: "ceph",
-		City:        "Dallas",
-		Country:     "United States",
-		SiteId:      3,
-		SiteName:    "Dallas",
-		SiteSlug:    "DAL",
-		Facility:    "Cologix",
 	}
 
 	// Check Virtual Network data
