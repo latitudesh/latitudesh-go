@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dnaeon/go-vcr/cassette"
-	"github.com/dnaeon/go-vcr/recorder"
+	"gopkg.in/dnaeon/go-vcr.v3/cassette"
+	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 )
 
 const (
@@ -28,7 +28,7 @@ const (
 	testRecorderRecord   = "record"
 	testRecorderPlay     = "play"
 	testRecorderDisabled = "disabled"
-	recorderDefaultMode  = recorder.ModeDisabled
+	recorderDefaultMode  = recorder.ModePassthrough
 
 	// defaults should be available to most users
 	testSiteDefault            = "ASH"
@@ -36,7 +36,7 @@ const (
 	testRegionDefault          = "ASH"
 	testSSHKeyDefault          = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQZtz6DPH4Y04vYLdOch5xOzDY7cdGWpYjBFx5H7ZzieVoRwartZAVTGX4qFT9aoyCuuE6qXYcTj6G1CdO5fb8iOtU6K3FdzVyw/WQ/c4sCehEL+wbYrOnXJSYMhLsUAFhZ69tTdmQSgctbv44yP32Z4xiE4zc/Bk465F3u4Zi1Jj883fyAgzahTWXOxpmvYAEuS6Qv6w4yJc6giiGFVYmu+N6h9j348UgbpToYiCSnSM4iNa9fs7sBGufOa9FuXtggPfXtpyk9f05AhkKEjPlCXcDNAq0GsvN2QEx3tYw6i5ze0qehv6EBAtwx3PLrj636O6IgSh0DgrZBih9NBov"
 	testUserDataContentDefault = "bGF0aXR1ZGVzaCB1c2VyIGRhdGEgZXhhbXBsZQ=="
-	testOperatingSystemDefault = "ubuntu_20_04_x64_lts"
+	testOperatingSystemDefault = "ubuntu_22_04_x64_lts"
 )
 
 func testPlan() string {
@@ -82,7 +82,7 @@ func testSSHKey() string {
 func randString8() string {
 	// test recorder needs replayable names, not randoms
 	mode, _ := testRecordMode()
-	if mode != recorder.ModeDisabled {
+	if mode != recorder.ModePassthrough {
 		return "testrand"
 	}
 
@@ -178,9 +178,9 @@ func testRecordMode() (recorder.Mode, error) {
 
 	switch strings.ToLower(modeRaw) {
 	case testRecorderRecord:
-		mode = recorder.ModeRecording
+		mode = recorder.ModeRecordOnly
 	case testRecorderPlay:
-		mode = recorder.ModeReplaying
+		mode = recorder.ModeReplayOnly
 	case "":
 		// no-op
 	case testRecorderDisabled:
@@ -192,15 +192,21 @@ func testRecordMode() (recorder.Mode, error) {
 }
 
 func testRecorder(t *testing.T, name string, mode recorder.Mode) (*recorder.Recorder, func()) {
-	r, err := recorder.NewAsMode(path.Join("fixtures", name), mode, nil)
+	rOptions := recorder.Options{
+		CassetteName:  path.Join("fixtures", name),
+		Mode:          mode,
+		RealTransport: nil,
+	}
+
+	r, err := recorder.NewWithOptions(&rOptions)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	r.AddFilter(func(i *cassette.Interaction) error {
+	r.AddHook(func(i *cassette.Interaction) error {
 		delete(i.Request.Headers, "X-Auth-Token")
 		return nil
-	})
+	}, recorder.HookKind(1))
 
 	return r, func() {
 		if err := r.Stop(); err != nil {

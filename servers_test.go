@@ -44,23 +44,23 @@ func TestAccServerBasic(t *testing.T) {
 
 	// TODO: API endpoint for server update currently not working
 	// Update newly created server
-	/*rs := randString8()
+	rs := randString8()
 	sur := ServerUpdateRequest{
 		Data: ServerUpdateData{
-			ID:   sID,
-			Type: testProjectType,
+			ID:   s.ID,
+			Type: "servers",
 			Attributes: ServerCreateAttributes{
 				Hostname: rs,
 			},
 		},
 	}
-	s, _, err = c.Servers.Update(sID, &sur)
+	s, _, err = c.Servers.Update(s.ID, &sur)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if s.Data.Attributes.Hostname != rs {
-		t.Fatalf("Expected the hostname of the updated server to be %s, not %s", rs, s.Data.Attributes.Hostname)
-	}*/
+	if s.Hostname != rs {
+		t.Fatalf("Expected the hostname of the updated server to be %s, not %s", rs, s.Hostname)
+	}
 
 	dl, _, err := c.Servers.List(projectID, nil)
 	if err != nil {
