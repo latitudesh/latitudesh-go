@@ -49,7 +49,7 @@ func TestAccServerBasic(t *testing.T) {
 		Data: ServerUpdateData{
 			ID:   s.ID,
 			Type: "servers",
-			Attributes: ServerCreateAttributes{
+			Attributes: ServerUpdateAttributes{
 				Hostname: rs,
 			},
 		},
