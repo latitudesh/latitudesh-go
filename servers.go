@@ -14,6 +14,7 @@ type ServerService interface {
 	Create(*ServerCreateRequest) (*Server, *Response, error)
 	Update(string, *ServerUpdateRequest) (*Server, *Response, error)
 	Delete(serverID string) (*Response, error)
+	Reinstall(serverID string, reinstallRequest *ServerReinstallRequest) (*Response, error)
 }
 
 type ServerRoot struct {
@@ -84,15 +85,15 @@ type ServerCreateData struct {
 }
 
 type ServerCreateAttributes struct {
-	Project         string `json:"project,omitempty"`
-	Plan            string `json:"plan,omitempty"`
-	Site            string `json:"site,omitempty"`
-	OperatingSystem string `json:"operating_system,omitempty"`
-	Hostname        string `json:"hostname"`
-	SSHKeys         []int  `json:"ssh_keys,omitempty"`
-	UserData        int    `json:"user_data,omitempty"`
-	Raid            string `json:"raid,omitempty"`
-	IpxeUrl         string `json:"ipxe_url,omitempty"`
+	Project         string   `json:"project,omitempty"`
+	Plan            string   `json:"plan,omitempty"`
+	Site            string   `json:"site,omitempty"`
+	OperatingSystem string   `json:"operating_system,omitempty"`
+	Hostname        string   `json:"hostname"`
+	SSHKeys         []string `json:"ssh_keys,omitempty"`
+	UserData        int      `json:"user_data,omitempty"`
+	Raid            string   `json:"raid,omitempty"`
+	IpxeUrl         string   `json:"ipxe_url,omitempty"`
 }
 
 // ServerUpdateRequest type used to update a Latitude server
@@ -103,7 +104,28 @@ type ServerUpdateRequest struct {
 type ServerUpdateData struct {
 	ID         string                 `json:"id"`
 	Type       string                 `json:"type"`
-	Attributes ServerCreateAttributes `json:"attributes"`
+	Attributes ServerUpdateAttributes `json:"attributes"`
+}
+
+type ServerUpdateAttributes struct {
+	Hostname string `json:"hostname"`
+}
+type ServerReinstallRequest struct {
+	Data ServerReinstallData `json:"data"`
+}
+
+type ServerReinstallData struct {
+	Type       string                    `json:"type"`
+	Attributes ServerReinstallAttributes `json:"attributes"`
+}
+
+type ServerReinstallAttributes struct {
+	OperatingSystem string   `json:"operating_system,omitempty"`
+	Hostname        string   `json:"hostname"`
+	SSHKeys         []string `json:"ssh_keys,omitempty"`
+	UserData        int      `json:"user_data,omitempty"`
+	Raid            string   `json:"raid,omitempty"`
+	IpxeUrl         string   `json:"ipxe_url,omitempty"`
 }
 
 // ServerServiceOp implements ServerService
@@ -128,7 +150,7 @@ type Server struct {
 }
 
 type ServerProject struct {
-	ID   int64  `json:"id"`
+	ID   string `json:"id"`
 	Name string `json:"name"`
 }
 
@@ -271,4 +293,11 @@ func (s *ServerServiceOp) Delete(serverID string) (*Response, error) {
 	apiPath := path.Join(serverBasePath, serverID)
 
 	return s.client.DoRequest("DELETE", apiPath, nil, nil)
+}
+
+// Reinstall reinstalls an existing server
+func (s *ServerServiceOp) Reinstall(serverID string, reinstallRequest *ServerReinstallRequest) (*Response, error) {
+	apiPath := path.Join(serverBasePath, serverID, "reinstall")
+
+	return s.client.DoRequest("POST", apiPath, reinstallRequest, nil)
 }
