@@ -85,15 +85,15 @@ type ServerCreateData struct {
 }
 
 type ServerCreateAttributes struct {
-	Project         string `json:"project,omitempty"`
-	Plan            string `json:"plan,omitempty"`
-	Site            string `json:"site,omitempty"`
-	OperatingSystem string `json:"operating_system,omitempty"`
-	Hostname        string `json:"hostname"`
-	SSHKeys         []int  `json:"ssh_keys,omitempty"`
-	UserData        int    `json:"user_data,omitempty"`
-	Raid            string `json:"raid,omitempty"`
-	IpxeUrl         string `json:"ipxe_url,omitempty"`
+	Project         string   `json:"project,omitempty"`
+	Plan            string   `json:"plan,omitempty"`
+	Site            string   `json:"site,omitempty"`
+	OperatingSystem string   `json:"operating_system,omitempty"`
+	Hostname        string   `json:"hostname"`
+	SSHKeys         []string `json:"ssh_keys,omitempty"`
+	UserData        int      `json:"user_data,omitempty"`
+	Raid            string   `json:"raid,omitempty"`
+	IpxeUrl         string   `json:"ipxe_url,omitempty"`
 }
 
 // ServerUpdateRequest type used to update a Latitude server
@@ -104,7 +104,11 @@ type ServerUpdateRequest struct {
 type ServerUpdateData struct {
 	ID         string                 `json:"id"`
 	Type       string                 `json:"type"`
-	Attributes ServerCreateAttributes `json:"attributes"`
+	Attributes ServerUpdateAttributes `json:"attributes"`
+}
+
+type ServerUpdateAttributes struct {
+	Hostname string `json:"hostname"`
 }
 type ServerReinstallRequest struct {
 	Data ServerReinstallData `json:"data"`
@@ -116,12 +120,12 @@ type ServerReinstallData struct {
 }
 
 type ServerReinstallAttributes struct {
-	OperatingSystem string `json:"operating_system,omitempty"`
-	Hostname        string `json:"hostname"`
-	SSHKeys         []int  `json:"ssh_keys,omitempty"`
-	UserData        int    `json:"user_data,omitempty"`
-	Raid            string `json:"raid,omitempty"`
-	IpxeUrl         string `json:"ipxe_url,omitempty"`
+	OperatingSystem string   `json:"operating_system,omitempty"`
+	Hostname        string   `json:"hostname"`
+	SSHKeys         []string `json:"ssh_keys,omitempty"`
+	UserData        int      `json:"user_data,omitempty"`
+	Raid            string   `json:"raid,omitempty"`
+	IpxeUrl         string   `json:"ipxe_url,omitempty"`
 }
 
 // ServerServiceOp implements ServerService
