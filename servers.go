@@ -150,8 +150,8 @@ type Server struct {
 }
 
 type ServerProject struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID   interface{} `json:"id"`
+	Name string      `json:"name"`
 }
 
 type ServerRegion struct {
