@@ -41,6 +41,23 @@ type ServerSpecs struct {
 	Disk string `json:"disk"`
 	RAM  string `json:"ram"`
 	NIC  string `json:"nic"`
+	GPU  string `json:"gpu"`
+}
+
+type ServerTeam struct {
+	ID          string       `json:"id"`
+	Name        string       `json:"name"`
+	Slug        string       `json:"slug"`
+	Description string       `json:"description"`
+	Address     string       `json:"address"`
+	Status      string       `json:"status"`
+	Currency    TeamCurrency `json:"currency"`
+}
+
+type TeamCurrency struct {
+	ID   string `json:"id"`
+	Code string `json:"code"`
+	Name string `json:"name"`
 }
 
 type ServerListResponse struct {
@@ -62,16 +79,20 @@ type ServerGetData struct {
 type ServerGetAttributes struct {
 	Hostname        string                `json:"hostname"`
 	Label           string                `json:"label"`
+	Price           float64               `json:"price"`
 	Role            string                `json:"role"`
 	PrimaryIPv4     string                `json:"primary_ipv4"`
 	Status          string                `json:"status"`
 	IMPIStatus      string                `json:"impi_status"`
+	Site            string                `json:"site"`
+	InstanceType    string                `json:"instance_type"`
 	CreatedAt       string                `json:"created_at"`
 	Specs           ServerSpecs           `json:"specs"`
 	Project         ServerProject         `json:"project"`
 	OperatingSystem ServerOperatingSystem `json:"operating_system"`
 	Plan            ServerPlan            `json:"plan"`
 	Region          ServerRegion          `json:"region"`
+	Team            ServerTeam            `json:"team"`
 }
 
 // ServerCreateRequest type used to create a Latitude server
@@ -167,14 +188,30 @@ type ServerSite struct {
 }
 
 type ServerPlan struct {
+	ID   string `json:"id"`
 	Name string `json:"name"`
 	Slug string `json:"slug"`
 }
 
 type ServerOperatingSystem struct {
-	Name    string `json:"name"`
-	Slug    string `json:"slug"`
-	Version string `json:"version"`
+	Name     string     `json:"name"`
+	Slug     string     `json:"slug"`
+	Version  string     `json:"version"`
+	Features OsFeatures `json:"features"`
+	Distro   OsDistro   `json:"distro"`
+}
+
+type OsFeatures struct {
+	Raid     bool `json:"raid"`
+	Rescue   bool `json:"rescue"`
+	SSHKeys  bool `json:"ssh_keys"`
+	UserData bool `json:"user_data"`
+}
+
+type OsDistro struct {
+	Name   string `json:"name"`
+	Slug   string `json:"slug"`
+	Series string `json:"series"`
 }
 
 // Flatten latitude API data structures

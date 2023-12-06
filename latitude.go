@@ -18,6 +18,7 @@ import (
 
 const (
 	authTokenEnvVar      = "LATITUDE_AUTH_TOKEN"
+	apiVersion           = "2023-06-01"
 	baseURL              = "https://api.latitude.sh"
 	debugEnvVar          = "LATITUDE_DEBUG"
 	userAgentForSDK      = "Latitude-Go-SDK"
@@ -129,6 +130,8 @@ func (c *Client) NewRequest(method, path string, body interface{}) (*http.Reques
 	req.Close = true
 
 	req.Header.Add("Authorization", c.APIKey)
+
+	req.Header.Add("API-Version", apiVersion)
 
 	// set User-Agent value for SDK or terraform-provider
 	userAgent := c.UserAgent
