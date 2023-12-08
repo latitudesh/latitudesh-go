@@ -17,6 +17,16 @@ func TestAccProjectBasic(t *testing.T) {
 	defer stopRecord()
 	defer projectTeardown(c)
 
+	// List Projects
+	projs, _, err := c.Projects.List(nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for _, proj := range projs {
+		fmt.Println(proj.ID, proj.Name)
+	}
+
 	// Create a new project
 	rs := testProjectPrefix + randString8()
 	pcr := ProjectCreateRequest{
@@ -69,23 +79,5 @@ func TestAccProjectBasic(t *testing.T) {
 	_, err = c.Projects.Delete(p.ID)
 	if err != nil {
 		t.Fatal(err)
-	}
-}
-
-func TestAccListProjects(t *testing.T) {
-	skipUnlessAcceptanceTestsAllowed(t)
-	c, stopRecord := setup(t)
-	defer stopRecord()
-
-	listOpt := &ListOptions{
-		Includes: []string{"team"},
-	}
-	projs, _, err := c.Projects.List(listOpt)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	for _, proj := range projs {
-		fmt.Println(proj.ID, proj.Name)
 	}
 }
