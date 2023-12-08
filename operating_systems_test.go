@@ -19,7 +19,7 @@ func TestAccOperatingSystemBasic(t *testing.T) {
 	}
 
 	osTest := OperatingSystem{
-		ID:       "7",
+		ID:       "os_KgXQvNe3azpbP",
 		Type:     "operating_system",
 		Name:     "CentOS 7.4",
 		Distro:   "centos",
