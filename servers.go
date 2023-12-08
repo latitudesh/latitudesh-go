@@ -194,24 +194,11 @@ type ServerPlan struct {
 }
 
 type ServerOperatingSystem struct {
-	Name     string     `json:"name"`
-	Slug     string     `json:"slug"`
-	Version  string     `json:"version"`
-	Features OsFeatures `json:"features"`
-	Distro   OsDistro   `json:"distro"`
-}
-
-type OsFeatures struct {
-	Raid     bool `json:"raid"`
-	Rescue   bool `json:"rescue"`
-	SSHKeys  bool `json:"ssh_keys"`
-	UserData bool `json:"user_data"`
-}
-
-type OsDistro struct {
-	Name   string `json:"name"`
-	Slug   string `json:"slug"`
-	Series string `json:"series"`
+	Name     string                  `json:"name"`
+	Slug     string                  `json:"slug"`
+	Version  string                  `json:"version"`
+	Features OperatingSystemFeatures `json:"features"`
+	Distro   OperatingSystemDistro   `json:"distro"`
 }
 
 // Flatten latitude API data structures
@@ -261,14 +248,15 @@ func waitServerActive(s *ServerServiceOp, id string) (*Server, error) {
 }
 
 // List returns servers on a project
-func (s *ServerServiceOp) List(projectID string, opts *ListOptions) (servers []Server, resp *Response, err error) {
+func (s *ServerServiceOp) List(projectID string, opts *ListOptions) ([]Server, *Response, error) {
 	opts = opts.Filter("project", projectID)
 	apiPathQuery := opts.WithQuery(serverBasePath)
+	var servers []Server
 
 	for {
 		res := new(ServerListResponse)
 
-		resp, err = s.client.DoRequest("GET", apiPathQuery, nil, res)
+		resp, err := s.client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
@@ -279,7 +267,7 @@ func (s *ServerServiceOp) List(projectID string, opts *ListOptions) (servers []S
 			continue
 		}
 
-		return
+		return servers, resp, err
 	}
 }
 
