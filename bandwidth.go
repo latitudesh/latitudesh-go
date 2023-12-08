@@ -21,14 +21,14 @@ type TrafficQuota struct {
 }
 
 type QuotaPerProject struct {
-	ProjectID      int64            `json:"project_id"`
+	ProjectID      string           `json:"project_id"`
 	ProjectSlug    string           `json:"project_slug"`
 	BillingMethod  string           `json:"billing_method"`
 	QuotaPerRegion []QuotaPerRegion `json:"quota_per_region"`
 }
 
 type QuotaPerRegion struct {
-	RegionId    int64       `json:"region_id"`
+	RegionId    string      `json:"region_id"`
 	RegionSlug  string      `json:"region_slug"`
 	QuotaInTb   QuotaDetail `json:"quota_in_tb"`
 	QuotaInMbps QuotaDetail `json:"quota_in_mbps"`
