@@ -43,6 +43,11 @@ func TestAccPlanBasic(t *testing.T) {
 		t.Fatalf("Expected the length of the GOT plan features to be %d, not %d", len(pl[0].Features), len(gotPlan.Features))
 	}
 
+	// Check plan specs Memorys
+	if gotPlan.Specs.Memory.Total != pl[0].Specs.Memory.Total {
+		t.Fatalf("Expected the memory total of the GOT plan to be %v, not %v", pl[0].Specs.Memory.Total, gotPlan.Specs.Memory.Total)
+	}
+
 	// Check plan specs (CPUs)
 	for i, cpu := range gotPlan.Specs.CPUs {
 		if cpu.Type != pl[0].Specs.CPUs[i].Type {
