@@ -112,7 +112,7 @@ type ServerCreateAttributes struct {
 	OperatingSystem string   `json:"operating_system,omitempty"`
 	Hostname        string   `json:"hostname"`
 	SSHKeys         []string `json:"ssh_keys,omitempty"`
-	UserData        int      `json:"user_data,omitempty"`
+	UserData        string   `json:"user_data,omitempty"`
 	Raid            string   `json:"raid,omitempty"`
 	IpxeUrl         string   `json:"ipxe_url,omitempty"`
 }
@@ -144,7 +144,7 @@ type ServerReinstallAttributes struct {
 	OperatingSystem string   `json:"operating_system,omitempty"`
 	Hostname        string   `json:"hostname"`
 	SSHKeys         []string `json:"ssh_keys,omitempty"`
-	UserData        int      `json:"user_data,omitempty"`
+	UserData        string   `json:"user_data,omitempty"`
 	Raid            string   `json:"raid,omitempty"`
 	IpxeUrl         string   `json:"ipxe_url,omitempty"`
 }
