@@ -36,7 +36,7 @@ type VirtualNetworkRegion struct {
 }
 
 type VirtualNetworkSite struct {
-	ID       int    `json:"id"`
+	ID       string `json:"id"`
 	Name     string `json:"name"`
 	Slug     string `json:"slug"`
 	Facility string `json:"facility"`
@@ -49,7 +49,7 @@ type VirtualNetwork struct {
 	Description      string `json:"description"`
 	City             string `json:"city"`
 	Country          string `json:"country"`
-	SiteId           int    `json:"site_id"`
+	SiteId           string `json:"site_id"`
 	SiteName         string `json:"site_name"`
 	SiteSlug         string `json:"site_slug"`
 	Facility         string `json:"facility"`
@@ -144,6 +144,7 @@ func (s *VirtualNetworkServiceOp) Get(virtualNetworkID string, opts *GetOptions)
 	endpointPath := path.Join(virtualNetworkBasePath, virtualNetworkID)
 	apiPathQuery := opts.WithQuery(endpointPath)
 	virtualNetwork := new(VirtualNetworkGetResponse)
+
 	resp, err := s.client.DoRequest("GET", apiPathQuery, nil, virtualNetwork)
 	if err != nil {
 		return nil, resp, err

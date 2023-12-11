@@ -41,6 +41,23 @@ type ServerSpecs struct {
 	Disk string `json:"disk"`
 	RAM  string `json:"ram"`
 	NIC  string `json:"nic"`
+	GPU  string `json:"gpu"`
+}
+
+type ServerTeam struct {
+	ID          string       `json:"id"`
+	Name        string       `json:"name"`
+	Slug        string       `json:"slug"`
+	Description string       `json:"description"`
+	Address     string       `json:"address"`
+	Status      string       `json:"status"`
+	Currency    TeamCurrency `json:"currency"`
+}
+
+type TeamCurrency struct {
+	ID   string `json:"id"`
+	Code string `json:"code"`
+	Name string `json:"name"`
 }
 
 type ServerListResponse struct {
@@ -62,16 +79,20 @@ type ServerGetData struct {
 type ServerGetAttributes struct {
 	Hostname        string                `json:"hostname"`
 	Label           string                `json:"label"`
+	Price           float64               `json:"price"`
 	Role            string                `json:"role"`
 	PrimaryIPv4     string                `json:"primary_ipv4"`
 	Status          string                `json:"status"`
 	IMPIStatus      string                `json:"impi_status"`
+	Site            string                `json:"site"`
+	InstanceType    string                `json:"instance_type"`
 	CreatedAt       string                `json:"created_at"`
 	Specs           ServerSpecs           `json:"specs"`
 	Project         ServerProject         `json:"project"`
 	OperatingSystem ServerOperatingSystem `json:"operating_system"`
 	Plan            ServerPlan            `json:"plan"`
 	Region          ServerRegion          `json:"region"`
+	Team            ServerTeam            `json:"team"`
 }
 
 // ServerCreateRequest type used to create a Latitude server
@@ -91,7 +112,7 @@ type ServerCreateAttributes struct {
 	OperatingSystem string   `json:"operating_system,omitempty"`
 	Hostname        string   `json:"hostname"`
 	SSHKeys         []string `json:"ssh_keys,omitempty"`
-	UserData        int      `json:"user_data,omitempty"`
+	UserData        string   `json:"user_data,omitempty"`
 	Raid            string   `json:"raid,omitempty"`
 	IpxeUrl         string   `json:"ipxe_url,omitempty"`
 }
@@ -123,7 +144,7 @@ type ServerReinstallAttributes struct {
 	OperatingSystem string   `json:"operating_system,omitempty"`
 	Hostname        string   `json:"hostname"`
 	SSHKeys         []string `json:"ssh_keys,omitempty"`
-	UserData        int      `json:"user_data,omitempty"`
+	UserData        string   `json:"user_data,omitempty"`
 	Raid            string   `json:"raid,omitempty"`
 	IpxeUrl         string   `json:"ipxe_url,omitempty"`
 }
@@ -167,14 +188,17 @@ type ServerSite struct {
 }
 
 type ServerPlan struct {
+	ID   string `json:"id"`
 	Name string `json:"name"`
 	Slug string `json:"slug"`
 }
 
 type ServerOperatingSystem struct {
-	Name    string `json:"name"`
-	Slug    string `json:"slug"`
-	Version string `json:"version"`
+	Name     string                  `json:"name"`
+	Slug     string                  `json:"slug"`
+	Version  string                  `json:"version"`
+	Features OperatingSystemFeatures `json:"features"`
+	Distro   OperatingSystemDistro   `json:"distro"`
 }
 
 // Flatten latitude API data structures
@@ -224,14 +248,15 @@ func waitServerActive(s *ServerServiceOp, id string) (*Server, error) {
 }
 
 // List returns servers on a project
-func (s *ServerServiceOp) List(projectID string, opts *ListOptions) (servers []Server, resp *Response, err error) {
+func (s *ServerServiceOp) List(projectID string, opts *ListOptions) ([]Server, *Response, error) {
 	opts = opts.Filter("project", projectID)
 	apiPathQuery := opts.WithQuery(serverBasePath)
+	var servers []Server
 
 	for {
 		res := new(ServerListResponse)
 
-		resp, err = s.client.DoRequest("GET", apiPathQuery, nil, res)
+		resp, err := s.client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
@@ -242,7 +267,7 @@ func (s *ServerServiceOp) List(projectID string, opts *ListOptions) (servers []S
 			continue
 		}
 
-		return
+		return servers, resp, err
 	}
 }
 

@@ -78,7 +78,7 @@ func TestAccVirtualNetworkBasic(t *testing.T) {
 			t.Fatalf("Expected the region country of the Virtual Network to be %s, not %s", vnTest.Country, vn.Country)
 		}
 		if vnTest.SiteId != vn.SiteId {
-			t.Fatalf("Expected the site id of the Virtual Network to be %d, not %d", vnTest.SiteId, vn.SiteId)
+			t.Fatalf("Expected the site id of the Virtual Network to be %s, not %s", vnTest.SiteId, vn.SiteId)
 		}
 		if vnTest.SiteName != vn.SiteName {
 			t.Fatalf("Expected the site name of the Virtual Network to be %s, not %s", vnTest.SiteName, vn.SiteName)

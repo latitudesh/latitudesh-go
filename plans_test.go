@@ -39,15 +39,11 @@ func TestAccPlanBasic(t *testing.T) {
 	}
 
 	// Check plan features
-	if gotPlan.Features.RAID != pl[0].Features.RAID {
-		t.Fatalf("Expected the RAID of the GOT plan to be %t, not %t", pl[0].Features.RAID, gotPlan.Features.RAID)
+	if len(gotPlan.Features) != len(pl[0].Features) {
+		t.Fatalf("Expected the length of the GOT plan features to be %d, not %d", len(pl[0].Features), len(gotPlan.Features))
 	}
-	if gotPlan.Features.SSH != pl[0].Features.SSH {
-		t.Fatalf("Expected the SSH of the GOT plan to be %t, not %t", pl[0].Features.SSH, gotPlan.Features.SSH)
-	}
-	if gotPlan.Features.UserData != pl[0].Features.UserData {
-		t.Fatalf("Expected the user data of the GOT plan to be %t, not %t", pl[0].Features.UserData, gotPlan.Features.UserData)
-	}
+
+	// Check plan specs Memorys
 	if gotPlan.Specs.Memory.Total != pl[0].Specs.Memory.Total {
 		t.Fatalf("Expected the memory total of the GOT plan to be %v, not %v", pl[0].Specs.Memory.Total, gotPlan.Specs.Memory.Total)
 	}

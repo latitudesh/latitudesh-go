@@ -1,7 +1,6 @@
 package latitude
 
 import (
-	"strconv"
 	"testing"
 )
 
@@ -46,22 +45,12 @@ func TestAccVlanAssignmentBasic(t *testing.T) {
 	}
 	defer c.VirtualNetworks.Delete(vn.ID)
 
-	serverID, err := strconv.Atoi(s.ID)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	vnID, err := strconv.Atoi(vn.ID)
-	if err != nil {
-		t.Fatal(err)
-	}
-
 	assignRequest := VlanAssignRequest{
 		Data: VlanAssignData{
 			Type: "virtual_network_assignment",
 			Attributes: VlanAssignAttributes{
-				ServerID:         serverID,
-				VirtualNetworkID: vnID,
+				ServerID:         s.ID,
+				VirtualNetworkID: vn.ID,
 			},
 		},
 	}
@@ -102,13 +91,13 @@ func TestAccVlanAssignmentBasic(t *testing.T) {
 			t.Fatalf("Expected the description of the Vlan Assignment to be %s, not %s", vaTest.Description, va.Description)
 		}
 		if vaTest.VirtualNetworkID != va.VirtualNetworkID {
-			t.Fatalf("Expected the virtual network id of the Vlan Assignment to be %d, not %d", vaTest.VirtualNetworkID, va.VirtualNetworkID)
+			t.Fatalf("Expected the virtual network id of the Vlan Assignment to be %s, not %s", vaTest.VirtualNetworkID, va.VirtualNetworkID)
 		}
 		if vaTest.Status != va.Status {
 			t.Fatalf("Expected the status of the Vlan Assignment to be %s, not %s", vaTest.Status, va.Status)
 		}
 		if vaTest.ServerID != va.ServerID {
-			t.Fatalf("Expected the server id of the Vlan Assignment to be %d, not %d", vaTest.ServerID, va.ServerID)
+			t.Fatalf("Expected the server id of the Vlan Assignment to be %s, not %s", vaTest.ServerID, va.ServerID)
 		}
 		if vaTest.ServerHostname != va.ServerHostname {
 			t.Fatalf("Expected the server hostname of the Vlan Assignment to be %s, not %s", vaTest.ServerHostname, va.ServerHostname)

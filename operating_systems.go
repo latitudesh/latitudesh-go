@@ -34,6 +34,12 @@ type OperatingSystemFeatures struct {
 	UserData bool `json:"user_data"`
 }
 
+type OperatingSystemDistro struct {
+	Name   string `json:"name"`
+	Slug   string `json:"slug"`
+	Series string `json:"series"`
+}
+
 type OperatingSystem struct {
 	ID       string `json:"id"`
 	Type     string `json:"type"`

@@ -40,11 +40,7 @@ type PlanAttributes struct {
 	Availablility []PlanAvailability `json:"available_in"`
 }
 
-type PlanFeatures struct {
-	SSH      bool `json:"ssh"`
-	RAID     bool `json:"raid"`
-	UserData bool `json:"user_data"`
-}
+type PlanFeatures []string
 
 type PlanSpecs struct {
 	CPUs   []PlanCPU   `json:"cpus"`
@@ -61,7 +57,6 @@ type PlanCPU struct {
 }
 
 type PlanMemory struct {
-	// Sometimes total is returned as a string and sometimes as an int
 	Total string `json:"total"`
 }
 

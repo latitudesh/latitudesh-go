@@ -43,24 +43,50 @@ func TestAccSSHKeyBasic(t *testing.T) {
 		t.Fatalf("Expected new SSH key name to be %s, not %s", keyName, k.Name)
 	}
 
+	kList, _, err := c.SSHKeys.List(projectID, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(kList) == 0 {
+		t.Fatalf("Plan List should contain at least one plan")
+	}
+
+	// Get first listed SSHkey
+	gotKey, _, err := c.SSHKeys.Get(kList[0].ID, projectID, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Check SSHKey data
+	if gotKey.ID != kList[0].ID {
+		t.Fatalf("Expected the id of the GOT plan to be %s, not %s", kList[0].ID, gotKey.ID)
+	}
+	if gotKey.Name != kList[0].Name {
+		t.Fatalf("Expected the Name of the GOT plan to be %s, not %s", kList[0].Name, gotKey.Name)
+	}
+	if gotKey.PublicKey != kList[0].PublicKey {
+		t.Fatalf("Expected the name of the GOT plan to be %s, not %s", kList[0].PublicKey, gotKey.PublicKey)
+	}
+
 	// Update newly created SSH key
-	/*keyName = randString8()
+	keyName = randString8()
 	skur := SSHKeyUpdateRequest{
 		Data: SSHKeyUpdateData{
-			ID:   k.Data.ID,
-			Type: testProjectType,
+			ID:   k.ID,
+			Type: testSSHKeyType,
 			Attributes: SSHKeyUpdateAttributes{
 				Name: keyName,
 			},
 		},
 	}
-	k, _, err = c.SSHKeys.Update(k.Data.ID, projectID, &skur)
+	k, _, err = c.SSHKeys.Update(k.ID, projectID, &skur)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if k.Data.Attributes.Name != keyName {
-		t.Fatalf("Expected the name of the updated SSH key to be %s, not %s", keyName, k.Data.Attributes.Name)
-	}*/
+	if k.Name != keyName {
+		t.Fatalf("Expected the name of the updated SSH key to be %s, not %s", keyName, k.Name)
+	}
 
 	kl, _, err := c.SSHKeys.List(projectID, nil)
 	if err != nil {

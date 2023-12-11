@@ -26,7 +26,7 @@ type VlanAssignmentData struct {
 }
 
 type VlanAssignmentAttributes struct {
-	VlanAssignmentId int        `json:"virtual_network_id"`
+	VlanAssignmentId string     `json:"virtual_network_id"`
 	Vid              int        `json:"vid"`
 	Description      string     `json:"description"`
 	Status           string     `json:"status"`
@@ -34,7 +34,7 @@ type VlanAssignmentAttributes struct {
 }
 
 type VlanServer struct {
-	Id       int    `json:"id"`
+	Id       string `json:"id"`
 	Hostname string `json:"hostname"`
 	Label    string `json:"label"`
 	Status   string `json:"status"`
@@ -43,11 +43,11 @@ type VlanServer struct {
 type VlanAssignment struct {
 	ID               string `json:"id"`
 	Type             string `json:"type"`
-	VirtualNetworkID int    `json:"virtual_network_id"`
+	VirtualNetworkID string `json:"virtual_network_id"`
 	Vid              int    `json:"vid"`
 	Description      string `json:"description"`
 	Status           string `json:"status"`
-	ServerID         int    `json:"server_id"`
+	ServerID         string `json:"server_id"`
 	ServerHostname   string `json:"server_hostname"`
 	ServerStatus     string `json:"server_status"`
 	ServerLabel      string `json:"server_label"`
@@ -73,8 +73,8 @@ type VlanAssignData struct {
 }
 
 type VlanAssignAttributes struct {
-	ServerID         int `json:"server_id"`
-	VirtualNetworkID int `json:"virtual_network_id"`
+	ServerID         string `json:"server_id"`
+	VirtualNetworkID string `json:"virtual_network_id"`
 }
 
 func NewFlatVlanAssignment(vnd VlanAssignmentData) VlanAssignment {
