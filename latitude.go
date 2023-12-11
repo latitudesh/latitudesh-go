@@ -25,7 +25,7 @@ const (
 	userAgentForProvider = "Latitude-Terraform-Provider"
 )
 
-var currentVersion = "0.2.6"
+var currentVersion = "0.2.7"
 
 // meta contains pagination information
 type meta struct {
