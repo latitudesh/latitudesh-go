@@ -57,7 +57,6 @@ type PlanCPU struct {
 }
 
 type PlanMemory struct {
-	// Sometimes total is returned as a string and sometimes as an int
 	Total string `json:"total"`
 }
 
