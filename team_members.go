@@ -38,10 +38,8 @@ type MemberListAttributes struct {
 }
 
 type Role struct {
-	ID        string `json:"id"`
-	Name      string `json:"name"`
-	CreatedAt string `json:"created_at"`
-	UpdatedAt string `json:"updated_at"`
+	ID   string `json:"id"`
+	Name string `json:"name"`
 }
 
 type MemberResponse struct {
@@ -101,7 +99,7 @@ type Member struct {
 	RoleName   string `json:"role"`
 }
 
-// Flatten latitude API data structures
+// Flatten latitude API data structure
 func NewFlatMember(md MemberData) Member {
 	return Member{
 		md.ID,
@@ -116,13 +114,14 @@ func NewFlatMember(md MemberData) Member {
 }
 
 func NewFlatMemberList(md []MemberData) []Member {
-	var res []Member
+	var members []Member
 	for _, member := range md {
-		res = append(res, NewFlatMember(member))
+		members = append(members, NewFlatMember(member))
 	}
-	return res
+	return members
 }
 
+// List returns a list of team members
 func (s *MemberServiceOp) List(listOpts *ListOptions) (members []Member, resp *Response, err error) {
 	apiPathQuery := listOpts.WithQuery(memberBasePath)
 
@@ -163,6 +162,7 @@ func (s *MemberServiceOp) List(listOpts *ListOptions) (members []Member, resp *R
 	}
 }
 
+// Create creates a new team member
 func (s *MemberServiceOp) Create(request *MemberCreateRequest) (*Member, *Response, error) {
 	member := new(MemberResponse)
 
@@ -175,6 +175,7 @@ func (s *MemberServiceOp) Create(request *MemberCreateRequest) (*Member, *Respon
 	return &flatMember, resp, err
 }
 
+// Delete deletes a team member
 func (s *MemberServiceOp) Delete(MemberID string) (*Response, error) {
 	apiPath := path.Join(memberBasePath, MemberID)
 
