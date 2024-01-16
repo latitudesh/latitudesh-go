@@ -25,7 +25,7 @@ const (
 	userAgentForProvider = "Latitude-Terraform-Provider"
 )
 
-var currentVersion = "0.3.0"
+var currentVersion = "0.3.1"
 
 // meta contains pagination information
 type meta struct {
@@ -91,6 +91,7 @@ type Client struct {
 	Regions          RegionService
 	Teams            TeamService
 	Bandwidth        BandwidthService
+	Members          MemberService
 }
 
 type requestDoer interface {
@@ -335,6 +336,7 @@ func NewClientWithBaseURL(apiKey string, httpClient *http.Client, apiBaseURL str
 	c.Regions = &RegionServiceOp{client: c}
 	c.VirtualNetworks = &VirtualNetworkServiceOp{client: c}
 	c.VlanAssignments = &VlanAssignmentServiceOp{client: c}
+	c.Members = &MemberServiceOp{client: c}
 	c.debug = os.Getenv(debugEnvVar) != ""
 
 	return c, nil
