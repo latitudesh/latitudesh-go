@@ -14,10 +14,8 @@ func deleteMember(t *testing.T, c *Client, id string) {
 
 func TestAccMembersBasic(t *testing.T) {
 	skipUnlessAcceptanceTestsAllowed(t)
-
 	c, stopRecord := setup(t)
 	defer stopRecord()
-	defer projectTeardown(c)
 
 	// List Members
 	members, _, err := c.Members.List(nil)
