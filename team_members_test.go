@@ -4,8 +4,6 @@ import (
 	"testing"
 )
 
-const ()
-
 func deleteMember(t *testing.T, c *Client, id string) {
 	if _, err := c.Members.Delete(id); err != nil {
 		t.Fatal(err)
