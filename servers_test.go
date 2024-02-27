@@ -42,7 +42,6 @@ func TestAccServerBasic(t *testing.T) {
 	}
 	defer deleteServer(t, c, s.ID)
 
-	// TODO: API endpoint for server update currently not working
 	// Update newly created server
 	rs := randString8()
 	sur := ServerUpdateRequest{
