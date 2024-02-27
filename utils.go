@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"log"
 	"reflect"
 	"regexp"
 )
@@ -13,8 +14,12 @@ var timestampType = reflect.TypeOf(Timestamp{})
 func Stringify(message interface{}) string {
 	var buf bytes.Buffer
 	v := reflect.ValueOf(message)
-	// TODO(displague) errors here are not reported
-	_ = stringifyValue(&buf, v)
+
+	err := stringifyValue(&buf, v)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	return buf.String()
 }
 

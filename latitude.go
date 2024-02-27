@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/httputil"
@@ -260,7 +259,7 @@ func dumpRequest(req *http.Request) {
 	defer r.Body.Close()
 
 	o, _ := httputil.DumpRequestOut(r, false)
-	bbs, _ := ioutil.ReadAll(r.Body)
+	bbs, _ := io.ReadAll(r.Body)
 	reqBodyStr := prettyPrintJsonLines(bbs)
 	strReq := prettyPrintJsonLines(o)
 	log.Printf("\n=======[REQUEST]=============\n%s%s\n", string(strReq), reqBodyStr)
@@ -350,17 +349,11 @@ func checkResponse(r *http.Response) error {
 	}
 
 	errorResponse := &ErrorResponse{Response: r}
-	data, err := ioutil.ReadAll(r.Body)
+	data, err := io.ReadAll(r.Body)
 	// if the response has a body, populate the message in errorResponse
 	if err != nil {
 		return err
 	}
-
-	// ct := r.Header.Get("Content-Type")
-	// if !strings.HasPrefix(ct, expectedAPIContentTypePrefix) {
-	// 	errorResponse.SingleError = fmt.Sprintf("Unexpected Content-Type %s with status %s", ct, r.Status)
-	// 	return errorResponse
-	// }
 
 	if len(data) > 0 {
 		err = json.Unmarshal(data, errorResponse)
