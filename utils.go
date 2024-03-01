@@ -23,16 +23,6 @@ func Stringify(message interface{}) string {
 	return buf.String()
 }
 
-// contains tells whether a contains x.
-func contains(a []string, x string) bool {
-	for _, n := range a {
-		if x == n {
-			return true
-		}
-	}
-	return false
-}
-
 func stringifyValue(w io.Writer, val reflect.Value) error {
 	if val.Kind() == reflect.Ptr && val.IsNil() {
 		_, err := w.Write([]byte("<nil>"))

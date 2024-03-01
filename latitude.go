@@ -14,12 +14,17 @@ import (
 	types "github.com/latitudesh/latitudesh-go/types"
 
 	bandwidth "github.com/latitudesh/latitudesh-go/bandwidth"
+	members "github.com/latitudesh/latitudesh-go/members"
 	opsys "github.com/latitudesh/latitudesh-go/operating_systems"
 	plans "github.com/latitudesh/latitudesh-go/plans"
 	projects "github.com/latitudesh/latitudesh-go/projects"
 	regions "github.com/latitudesh/latitudesh-go/regions"
 	servers "github.com/latitudesh/latitudesh-go/servers"
 	sshkeys "github.com/latitudesh/latitudesh-go/ssh_keys"
+	teams "github.com/latitudesh/latitudesh-go/teams"
+	userdata "github.com/latitudesh/latitudesh-go/user_data"
+	vnet "github.com/latitudesh/latitudesh-go/virtual_networks"
+	vlanassign "github.com/latitudesh/latitudesh-go/virtual_networks_assignments"
 )
 
 const (
@@ -44,16 +49,16 @@ type Client struct {
 
 	Projects         projects.ProjectService
 	Servers          servers.ServerService
-	UserData         UserDataService
+	UserData         userdata.UserDataService
 	SSHKeys          sshkeys.SSHKeyService
 	Plans            plans.PlanService
 	OperatingSystems opsys.OperatingSystemService
-	VirtualNetworks  VirtualNetworkService
-	VlanAssignments  VlanAssignmentService
+	VirtualNetworks  vnet.VirtualNetworkService
+	VlanAssignments  vlanassign.VlanAssignmentService
 	Regions          regions.RegionService
-	Teams            TeamService
+	Teams            teams.TeamService
 	Bandwidth        bandwidth.BandwidthService
-	Members          MemberService
+	Members          members.MemberService
 }
 
 // NewRequest inits a new http request with the proper headers
@@ -205,15 +210,15 @@ func NewClientWithBaseURL(apiKey string, httpClient *http.Client, apiBaseURL str
 	c.Projects = &projects.ProjectServiceOp{Client: c}
 	c.Servers = &servers.ServerServiceOp{Client: c}
 	c.SSHKeys = &sshkeys.SSHKeyServiceOp{Client: c}
-	c.UserData = &UserDataServiceOp{client: c}
-	c.Teams = &TeamServiceOp{client: c}
+	c.UserData = &userdata.UserDataServiceOp{Client: c}
+	c.Teams = &teams.TeamServiceOp{Client: c}
 	c.Bandwidth = &bandwidth.BandwidthServiceOp{Client: c}
 	c.Plans = &plans.PlanServiceOp{Client: c}
 	c.OperatingSystems = &opsys.OperatingSystemServiceOp{Client: c}
 	c.Regions = &regions.RegionServiceOp{Client: c}
-	c.VirtualNetworks = &VirtualNetworkServiceOp{client: c}
-	c.VlanAssignments = &VlanAssignmentServiceOp{client: c}
-	c.Members = &MemberServiceOp{client: c}
+	c.VirtualNetworks = &vnet.VirtualNetworkServiceOp{Client: c}
+	c.VlanAssignments = &vlanassign.VlanAssignmentServiceOp{Client: c}
+	c.Members = &members.MemberServiceOp{Client: c}
 	c.debug = os.Getenv(debugEnvVar) != ""
 
 	return c, nil

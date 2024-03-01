@@ -1,34 +1,37 @@
-package latitude
+package user_data_test
 
 import (
 	"testing"
+
+	latitude "github.com/latitudesh/latitudesh-go"
+	userdata "github.com/latitudesh/latitudesh-go/user_data"
 )
 
 const (
 	testUserDataType = "user_data"
 )
 
-func deleteUserData(t *testing.T, c *Client, userDataID string, projectID string) {
+func deleteUserData(t *testing.T, c *latitude.Client, userDataID string, projectID string) {
 	if _, err := c.UserData.Delete(userDataID, projectID); err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestAccUserDataBasic(t *testing.T) {
-	skipUnlessAcceptanceTestsAllowed(t)
+	latitude.SkipUnlessAcceptanceTestsAllowed(t)
 	t.Parallel()
 
-	c, projectID, teardown := setupWithProject(t)
+	c, projectID, teardown := latitude.SetupWithProject(t)
 	defer teardown()
 
 	// Create a new UserData record
-	description := randString8()
-	content := testUserDataContent()
+	description := latitude.RandString8()
+	content := latitude.TestUserDataContent()
 
-	udcr := UserDataCreateRequest{
-		Data: UserDataCreateData{
+	udcr := userdata.UserDataCreateRequest{
+		Data: userdata.UserDataCreateData{
 			Type: testUserDataType,
-			Attributes: UserDataCreateAttributes{
+			Attributes: userdata.UserDataCreateAttributes{
 				Description: description,
 				Content:     content,
 			},
@@ -46,12 +49,12 @@ func TestAccUserDataBasic(t *testing.T) {
 	}
 
 	// Update newly created User Data
-	description = randString8()
-	skur := UserDataUpdateRequest{
-		Data: UserDataUpdateData{
+	description = latitude.RandString8()
+	skur := userdata.UserDataUpdateRequest{
+		Data: userdata.UserDataUpdateData{
 			ID:   k.ID,
 			Type: testUserDataType,
-			Attributes: UserDataUpdateAttributes{
+			Attributes: userdata.UserDataUpdateAttributes{
 				Description: description,
 			},
 		},

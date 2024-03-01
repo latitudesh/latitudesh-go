@@ -1,22 +1,26 @@
-package latitude
+package virtual_network_assignment
 
 import (
 	"errors"
 	"net/http"
 	"path"
+
+	api "github.com/latitudesh/latitudesh-go/api_utils"
+	internal "github.com/latitudesh/latitudesh-go/internal"
+	types "github.com/latitudesh/latitudesh-go/types"
 )
 
 const vlanAssignmentBasePath = "/virtual_networks/assignments"
 
 type VlanAssignmentService interface {
-	List(listOpt *ListOptions) ([]VlanAssignment, *Response, error)
-	Get(VlanAssignmentID string) (*VlanAssignment, *Response, error)
-	Assign(assignRequest *VlanAssignRequest) (*VlanAssignment, *Response, error)
-	Delete(VlanAssignmentID string) (*Response, error)
+	List(listOpt *api.ListOptions) ([]VlanAssignment, *types.Response, error)
+	Get(VlanAssignmentID string) (*VlanAssignment, *types.Response, error)
+	Assign(assignRequest *VlanAssignRequest) (*VlanAssignment, *types.Response, error)
+	Delete(VlanAssignmentID string) (*types.Response, error)
 }
 
 type VlanAssignmentServiceOp struct {
-	client requestDoer
+	Client internal.RequestDoer
 }
 
 type VlanAssignmentData struct {
@@ -55,12 +59,12 @@ type VlanAssignment struct {
 
 type VlanAssignmentListResponse struct {
 	Data []VlanAssignmentData `json:"data"`
-	Meta meta                 `json:"meta"`
+	Meta internal.Meta        `json:"meta"`
 }
 
 type VlanAssignmentGetResponse struct {
 	Data VlanAssignmentData `json:"data"`
-	Meta meta               `json:"meta"`
+	Meta internal.Meta      `json:"meta"`
 }
 
 type VlanAssignRequest struct {
@@ -100,27 +104,27 @@ func NewFlatVlanAssignmentList(vnd []VlanAssignmentData) []VlanAssignment {
 	return res
 }
 
-func (vn *VlanAssignmentServiceOp) List(opts *ListOptions) (vlanAssignments []VlanAssignment, resp *Response, err error) {
+func (vn *VlanAssignmentServiceOp) List(opts *api.ListOptions) (vlanAssignments []VlanAssignment, resp *types.Response, err error) {
 	apiPathQuery := opts.WithQuery(vlanAssignmentBasePath)
 
 	for {
 		res := new(VlanAssignmentListResponse)
 
-		resp, err = vn.client.DoRequest("GET", apiPathQuery, nil, res)
+		resp, err = vn.Client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
 
 		vlanAssignments = append(vlanAssignments, NewFlatVlanAssignmentList(res.Data)...)
 
-		if apiPathQuery = nextPage(res.Meta, opts); apiPathQuery != "" {
+		if apiPathQuery = api.NextPage(res.Meta, opts); apiPathQuery != "" {
 			continue
 		}
 		return
 	}
 }
 
-func (s *VlanAssignmentServiceOp) Get(vlanAssignmentID string) (*VlanAssignment, *Response, error) {
+func (s *VlanAssignmentServiceOp) Get(vlanAssignmentID string) (*VlanAssignment, *types.Response, error) {
 	vlans, resp, err := s.List(nil)
 	if err != nil {
 		return nil, resp, err
@@ -140,10 +144,10 @@ func (s *VlanAssignmentServiceOp) Get(vlanAssignmentID string) (*VlanAssignment,
 	return nil, resp, notFoundErr
 }
 
-func (s *VlanAssignmentServiceOp) Assign(assignRequest *VlanAssignRequest) (*VlanAssignment, *Response, error) {
+func (s *VlanAssignmentServiceOp) Assign(assignRequest *VlanAssignRequest) (*VlanAssignment, *types.Response, error) {
 	vLan := new(VlanAssignmentGetResponse)
 
-	resp, err := s.client.DoRequest("POST", vlanAssignmentBasePath, assignRequest, vLan)
+	resp, err := s.Client.DoRequest("POST", vlanAssignmentBasePath, assignRequest, vLan)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -152,8 +156,8 @@ func (s *VlanAssignmentServiceOp) Assign(assignRequest *VlanAssignRequest) (*Vla
 	return &flatVlanAssignment, resp, err
 }
 
-func (s *VlanAssignmentServiceOp) Delete(vlanAssignmentID string) (*Response, error) {
+func (s *VlanAssignmentServiceOp) Delete(vlanAssignmentID string) (*types.Response, error) {
 	apiPath := path.Join(vlanAssignmentBasePath, vlanAssignmentID)
 
-	return s.client.DoRequest("DELETE", apiPath, nil, nil)
+	return s.Client.DoRequest("DELETE", apiPath, nil, nil)
 }

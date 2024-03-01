@@ -1,23 +1,26 @@
-package latitude
+package members_test
 
 import (
 	"testing"
+
+	latitude "github.com/latitudesh/latitudesh-go"
+	team_members "github.com/latitudesh/latitudesh-go/members"
 )
 
 const ()
 
-func deleteMember(t *testing.T, c *Client, id string) {
+func deleteMember(t *testing.T, c *latitude.Client, id string) {
 	if _, err := c.Members.Delete(id); err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestAccMembersBasic(t *testing.T) {
-	skipUnlessAcceptanceTestsAllowed(t)
+	latitude.SkipUnlessAcceptanceTestsAllowed(t)
 
-	c, stopRecord := setup(t)
+	c, stopRecord := latitude.Setup(t)
 	defer stopRecord()
-	defer projectTeardown(c)
+	defer latitude.ProjectTeardown(c)
 
 	// List Members
 	members, _, err := c.Members.List(nil)
@@ -30,14 +33,14 @@ func TestAccMembersBasic(t *testing.T) {
 	}
 
 	//Create Member
-	request := MemberCreateRequest{
-		Data: MemberCreateData{
+	request := team_members.MemberCreateRequest{
+		Data: team_members.MemberCreateData{
 			Type: "memberships",
-			Attributes: MemberCreateAttributes{
+			Attributes: team_members.MemberCreateAttributes{
 				FirstName: "go-sdk",
 				LastName:  "test",
 				Email:     "go_sdk_test@latitude.sh",
-				Role:      Collaborator,
+				Role:      team_members.Collaborator,
 			},
 		},
 	}

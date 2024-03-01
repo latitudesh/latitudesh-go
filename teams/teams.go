@@ -1,13 +1,18 @@
-package latitude
+package teams
 
-import "path"
+import (
+	"path"
+
+	internal "github.com/latitudesh/latitudesh-go/internal"
+	types "github.com/latitudesh/latitudesh-go/types"
+)
 
 const teamBasePath = "/team"
 
 type TeamService interface {
-	Get() (*Team, *Response, error)
-	Create(request *TeamCreateRequest) (*Team, *Response, error)
-	Update(TeamID string, request *TeamUpdateRequest) (*Team, *Response, error)
+	Get() (*Team, *types.Response, error)
+	Create(request *TeamCreateRequest) (*Team, *types.Response, error)
+	Update(TeamID string, request *TeamUpdateRequest) (*Team, *types.Response, error)
 }
 
 // Team represents a Latitude Team record
@@ -29,7 +34,7 @@ type Team struct {
 
 // TeamServiceOp implements TeamService
 type TeamServiceOp struct {
-	client requestDoer
+	Client internal.RequestDoer
 }
 
 // TeamCreateRequest type used to create a Latitude Team record
@@ -66,13 +71,13 @@ type TeamUpdateAttributes struct {
 }
 
 type TeamGetResponse struct {
-	Data []TeamData `json:"data"`
-	Meta meta       `json:"meta"`
+	Data []TeamData    `json:"data"`
+	Meta internal.Meta `json:"meta"`
 }
 
 type TeamCreateResponse struct {
-	Data TeamData `json:"data"`
-	Meta meta     `json:"meta"`
+	Data TeamData      `json:"data"`
+	Meta internal.Meta `json:"meta"`
 }
 
 type TeamData struct {
@@ -116,11 +121,11 @@ func NewFlatTeam(t TeamData) Team {
 }
 
 // Get returns a Team by id
-func (u *TeamServiceOp) Get() (*Team, *Response, error) {
+func (u *TeamServiceOp) Get() (*Team, *types.Response, error) {
 	var flatTeam Team
 	Team := new(TeamGetResponse)
 
-	resp, err := u.client.DoRequest("GET", teamBasePath, nil, Team)
+	resp, err := u.Client.DoRequest("GET", teamBasePath, nil, Team)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -132,10 +137,10 @@ func (u *TeamServiceOp) Get() (*Team, *Response, error) {
 }
 
 // Create creates a new Team record
-func (s *TeamServiceOp) Create(createRequest *TeamCreateRequest) (*Team, *Response, error) {
+func (s *TeamServiceOp) Create(createRequest *TeamCreateRequest) (*Team, *types.Response, error) {
 	Team := new(TeamCreateResponse)
 
-	resp, err := s.client.DoRequest("POST", teamBasePath, createRequest, Team)
+	resp, err := s.Client.DoRequest("POST", teamBasePath, createRequest, Team)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -145,11 +150,11 @@ func (s *TeamServiceOp) Create(createRequest *TeamCreateRequest) (*Team, *Respon
 }
 
 // Update updates a Team record
-func (s *TeamServiceOp) Update(TeamID string, updateRequest *TeamUpdateRequest) (*Team, *Response, error) {
+func (s *TeamServiceOp) Update(TeamID string, updateRequest *TeamUpdateRequest) (*Team, *types.Response, error) {
 	apiPath := path.Join(teamBasePath, TeamID)
 	Team := new(TeamCreateResponse)
 
-	resp, err := s.client.DoRequest("PATCH", apiPath, updateRequest, Team)
+	resp, err := s.Client.DoRequest("PATCH", apiPath, updateRequest, Team)
 	if err != nil {
 		return nil, resp, err
 	}

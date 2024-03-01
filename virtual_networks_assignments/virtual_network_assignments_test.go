@@ -1,23 +1,34 @@
-package latitude
+package virtual_network_assignment_test
 
 import (
 	"testing"
+
+	latitude "github.com/latitudesh/latitudesh-go"
+	servers "github.com/latitudesh/latitudesh-go/servers"
+	vnet "github.com/latitudesh/latitudesh-go/virtual_networks"
+	vlanassign "github.com/latitudesh/latitudesh-go/virtual_networks_assignments"
 )
 
+func deleteServer(t *testing.T, c *latitude.Client, id string) {
+	if _, err := c.Servers.Delete(id); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestAccVlanAssignmentBasic(t *testing.T) {
-	skipUnlessAcceptanceTestsAllowed(t)
-	c, projectID, teardown := setupWithProject(t)
+	latitude.SkipUnlessAcceptanceTestsAllowed(t)
+	c, projectID, teardown := latitude.SetupWithProject(t)
 	defer teardown()
 
-	hn := randString8()
-	scr := ServerCreateRequest{
-		Data: ServerCreateData{
-			Type: testServerType,
-			Attributes: ServerCreateAttributes{
+	hn := latitude.RandString8()
+	scr := servers.ServerCreateRequest{
+		Data: servers.ServerCreateData{
+			Type: "servers",
+			Attributes: servers.ServerCreateAttributes{
 				Project:         projectID,
-				Plan:            testPlan(),
-				Site:            testSite(),
-				OperatingSystem: testOperatingSystem(),
+				Plan:            latitude.TestPlan(),
+				Site:            latitude.TestSite(),
+				OperatingSystem: latitude.TestOperatingSystem(),
 				Hostname:        hn,
 			},
 		},
@@ -29,12 +40,12 @@ func TestAccVlanAssignmentBasic(t *testing.T) {
 	}
 	defer deleteServer(t, c, s.ID)
 
-	createRequest := VirtualNetworkCreateRequest{
-		Data: VirtualNetworkCreateData{
+	createRequest := vnet.VirtualNetworkCreateRequest{
+		Data: vnet.VirtualNetworkCreateData{
 			Type: "virtual_network",
-			Attributes: VirtualNetworkCreateAttributes{
+			Attributes: vnet.VirtualNetworkCreateAttributes{
 				Description: "Testing golang client",
-				Site:        testSite(),
+				Site:        latitude.TestSite(),
 				Project:     projectID,
 			},
 		},
@@ -45,10 +56,10 @@ func TestAccVlanAssignmentBasic(t *testing.T) {
 	}
 	defer c.VirtualNetworks.Delete(vn.ID)
 
-	assignRequest := VlanAssignRequest{
-		Data: VlanAssignData{
+	assignRequest := vlanassign.VlanAssignRequest{
+		Data: vlanassign.VlanAssignData{
 			Type: "virtual_network_assignment",
-			Attributes: VlanAssignAttributes{
+			Attributes: vlanassign.VlanAssignAttributes{
 				ServerID:         s.ID,
 				VirtualNetworkID: vn.ID,
 			},

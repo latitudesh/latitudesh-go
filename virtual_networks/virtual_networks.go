@@ -1,19 +1,25 @@
-package latitude
+package virtual_networks
 
-import "path"
+import (
+	"path"
+
+	api "github.com/latitudesh/latitudesh-go/api_utils"
+	internal "github.com/latitudesh/latitudesh-go/internal"
+	types "github.com/latitudesh/latitudesh-go/types"
+)
 
 const virtualNetworkBasePath = "/virtual_networks"
 
 type VirtualNetworkService interface {
-	List(listOpt *ListOptions) ([]VirtualNetwork, *Response, error)
-	Get(virtualNetworkID string, getOpt *GetOptions) (*VirtualNetwork, *Response, error)
-	Create(createRequest *VirtualNetworkCreateRequest) (*VirtualNetwork, *Response, error)
-	Update(virtualNetworkID string, updateRequest *VirtualNetworkUpdateRequest) (*VirtualNetwork, *Response, error)
-	Delete(virtualNetworkID string) (*Response, error)
+	List(listOpt *api.ListOptions) ([]VirtualNetwork, *types.Response, error)
+	Get(virtualNetworkID string, getOpt *api.GetOptions) (*VirtualNetwork, *types.Response, error)
+	Create(createRequest *VirtualNetworkCreateRequest) (*VirtualNetwork, *types.Response, error)
+	Update(virtualNetworkID string, updateRequest *VirtualNetworkUpdateRequest) (*VirtualNetwork, *types.Response, error)
+	Delete(virtualNetworkID string) (*types.Response, error)
 }
 
 type VirtualNetworkServiceOp struct {
-	client requestDoer
+	Client internal.RequestDoer
 }
 
 type VirtualNetworkData struct {
@@ -58,12 +64,12 @@ type VirtualNetwork struct {
 
 type VirtualNetworkListResponse struct {
 	Data []VirtualNetworkData `json:"data"`
-	Meta meta                 `json:"meta"`
+	Meta internal.Meta        `json:"meta"`
 }
 
 type VirtualNetworkGetResponse struct {
 	Data VirtualNetworkData `json:"data"`
-	Meta meta               `json:"meta"`
+	Meta internal.Meta      `json:"meta"`
 }
 
 type VirtualNetworkCreateRequest struct {
@@ -119,20 +125,20 @@ func NewFlatVirtualNetworkList(vnd []VirtualNetworkData) []VirtualNetwork {
 	return res
 }
 
-func (vn *VirtualNetworkServiceOp) List(opts *ListOptions) (virtualNetworks []VirtualNetwork, resp *Response, err error) {
+func (vn *VirtualNetworkServiceOp) List(opts *api.ListOptions) (virtualNetworks []VirtualNetwork, resp *types.Response, err error) {
 	apiPathQuery := opts.WithQuery(virtualNetworkBasePath)
 
 	for {
 		res := new(VirtualNetworkListResponse)
 
-		resp, err = vn.client.DoRequest("GET", apiPathQuery, nil, res)
+		resp, err = vn.Client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
 
 		virtualNetworks = append(virtualNetworks, NewFlatVirtualNetworkList(res.Data)...)
 
-		if apiPathQuery = nextPage(res.Meta, opts); apiPathQuery != "" {
+		if apiPathQuery = api.NextPage(res.Meta, opts); apiPathQuery != "" {
 			continue
 		}
 		return
@@ -140,12 +146,12 @@ func (vn *VirtualNetworkServiceOp) List(opts *ListOptions) (virtualNetworks []Vi
 }
 
 // Get returns a server by id
-func (s *VirtualNetworkServiceOp) Get(virtualNetworkID string, opts *GetOptions) (*VirtualNetwork, *Response, error) {
+func (s *VirtualNetworkServiceOp) Get(virtualNetworkID string, opts *api.GetOptions) (*VirtualNetwork, *types.Response, error) {
 	endpointPath := path.Join(virtualNetworkBasePath, virtualNetworkID)
 	apiPathQuery := opts.WithQuery(endpointPath)
 	virtualNetwork := new(VirtualNetworkGetResponse)
 
-	resp, err := s.client.DoRequest("GET", apiPathQuery, nil, virtualNetwork)
+	resp, err := s.Client.DoRequest("GET", apiPathQuery, nil, virtualNetwork)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -155,10 +161,10 @@ func (s *VirtualNetworkServiceOp) Get(virtualNetworkID string, opts *GetOptions)
 }
 
 // Create creates a new virtual network
-func (s *VirtualNetworkServiceOp) Create(createRequest *VirtualNetworkCreateRequest) (*VirtualNetwork, *Response, error) {
+func (s *VirtualNetworkServiceOp) Create(createRequest *VirtualNetworkCreateRequest) (*VirtualNetwork, *types.Response, error) {
 	vLan := new(VirtualNetworkGetResponse)
 
-	resp, err := s.client.DoRequest("POST", virtualNetworkBasePath, createRequest, vLan)
+	resp, err := s.Client.DoRequest("POST", virtualNetworkBasePath, createRequest, vLan)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -168,11 +174,11 @@ func (s *VirtualNetworkServiceOp) Create(createRequest *VirtualNetworkCreateRequ
 }
 
 // Update updates a virtual network
-func (s *VirtualNetworkServiceOp) Update(virtualNetworkID string, updateRequest *VirtualNetworkUpdateRequest) (*VirtualNetwork, *Response, error) {
+func (s *VirtualNetworkServiceOp) Update(virtualNetworkID string, updateRequest *VirtualNetworkUpdateRequest) (*VirtualNetwork, *types.Response, error) {
 	apiPath := path.Join(virtualNetworkBasePath, virtualNetworkID)
 	virtualNetwork := new(VirtualNetworkGetResponse)
 
-	resp, err := s.client.DoRequest("PATCH", apiPath, updateRequest, virtualNetwork)
+	resp, err := s.Client.DoRequest("PATCH", apiPath, updateRequest, virtualNetwork)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -182,8 +188,8 @@ func (s *VirtualNetworkServiceOp) Update(virtualNetworkID string, updateRequest 
 }
 
 // Delete deletes a virtual network
-func (s *VirtualNetworkServiceOp) Delete(virtualNetworkID string) (*Response, error) {
+func (s *VirtualNetworkServiceOp) Delete(virtualNetworkID string) (*types.Response, error) {
 	apiPath := path.Join(virtualNetworkBasePath, virtualNetworkID)
 
-	return s.client.DoRequest("DELETE", apiPath, nil, nil)
+	return s.Client.DoRequest("DELETE", apiPath, nil, nil)
 }

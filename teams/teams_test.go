@@ -1,7 +1,10 @@
-package latitude
+package teams_test
 
 import (
 	"testing"
+
+	latitude "github.com/latitudesh/latitudesh-go"
+	teams "github.com/latitudesh/latitudesh-go/teams"
 )
 
 const (
@@ -9,21 +12,21 @@ const (
 )
 
 func TestAccTeamBasic(t *testing.T) {
-	skipUnlessAcceptanceTestsAllowed(t)
+	latitude.SkipUnlessAcceptanceTestsAllowed(t)
 	t.Parallel()
 
-	c, teardown := setup(t)
+	c, teardown := latitude.Setup(t)
 	defer teardown()
 
 	// Create a new Team record
-	description := randString8()
-	name := randString8()
-	address := randString8()
+	description := latitude.RandString8()
+	name := latitude.RandString8()
+	address := latitude.RandString8()
 
-	tcr := TeamCreateRequest{
-		Data: TeamCreateData{
+	tcr := teams.TeamCreateRequest{
+		Data: teams.TeamCreateData{
 			Type: testTeamType,
-			Attributes: TeamCreateAttributes{
+			Attributes: teams.TeamCreateAttributes{
 				Description: description,
 				Name:        name,
 				Currency:    "USD",

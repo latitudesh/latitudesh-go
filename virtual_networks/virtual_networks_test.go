@@ -1,21 +1,24 @@
-package latitude
+package virtual_networks_test
 
 import (
 	"testing"
+
+	latitude "github.com/latitudesh/latitudesh-go"
+	vnet "github.com/latitudesh/latitudesh-go/virtual_networks"
 )
 
 func TestAccVirtualNetworkBasic(t *testing.T) {
-	skipUnlessAcceptanceTestsAllowed(t)
-	c, projectID, teardown := setupWithProject(t)
+	latitude.SkipUnlessAcceptanceTestsAllowed(t)
+	c, projectID, teardown := latitude.SetupWithProject(t)
 	defer teardown()
 
 	// Create Virtual Network
-	createRequest := VirtualNetworkCreateRequest{
-		Data: VirtualNetworkCreateData{
+	createRequest := vnet.VirtualNetworkCreateRequest{
+		Data: vnet.VirtualNetworkCreateData{
 			Type: "virtual_network",
-			Attributes: VirtualNetworkCreateAttributes{
+			Attributes: vnet.VirtualNetworkCreateAttributes{
 				Description: "Testing Virtual Network via golang client",
-				Site:        testSite(),
+				Site:        latitude.TestSite(),
 				Project:     projectID,
 			},
 		},
@@ -27,11 +30,11 @@ func TestAccVirtualNetworkBasic(t *testing.T) {
 	}
 	defer c.VirtualNetworks.Delete(vnNew.ID)
 
-	updateRequest := VirtualNetworkUpdateRequest{
-		Data: VirtualNetworkUpdateData{
+	updateRequest := vnet.VirtualNetworkUpdateRequest{
+		Data: vnet.VirtualNetworkUpdateData{
 			ID:   vnNew.ID,
 			Type: "virtual_networks",
-			Attributes: VirtualNetworkUpdateAttributes{
+			Attributes: vnet.VirtualNetworkUpdateAttributes{
 				Description: "Updating Virtual Network via golang client",
 			},
 		},

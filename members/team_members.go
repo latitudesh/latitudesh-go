@@ -1,24 +1,30 @@
-package latitude
+package members
 
-import "path"
+import (
+	"path"
+
+	api "github.com/latitudesh/latitudesh-go/api_utils"
+	internal "github.com/latitudesh/latitudesh-go/internal"
+	types "github.com/latitudesh/latitudesh-go/types"
+)
 
 const memberBasePath = "/team/members"
 
 // MemberService interface defines available member methods
 type MemberService interface {
-	List(listOpt *ListOptions) ([]Member, *Response, error)
-	Create(request *MemberCreateRequest) (*Member, *Response, error)
-	Delete(UserID string) (*Response, error)
+	List(listOpt *api.ListOptions) ([]Member, *types.Response, error)
+	Create(request *MemberCreateRequest) (*Member, *types.Response, error)
+	Delete(UserID string) (*types.Response, error)
 }
 
 // MemberServiceOp implements MemberService
 type MemberServiceOp struct {
-	client requestDoer
+	Client internal.RequestDoer
 }
 
 type MemberListResponse struct {
 	Data []MemberListData `json:"data"`
-	Meta meta             `json:"meta"`
+	Meta internal.Meta    `json:"meta"`
 }
 
 type MemberListData struct {
@@ -43,8 +49,8 @@ type Role struct {
 }
 
 type MemberResponse struct {
-	Data MemberData `json:"data"`
-	Meta meta       `json:"meta"`
+	Data MemberData    `json:"data"`
+	Meta internal.Meta `json:"meta"`
 }
 
 type MemberData struct {
@@ -122,14 +128,14 @@ func NewFlatMemberList(md []MemberData) []Member {
 }
 
 // List returns a list of team members
-func (s *MemberServiceOp) List(listOpts *ListOptions) (members []Member, resp *Response, err error) {
+func (s *MemberServiceOp) List(listOpts *api.ListOptions) (members []Member, resp *types.Response, err error) {
 	apiPathQuery := listOpts.WithQuery(memberBasePath)
 
 	for {
 		res := new(MemberListResponse)
 		membersData := []MemberData{}
 
-		resp, err = s.client.DoRequest("GET", apiPathQuery, nil, res)
+		resp, err = s.Client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
@@ -154,7 +160,7 @@ func (s *MemberServiceOp) List(listOpts *ListOptions) (members []Member, resp *R
 
 		members = append(members, NewFlatMemberList(membersData)...)
 
-		if apiPathQuery = nextPage(res.Meta, listOpts); apiPathQuery != "" {
+		if apiPathQuery = api.NextPage(res.Meta, listOpts); apiPathQuery != "" {
 			continue
 		}
 
@@ -163,10 +169,10 @@ func (s *MemberServiceOp) List(listOpts *ListOptions) (members []Member, resp *R
 }
 
 // Create creates a new team member
-func (s *MemberServiceOp) Create(request *MemberCreateRequest) (*Member, *Response, error) {
+func (s *MemberServiceOp) Create(request *MemberCreateRequest) (*Member, *types.Response, error) {
 	member := new(MemberResponse)
 
-	resp, err := s.client.DoRequest("POST", memberBasePath, request, member)
+	resp, err := s.Client.DoRequest("POST", memberBasePath, request, member)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -176,8 +182,8 @@ func (s *MemberServiceOp) Create(request *MemberCreateRequest) (*Member, *Respon
 }
 
 // Delete deletes a team member
-func (s *MemberServiceOp) Delete(MemberID string) (*Response, error) {
+func (s *MemberServiceOp) Delete(MemberID string) (*types.Response, error) {
 	apiPath := path.Join(memberBasePath, MemberID)
 
-	return s.client.DoRequest("DELETE", apiPath, nil, nil)
+	return s.Client.DoRequest("DELETE", apiPath, nil, nil)
 }
