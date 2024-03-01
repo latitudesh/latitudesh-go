@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	latitude "github.com/latitudesh/latitudesh-go"
-	teams "github.com/latitudesh/latitudesh-go/teams"
+	teams "github.com/latitudesh/latitudesh-go/infrastructure/teams"
 )
 
 const (

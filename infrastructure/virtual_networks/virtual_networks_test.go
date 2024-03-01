@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	latitude "github.com/latitudesh/latitudesh-go"
-	vnet "github.com/latitudesh/latitudesh-go/virtual_networks"
+	vnet "github.com/latitudesh/latitudesh-go/infrastructure/virtual_networks"
 )
 
 func TestAccVirtualNetworkBasic(t *testing.T) {

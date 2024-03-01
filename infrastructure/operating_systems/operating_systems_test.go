@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	latitude "github.com/latitudesh/latitudesh-go"
-	opsys "github.com/latitudesh/latitudesh-go/operating_systems"
+	opsys "github.com/latitudesh/latitudesh-go/infrastructure/operating_systems"
 )
 
 func TestAccOperatingSystemBasic(t *testing.T) {

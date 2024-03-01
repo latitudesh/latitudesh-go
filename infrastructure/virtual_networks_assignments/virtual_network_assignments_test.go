@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	latitude "github.com/latitudesh/latitudesh-go"
-	servers "github.com/latitudesh/latitudesh-go/servers"
-	vnet "github.com/latitudesh/latitudesh-go/virtual_networks"
-	vlanassign "github.com/latitudesh/latitudesh-go/virtual_networks_assignments"
+	servers "github.com/latitudesh/latitudesh-go/infrastructure/servers"
+	vnet "github.com/latitudesh/latitudesh-go/infrastructure/virtual_networks"
+	vlanassign "github.com/latitudesh/latitudesh-go/infrastructure/virtual_networks_assignments"
 )
 
 func deleteServer(t *testing.T, c *latitude.Client, id string) {

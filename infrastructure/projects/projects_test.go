@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	latitude "github.com/latitudesh/latitudesh-go"
-	projects "github.com/latitudesh/latitudesh-go/projects"
+	projects "github.com/latitudesh/latitudesh-go/infrastructure/projects"
 )
 
 func TestAccProjectBasic(t *testing.T) {
