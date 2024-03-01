@@ -13,7 +13,7 @@ import (
 	"gopkg.in/dnaeon/go-vcr.v3/cassette"
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 
-	projects "github.com/latitudesh/latitudesh-go/projects"
+	projects "github.com/latitudesh/latitudesh-go/infrastructure/projects"
 )
 
 const (

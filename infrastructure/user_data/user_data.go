@@ -7,7 +7,7 @@ import (
 	internal "github.com/latitudesh/latitudesh-go/internal"
 	types "github.com/latitudesh/latitudesh-go/types"
 
-	projects "github.com/latitudesh/latitudesh-go/projects"
+	projects "github.com/latitudesh/latitudesh-go/infrastructure/projects"
 )
 
 const userDataBasePath = "/user_data"

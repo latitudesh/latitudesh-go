@@ -7,8 +7,8 @@ import (
 	internal "github.com/latitudesh/latitudesh-go/internal"
 	types "github.com/latitudesh/latitudesh-go/types"
 
-	projects "github.com/latitudesh/latitudesh-go/projects"
-	servers "github.com/latitudesh/latitudesh-go/servers"
+	projects "github.com/latitudesh/latitudesh-go/infrastructure/projects"
+	servers "github.com/latitudesh/latitudesh-go/infrastructure/servers"
 )
 
 const sshKeyBasePath = "/ssh_keys"

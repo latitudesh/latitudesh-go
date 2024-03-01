@@ -6,8 +6,8 @@ import (
 	"time"
 
 	api "github.com/latitudesh/latitudesh-go/api_utils"
+	opsys "github.com/latitudesh/latitudesh-go/infrastructure/operating_systems"
 	internal "github.com/latitudesh/latitudesh-go/internal"
-	opsys "github.com/latitudesh/latitudesh-go/operating_systems"
 	types "github.com/latitudesh/latitudesh-go/types"
 )
 
