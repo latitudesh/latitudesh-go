@@ -11,10 +11,12 @@ import (
 	"strings"
 
 	internal "github.com/latitudesh/latitudesh-go/internal"
-	opsys "github.com/latitudesh/latitudesh-go/operating_systems"
-	servers "github.com/latitudesh/latitudesh-go/servers"
-
 	types "github.com/latitudesh/latitudesh-go/types"
+
+	opsys "github.com/latitudesh/latitudesh-go/operating_systems"
+	plans "github.com/latitudesh/latitudesh-go/plans"
+	projects "github.com/latitudesh/latitudesh-go/projects"
+	servers "github.com/latitudesh/latitudesh-go/servers"
 )
 
 const (
@@ -37,11 +39,11 @@ type Client struct {
 	ConsumerToken string
 	APIKey        string
 
-	Projects         ProjectService
+	Projects         projects.ProjectService
 	Servers          servers.ServerService
 	UserData         UserDataService
 	SSHKeys          SSHKeyService
-	Plans            PlanService
+	Plans            plans.PlanService
 	OperatingSystems opsys.OperatingSystemService
 	VirtualNetworks  VirtualNetworkService
 	VlanAssignments  VlanAssignmentService
@@ -197,13 +199,13 @@ func NewClientWithBaseURL(apiKey string, httpClient *http.Client, apiBaseURL str
 	}
 
 	c := &Client{client: httpClient, BaseURL: u, APIKey: apiKey}
-	c.Projects = &ProjectServiceOp{client: c}
+	c.Projects = &projects.ProjectServiceOp{Client: c}
 	c.Servers = &servers.ServerServiceOp{Client: c}
 	c.SSHKeys = &SSHKeyServiceOp{client: c}
 	c.UserData = &UserDataServiceOp{client: c}
 	c.Teams = &TeamServiceOp{client: c}
 	c.Bandwidth = &BandwidthServiceOp{client: c}
-	c.Plans = &PlanServiceOp{client: c}
+	c.Plans = &plans.PlanServiceOp{Client: c}
 	c.OperatingSystems = &opsys.OperatingSystemServiceOp{Client: c}
 	c.Regions = &RegionServiceOp{client: c}
 	c.VirtualNetworks = &VirtualNetworkServiceOp{client: c}

@@ -1,28 +1,32 @@
-package latitude
+package plans
 
 import (
 	"encoding/json"
 	"path"
 	"strconv"
+
+	api "github.com/latitudesh/latitudesh-go/api_utils"
+	internal "github.com/latitudesh/latitudesh-go/internal"
+	types "github.com/latitudesh/latitudesh-go/types"
 )
 
 const planBasePath = "/plans"
 
 // PlanService interface defines available plan methods
 type PlanService interface {
-	List(listOpt *ListOptions) ([]Plan, *Response, error)
-	Get(string, *GetOptions) (*Plan, *Response, error)
+	List(listOpt *api.ListOptions) ([]Plan, *types.Response, error)
+	Get(string, *api.GetOptions) (*Plan, *types.Response, error)
 }
 
 // Plan represents a Latitude plan
 type PlanRoot struct {
-	Data PlanData `json:"data"`
-	Meta meta     `json:"meta"`
+	Data PlanData      `json:"data"`
+	Meta internal.Meta `json:"meta"`
 }
 
 type PlanListResponse struct {
-	Data []PlanData `json:"data"`
-	Meta meta       `json:"meta"`
+	Data []PlanData    `json:"data"`
+	Meta internal.Meta `json:"meta"`
 }
 
 type PlanData struct {
@@ -140,7 +144,7 @@ type Plan struct {
 
 // PlanServiceOp implements PlanService
 type PlanServiceOp struct {
-	client requestDoer
+	Client internal.RequestDoer
 }
 
 // Flatten latitude API data structures
@@ -166,20 +170,20 @@ func NewFlatPlanList(pd []PlanData) []Plan {
 }
 
 // List returns a list of plans
-func (s *PlanServiceOp) List(opts *ListOptions) (plans []Plan, resp *Response, err error) {
+func (s *PlanServiceOp) List(opts *api.ListOptions) (plans []Plan, resp *types.Response, err error) {
 	apiPathQuery := opts.WithQuery(planBasePath)
 
 	for {
 		res := new(PlanListResponse)
 
-		resp, err = s.client.DoRequest("GET", apiPathQuery, nil, res)
+		resp, err = s.Client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
 
 		plans = append(plans, NewFlatPlanList(res.Data)...)
 
-		if apiPathQuery = nextPage(res.Meta, opts); apiPathQuery != "" {
+		if apiPathQuery = api.NextPage(res.Meta, opts); apiPathQuery != "" {
 			continue
 		}
 
@@ -188,11 +192,11 @@ func (s *PlanServiceOp) List(opts *ListOptions) (plans []Plan, resp *Response, e
 }
 
 // Get returns a plan by id
-func (s *PlanServiceOp) Get(planID string, opts *GetOptions) (*Plan, *Response, error) {
+func (s *PlanServiceOp) Get(planID string, opts *api.GetOptions) (*Plan, *types.Response, error) {
 	endpointPath := path.Join(planBasePath, planID)
 	apiPathQuery := opts.WithQuery(endpointPath)
 	plan := new(PlanRoot)
-	resp, err := s.client.DoRequest("GET", apiPathQuery, nil, plan)
+	resp, err := s.Client.DoRequest("GET", apiPathQuery, nil, plan)
 	if err != nil {
 		return nil, resp, err
 	}

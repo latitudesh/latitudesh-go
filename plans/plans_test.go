@@ -1,12 +1,15 @@
-package latitude
+package plans_test
 
 import (
 	"testing"
+
+	latitude "github.com/latitudesh/latitudesh-go"
+	api "github.com/latitudesh/latitudesh-go/api_utils"
 )
 
 func TestAccPlanBasic(t *testing.T) {
-	skipUnlessAcceptanceTestsAllowed(t)
-	c, stopRecord := setup(t)
+	latitude.SkipUnlessAcceptanceTestsAllowed(t)
+	c, stopRecord := latitude.Setup(t)
 	defer stopRecord()
 
 	pl, _, err := c.Plans.List(nil)
@@ -99,11 +102,11 @@ func TestAccPlanBasic(t *testing.T) {
 }
 
 func TestAccPlanFilter(t *testing.T) {
-	skipUnlessAcceptanceTestsAllowed(t)
-	c, stopRecord := setup(t)
+	latitude.SkipUnlessAcceptanceTestsAllowed(t)
+	c, stopRecord := latitude.Setup(t)
 	defer stopRecord()
 
-	pl, _, err := c.Plans.List(new(GetOptions).Filter("slug", testPlanDefault))
+	pl, _, err := c.Plans.List(new(api.GetOptions).Filter("slug", latitude.TestPlanDefault))
 	if err != nil {
 		t.Fatal(err)
 	}

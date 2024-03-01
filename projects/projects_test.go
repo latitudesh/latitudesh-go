@@ -1,16 +1,19 @@
-package latitude
+package projects_test
 
 import (
 	"fmt"
 	"testing"
+
+	latitude "github.com/latitudesh/latitudesh-go"
+	projects "github.com/latitudesh/latitudesh-go/projects"
 )
 
 func TestAccProjectBasic(t *testing.T) {
-	skipUnlessAcceptanceTestsAllowed(t)
+	latitude.SkipUnlessAcceptanceTestsAllowed(t)
 
-	c, stopRecord := setup(t)
+	c, stopRecord := latitude.Setup(t)
 	defer stopRecord()
-	defer projectTeardown(c)
+	defer latitude.ProjectTeardown(c)
 
 	// List Projects
 	projs, _, err := c.Projects.List(nil)
@@ -23,13 +26,13 @@ func TestAccProjectBasic(t *testing.T) {
 	}
 
 	// Create a new project
-	rs := testProjectPrefix + randString8()
-	pcr := ProjectCreateRequest{
-		Data: ProjectCreateData{
-			Type: testProjectType,
-			Attributes: ProjectCreateAttributes{
+	rs := latitude.TestProjectPrefix + latitude.RandString8()
+	pcr := projects.ProjectCreateRequest{
+		Data: projects.ProjectCreateData{
+			Type: latitude.TestProjectType,
+			Attributes: projects.ProjectCreateAttributes{
 				Name:        rs,
-				Environment: testProjectEnvironment,
+				Environment: latitude.TestProjectEnvironment,
 			},
 		},
 	}
@@ -42,14 +45,14 @@ func TestAccProjectBasic(t *testing.T) {
 	}
 
 	// Update newly created project
-	rs = testProjectPrefix + randString8()
-	pur := ProjectUpdateRequest{
-		Data: ProjectUpdateData{
+	rs = latitude.TestProjectPrefix + latitude.RandString8()
+	pur := projects.ProjectUpdateRequest{
+		Data: projects.ProjectUpdateData{
 			ID:   p.ID,
-			Type: testProjectType,
-			Attributes: ProjectCreateAttributes{
+			Type: latitude.TestProjectType,
+			Attributes: projects.ProjectCreateAttributes{
 				Name:        rs,
-				Environment: testProjectEnvironment,
+				Environment: latitude.TestProjectEnvironment,
 			},
 		},
 	}

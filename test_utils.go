@@ -12,12 +12,14 @@ import (
 
 	"gopkg.in/dnaeon/go-vcr.v3/cassette"
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
+
+	projects "github.com/latitudesh/latitudesh-go/projects"
 )
 
 const (
 	apiURLEnvVar           = "LATITUDE_API_URL"
 	latitudeAccTestVar     = "LATITUDE_TEST_ACTUAL_API"
-	testProjectPrefix      = "LATITUDE_TEST_PROJECT_"
+	TestProjectPrefix      = "LATITUDE_TEST_PROJECT_"
 	testPlanVar            = "LATITUDE_TEST_PLAN"
 	testSiteVar            = "LATITUDE_TEST_SITE"
 	testOperatingSystemVar = "LATITUDE_TEST_OS"
@@ -32,7 +34,7 @@ const (
 
 	// defaults should be available to most users
 	testSiteDefault            = "ASH"
-	testPlanDefault            = "c2-small-x86"
+	TestPlanDefault            = "c2-small-x86"
 	testRegionDefault          = "ASH"
 	testSSHKeyDefault          = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQZtz6DPH4Y04vYLdOch5xOzDY7cdGWpYjBFx5H7ZzieVoRwartZAVTGX4qFT9aoyCuuE6qXYcTj6G1CdO5fb8iOtU6K3FdzVyw/WQ/c4sCehEL+wbYrOnXJSYMhLsUAFhZ69tTdmQSgctbv44yP32Z4xiE4zc/Bk465F3u4Zi1Jj883fyAgzahTWXOxpmvYAEuS6Qv6w4yJc6giiGFVYmu+N6h9j348UgbpToYiCSnSM4iNa9fs7sBGufOa9FuXtggPfXtpyk9f05AhkKEjPlCXcDNAq0GsvN2QEx3tYw6i5ze0qehv6EBAtwx3PLrj636O6IgSh0DgrZBih9NBov"
 	testUserDataContentDefault = "bGF0aXR1ZGVzaCB1c2VyIGRhdGEgZXhhbXBsZQ=="
@@ -40,8 +42,8 @@ const (
 )
 
 const (
-	testProjectType        = "projects"
-	testProjectEnvironment = "Development"
+	TestProjectType        = "projects"
+	TestProjectEnvironment = "Development"
 )
 
 func TestPlan() string {
@@ -49,7 +51,7 @@ func TestPlan() string {
 	if envPlan != "" {
 		return envPlan
 	}
-	return testPlanDefault
+	return TestPlanDefault
 }
 
 func TestUserDataContent() string {
@@ -105,13 +107,13 @@ func RandString8() string {
 // configured for a new project with a test recorder for the named test
 func SetupWithProject(t *testing.T) (*Client, string, func()) {
 	c, stopRecord := Setup(t)
-	rs := testProjectPrefix + RandString8()
-	pcr := ProjectCreateRequest{
-		Data: ProjectCreateData{
-			Type: testProjectType,
-			Attributes: ProjectCreateAttributes{
+	rs := TestProjectPrefix + RandString8()
+	pcr := projects.ProjectCreateRequest{
+		Data: projects.ProjectCreateData{
+			Type: TestProjectType,
+			Attributes: projects.ProjectCreateAttributes{
 				Name:        rs,
-				Environment: testProjectEnvironment,
+				Environment: TestProjectEnvironment,
 			},
 		},
 	}
@@ -155,14 +157,14 @@ func Setup(t *testing.T) (*Client, func()) {
 	return c, stopRecord
 }
 
-func projectTeardown(c *Client) {
+func ProjectTeardown(c *Client) {
 	ps, _, err := c.Projects.List(nil)
 	if err != nil {
 		panic(fmt.Errorf("while teardown: %s", err))
 	}
 	for _, p := range ps {
 		fmt.Println(p.ID)
-		if strings.HasPrefix(p.Name, testProjectPrefix) {
+		if strings.HasPrefix(p.Name, TestProjectPrefix) {
 			_, err := c.Projects.Delete(p.ID)
 			if err != nil {
 				panic(fmt.Errorf("while deleting %s: %s", p.Name, err))
