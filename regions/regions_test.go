@@ -1,12 +1,15 @@
-package latitude
+package regions_test
 
 import (
 	"testing"
+
+	latitude "github.com/latitudesh/latitudesh-go"
+	api "github.com/latitudesh/latitudesh-go/api_utils"
 )
 
 func TestAccRegionBasic(t *testing.T) {
-	skipUnlessAcceptanceTestsAllowed(t)
-	c, stopRecord := setup(t)
+	latitude.SkipUnlessAcceptanceTestsAllowed(t)
+	c, stopRecord := latitude.Setup(t)
 	defer stopRecord()
 
 	rl, _, err := c.Regions.List(nil)
@@ -46,11 +49,11 @@ func TestAccRegionBasic(t *testing.T) {
 }
 
 func TestAccRegionFilter(t *testing.T) {
-	skipUnlessAcceptanceTestsAllowed(t)
-	c, stopRecord := setup(t)
+	latitude.SkipUnlessAcceptanceTestsAllowed(t)
+	c, stopRecord := latitude.Setup(t)
 	defer stopRecord()
 
-	rl, _, err := c.Regions.List(new(GetOptions).Filter("slug", testRegionDefault))
+	rl, _, err := c.Regions.List(new(api.GetOptions).Filter("slug", latitude.TestRegionDefault))
 	if err != nil {
 		t.Fatal(err)
 	}

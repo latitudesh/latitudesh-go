@@ -1,8 +1,14 @@
-package latitude
+package bandwidth
+
+import (
+	api "github.com/latitudesh/latitudesh-go/api_utils"
+	internal "github.com/latitudesh/latitudesh-go/internal"
+	types "github.com/latitudesh/latitudesh-go/types"
+)
 
 type BandwidthService interface {
-	TrafficQuota(opts *ListOptions) (*TrafficQuota, *Response, error)
-	TrafficConsumption(opts *ListOptions) (*TrafficConsumption, *Response, error)
+	TrafficQuota(opts *api.ListOptions) (*TrafficQuota, *types.Response, error)
+	TrafficConsumption(opts *api.ListOptions) (*TrafficConsumption, *types.Response, error)
 }
 
 // TrafficConsumption represents consumed traffic in regions
@@ -56,17 +62,17 @@ type TrafficRegionData struct {
 
 // BandwidthServiceOp implements BandwidthService
 type BandwidthServiceOp struct {
-	client requestDoer
+	Client internal.RequestDoer
 }
 
 type TrafficConsumptionResponse struct {
 	Data TrafficConsumptionData `json:"data"`
-	Meta meta                   `json:"meta"`
+	Meta internal.Meta          `json:"meta"`
 }
 
 type TrafficQuotaResponse struct {
 	Data TrafficQuotaData `json:"data"`
-	Meta meta             `json:"meta"`
+	Meta internal.Meta    `json:"meta"`
 }
 
 type TrafficConsumptionData struct {
@@ -101,11 +107,11 @@ func NewFlatTrafficQuota(t TrafficQuotaData) TrafficQuota {
 }
 
 // TrafficConsumption returns consumed traffic
-func (u *BandwidthServiceOp) TrafficConsumption(opts *ListOptions) (*TrafficConsumption, *Response, error) {
+func (u *BandwidthServiceOp) TrafficConsumption(opts *api.ListOptions) (*TrafficConsumption, *types.Response, error) {
 	trafficConsumptionResponse := new(TrafficConsumptionResponse)
 	apiPathQuery := opts.WithQuery("/traffic")
 
-	resp, err := u.client.DoRequest("GET", apiPathQuery, nil, trafficConsumptionResponse)
+	resp, err := u.Client.DoRequest("GET", apiPathQuery, nil, trafficConsumptionResponse)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -115,11 +121,11 @@ func (u *BandwidthServiceOp) TrafficConsumption(opts *ListOptions) (*TrafficCons
 }
 
 // TrafficQuota returns purchased quota
-func (u *BandwidthServiceOp) TrafficQuota(opts *ListOptions) (*TrafficQuota, *Response, error) {
+func (u *BandwidthServiceOp) TrafficQuota(opts *api.ListOptions) (*TrafficQuota, *types.Response, error) {
 	trafficQuotaResponse := new(TrafficQuotaResponse)
 	apiPathQuery := opts.WithQuery("/traffic/quota")
 
-	resp, err := u.client.DoRequest("GET", apiPathQuery, nil, trafficQuotaResponse)
+	resp, err := u.Client.DoRequest("GET", apiPathQuery, nil, trafficQuotaResponse)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -13,10 +13,13 @@ import (
 	internal "github.com/latitudesh/latitudesh-go/internal"
 	types "github.com/latitudesh/latitudesh-go/types"
 
+	bandwidth "github.com/latitudesh/latitudesh-go/bandwidth"
 	opsys "github.com/latitudesh/latitudesh-go/operating_systems"
 	plans "github.com/latitudesh/latitudesh-go/plans"
 	projects "github.com/latitudesh/latitudesh-go/projects"
+	regions "github.com/latitudesh/latitudesh-go/regions"
 	servers "github.com/latitudesh/latitudesh-go/servers"
+	sshkeys "github.com/latitudesh/latitudesh-go/ssh_keys"
 )
 
 const (
@@ -42,14 +45,14 @@ type Client struct {
 	Projects         projects.ProjectService
 	Servers          servers.ServerService
 	UserData         UserDataService
-	SSHKeys          SSHKeyService
+	SSHKeys          sshkeys.SSHKeyService
 	Plans            plans.PlanService
 	OperatingSystems opsys.OperatingSystemService
 	VirtualNetworks  VirtualNetworkService
 	VlanAssignments  VlanAssignmentService
-	Regions          RegionService
+	Regions          regions.RegionService
 	Teams            TeamService
-	Bandwidth        BandwidthService
+	Bandwidth        bandwidth.BandwidthService
 	Members          MemberService
 }
 
@@ -201,13 +204,13 @@ func NewClientWithBaseURL(apiKey string, httpClient *http.Client, apiBaseURL str
 	c := &Client{client: httpClient, BaseURL: u, APIKey: apiKey}
 	c.Projects = &projects.ProjectServiceOp{Client: c}
 	c.Servers = &servers.ServerServiceOp{Client: c}
-	c.SSHKeys = &SSHKeyServiceOp{client: c}
+	c.SSHKeys = &sshkeys.SSHKeyServiceOp{Client: c}
 	c.UserData = &UserDataServiceOp{client: c}
 	c.Teams = &TeamServiceOp{client: c}
-	c.Bandwidth = &BandwidthServiceOp{client: c}
+	c.Bandwidth = &bandwidth.BandwidthServiceOp{Client: c}
 	c.Plans = &plans.PlanServiceOp{Client: c}
 	c.OperatingSystems = &opsys.OperatingSystemServiceOp{Client: c}
-	c.Regions = &RegionServiceOp{client: c}
+	c.Regions = &regions.RegionServiceOp{Client: c}
 	c.VirtualNetworks = &VirtualNetworkServiceOp{client: c}
 	c.VlanAssignments = &VlanAssignmentServiceOp{client: c}
 	c.Members = &MemberServiceOp{client: c}

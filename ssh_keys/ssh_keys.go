@@ -1,22 +1,29 @@
-package latitude
+package ssh_keys
 
 import (
 	"path"
+
+	api "github.com/latitudesh/latitudesh-go/api_utils"
+	internal "github.com/latitudesh/latitudesh-go/internal"
+	types "github.com/latitudesh/latitudesh-go/types"
+
+	projects "github.com/latitudesh/latitudesh-go/projects"
+	servers "github.com/latitudesh/latitudesh-go/servers"
 )
 
 const sshKeyBasePath = "/ssh_keys"
 
 type SSHKeyService interface {
-	List(projectID string, opts *ListOptions) ([]SSHKey, *Response, error)
-	Get(sshKeyID string, projectID string, opts *GetOptions) (*SSHKey, *Response, error)
-	Create(projectID string, request *SSHKeyCreateRequest) (*SSHKey, *Response, error)
-	Update(sshKeyID string, projectID string, request *SSHKeyUpdateRequest) (*SSHKey, *Response, error)
-	Delete(sshKeyID string, projectID string) (*Response, error)
+	List(projectID string, opts *api.ListOptions) ([]SSHKey, *types.Response, error)
+	Get(sshKeyID string, projectID string, opts *api.GetOptions) (*SSHKey, *types.Response, error)
+	Create(projectID string, request *SSHKeyCreateRequest) (*SSHKey, *types.Response, error)
+	Update(sshKeyID string, projectID string, request *SSHKeyUpdateRequest) (*SSHKey, *types.Response, error)
+	Delete(sshKeyID string, projectID string) (*types.Response, error)
 }
 
 type SSHKeyRoot struct {
-	Data ServerData `json:"data"`
-	Meta meta       `json:"meta"`
+	Data servers.ServerData `json:"data"`
+	Meta internal.Meta      `json:"meta"`
 }
 
 type SSHKeyData struct {
@@ -26,13 +33,13 @@ type SSHKeyData struct {
 }
 
 type SSHKeyListResponse struct {
-	Data []SSHKeyData `json:"data"`
-	Meta meta         `json:"meta"`
+	Data []SSHKeyData  `json:"data"`
+	Meta internal.Meta `json:"meta"`
 }
 
 type SSHKeyGetResponse struct {
-	Data SSHKeyData `json:"data"`
-	Meta meta       `json:"meta"`
+	Data SSHKeyData    `json:"data"`
+	Meta internal.Meta `json:"meta"`
 }
 
 type SSHKeyGetAttributes struct {
@@ -75,7 +82,7 @@ type SSHKeyUpdateAttributes struct {
 
 // SSHKeyServiceOp implements SSHKeyService
 type SSHKeyServiceOp struct {
-	client requestDoer
+	Client internal.RequestDoer
 }
 
 // SSHKey represents a Latitude SSH key
@@ -109,20 +116,20 @@ func NewFlatSSHKeyList(sd []SSHKeyData) []SSHKey {
 }
 
 // List returns a list of SSH Keys
-func (s *SSHKeyServiceOp) List(projectID string, opts *ListOptions) (sshKeys []SSHKey, resp *Response, err error) {
-	endpointPath := path.Join(projectBasePath, projectID, sshKeyBasePath)
+func (s *SSHKeyServiceOp) List(projectID string, opts *api.ListOptions) (sshKeys []SSHKey, resp *types.Response, err error) {
+	endpointPath := path.Join(projects.ProjectBasePath, projectID, sshKeyBasePath)
 	apiPathQuery := opts.WithQuery(endpointPath)
 
 	for {
 		res := new(SSHKeyListResponse)
 
-		resp, err = s.client.DoRequest("GET", apiPathQuery, nil, res)
+		resp, err = s.Client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
 		sshKeys = append(sshKeys, NewFlatSSHKeyList(res.Data)...)
 
-		if apiPathQuery = nextPage(res.Meta, opts); apiPathQuery != "" {
+		if apiPathQuery = api.NextPage(res.Meta, opts); apiPathQuery != "" {
 			continue
 		}
 
@@ -131,11 +138,11 @@ func (s *SSHKeyServiceOp) List(projectID string, opts *ListOptions) (sshKeys []S
 }
 
 // Get returns an SSH key by id
-func (s *SSHKeyServiceOp) Get(sshKeyID string, projectID string, opts *GetOptions) (*SSHKey, *Response, error) {
-	endpointPath := path.Join(projectBasePath, projectID, sshKeyBasePath, sshKeyID)
+func (s *SSHKeyServiceOp) Get(sshKeyID string, projectID string, opts *api.GetOptions) (*SSHKey, *types.Response, error) {
+	endpointPath := path.Join(projects.ProjectBasePath, projectID, sshKeyBasePath, sshKeyID)
 	apiPathQuery := opts.WithQuery(endpointPath)
 	sshKey := new(SSHKeyGetResponse)
-	resp, err := s.client.DoRequest("GET", apiPathQuery, nil, sshKey)
+	resp, err := s.Client.DoRequest("GET", apiPathQuery, nil, sshKey)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -145,11 +152,11 @@ func (s *SSHKeyServiceOp) Get(sshKeyID string, projectID string, opts *GetOption
 }
 
 // Create creates a new SSH key
-func (s *SSHKeyServiceOp) Create(projectID string, createRequest *SSHKeyCreateRequest) (*SSHKey, *Response, error) {
-	endpointPath := path.Join(projectBasePath, projectID, sshKeyBasePath)
+func (s *SSHKeyServiceOp) Create(projectID string, createRequest *SSHKeyCreateRequest) (*SSHKey, *types.Response, error) {
+	endpointPath := path.Join(projects.ProjectBasePath, projectID, sshKeyBasePath)
 	sshKey := new(SSHKeyGetResponse)
 
-	resp, err := s.client.DoRequest("POST", endpointPath, createRequest, sshKey)
+	resp, err := s.Client.DoRequest("POST", endpointPath, createRequest, sshKey)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -159,11 +166,11 @@ func (s *SSHKeyServiceOp) Create(projectID string, createRequest *SSHKeyCreateRe
 }
 
 // Update updates an SSH key
-func (s *SSHKeyServiceOp) Update(sshKeyID string, projectID string, updateRequest *SSHKeyUpdateRequest) (*SSHKey, *Response, error) {
-	apiPath := path.Join(projectBasePath, projectID, sshKeyBasePath, sshKeyID)
+func (s *SSHKeyServiceOp) Update(sshKeyID string, projectID string, updateRequest *SSHKeyUpdateRequest) (*SSHKey, *types.Response, error) {
+	apiPath := path.Join(projects.ProjectBasePath, projectID, sshKeyBasePath, sshKeyID)
 	sshKey := new(SSHKeyGetResponse)
 
-	resp, err := s.client.DoRequest("PATCH", apiPath, updateRequest, sshKey)
+	resp, err := s.Client.DoRequest("PATCH", apiPath, updateRequest, sshKey)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -173,8 +180,8 @@ func (s *SSHKeyServiceOp) Update(sshKeyID string, projectID string, updateReques
 }
 
 // Delete deletes an SSH Key
-func (s *SSHKeyServiceOp) Delete(sshKeyID string, projectID string) (*Response, error) {
-	apiPath := path.Join(projectBasePath, projectID, sshKeyBasePath, sshKeyID)
+func (s *SSHKeyServiceOp) Delete(sshKeyID string, projectID string) (*types.Response, error) {
+	apiPath := path.Join(projects.ProjectBasePath, projectID, sshKeyBasePath, sshKeyID)
 
-	return s.client.DoRequest("DELETE", apiPath, nil, nil)
+	return s.Client.DoRequest("DELETE", apiPath, nil, nil)
 }

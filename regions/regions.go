@@ -1,26 +1,30 @@
-package latitude
+package regions
 
 import (
 	"path"
+
+	api "github.com/latitudesh/latitudesh-go/api_utils"
+	internal "github.com/latitudesh/latitudesh-go/internal"
+	types "github.com/latitudesh/latitudesh-go/types"
 )
 
 const regionBasePath = "/regions"
 
 // RegionService interface defines available region methods
 type RegionService interface {
-	List(listOpt *ListOptions) ([]Region, *Response, error)
-	Get(string, *GetOptions) (*Region, *Response, error)
+	List(listOpt *api.ListOptions) ([]Region, *types.Response, error)
+	Get(string, *api.GetOptions) (*Region, *types.Response, error)
 }
 
 // Plan represents a Latitude plan
 type RegionRoot struct {
-	Data RegionData `json:"data"`
-	Meta meta       `json:"meta"`
+	Data RegionData    `json:"data"`
+	Meta internal.Meta `json:"meta"`
 }
 
 type RegionListResponse struct {
-	Data []RegionData `json:"data"`
-	Meta meta         `json:"meta"`
+	Data []RegionData  `json:"data"`
+	Meta internal.Meta `json:"meta"`
 }
 
 type RegionData struct {
@@ -53,7 +57,7 @@ type Region struct {
 
 // RegionServiceOp implements RegionService
 type RegionServiceOp struct {
-	client requestDoer
+	Client internal.RequestDoer
 }
 
 // Flatten latitude API data structures
@@ -78,20 +82,20 @@ func NewFlatRegionList(rd []RegionData) []Region {
 }
 
 // List returns a list of regions
-func (s *RegionServiceOp) List(opts *ListOptions) (regions []Region, resp *Response, err error) {
+func (s *RegionServiceOp) List(opts *api.ListOptions) (regions []Region, resp *types.Response, err error) {
 	apiPathQuery := opts.WithQuery(regionBasePath)
 
 	for {
 		res := new(RegionListResponse)
 
-		resp, err = s.client.DoRequest("GET", apiPathQuery, nil, res)
+		resp, err = s.Client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
 
 		regions = append(regions, NewFlatRegionList(res.Data)...)
 
-		if apiPathQuery = nextPage(res.Meta, opts); apiPathQuery != "" {
+		if apiPathQuery = api.NextPage(res.Meta, opts); apiPathQuery != "" {
 			continue
 		}
 
@@ -100,11 +104,11 @@ func (s *RegionServiceOp) List(opts *ListOptions) (regions []Region, resp *Respo
 }
 
 // Get returns a region by id
-func (s *RegionServiceOp) Get(regionID string, opts *GetOptions) (*Region, *Response, error) {
+func (s *RegionServiceOp) Get(regionID string, opts *api.GetOptions) (*Region, *types.Response, error) {
 	endpointPath := path.Join(regionBasePath, regionID)
 	apiPathQuery := opts.WithQuery(endpointPath)
 	region := new(RegionRoot)
-	resp, err := s.client.DoRequest("GET", apiPathQuery, nil, region)
+	resp, err := s.Client.DoRequest("GET", apiPathQuery, nil, region)
 	if err != nil {
 		return nil, resp, err
 	}
