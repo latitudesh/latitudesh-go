@@ -5,11 +5,6 @@ import (
 	"testing"
 )
 
-const (
-	testProjectType        = "projects"
-	testProjectEnvironment = "Development"
-)
-
 func TestAccProjectBasic(t *testing.T) {
 	skipUnlessAcceptanceTestsAllowed(t)
 

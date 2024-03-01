@@ -39,7 +39,12 @@ const (
 	testOperatingSystemDefault = "ubuntu_22_04_x64_lts"
 )
 
-func testPlan() string {
+const (
+	testProjectType        = "projects"
+	testProjectEnvironment = "Development"
+)
+
+func TestPlan() string {
 	envPlan := os.Getenv(testPlanVar)
 	if envPlan != "" {
 		return envPlan
@@ -47,7 +52,7 @@ func testPlan() string {
 	return testPlanDefault
 }
 
-func testUserDataContent() string {
+func TestUserDataContent() string {
 	envUserDataContent := os.Getenv(testUserDataContentVar)
 	if envUserDataContent != "" {
 		return envUserDataContent
@@ -55,7 +60,7 @@ func testUserDataContent() string {
 	return testUserDataContentDefault
 }
 
-func testSite() string {
+func TestSite() string {
 	envSite := os.Getenv(testSiteVar)
 	if envSite != "" {
 		return envSite
@@ -63,7 +68,7 @@ func testSite() string {
 	return testSiteDefault
 }
 
-func testOperatingSystem() string {
+func TestOperatingSystem() string {
 	envOS := os.Getenv(testOperatingSystemVar)
 	if envOS != "" {
 		return envOS
@@ -71,7 +76,7 @@ func testOperatingSystem() string {
 	return testOperatingSystemDefault
 }
 
-func testSSHKey() string {
+func TestSSHKey() string {
 	envPlan := os.Getenv(testSSHKeyVar)
 	if envPlan != "" {
 		return envPlan
@@ -79,7 +84,7 @@ func testSSHKey() string {
 	return testSSHKeyDefault
 }
 
-func randString8() string {
+func RandString8() string {
 	// test recorder needs replayable names, not randoms
 	mode, _ := testRecordMode()
 	if mode != recorder.ModePassthrough {
@@ -98,9 +103,9 @@ func randString8() string {
 
 // setupWithProject returns a client, project id, and teardown function
 // configured for a new project with a test recorder for the named test
-func setupWithProject(t *testing.T) (*Client, string, func()) {
-	c, stopRecord := setup(t)
-	rs := testProjectPrefix + randString8()
+func SetupWithProject(t *testing.T) (*Client, string, func()) {
+	c, stopRecord := Setup(t)
+	rs := testProjectPrefix + RandString8()
 	pcr := ProjectCreateRequest{
 		Data: ProjectCreateData{
 			Type: testProjectType,
@@ -124,7 +129,7 @@ func setupWithProject(t *testing.T) (*Client, string, func()) {
 	}
 }
 
-func setup(t *testing.T) (*Client, func()) {
+func Setup(t *testing.T) (*Client, func()) {
 	name := t.Name()
 	apiToken := os.Getenv(authTokenEnvVar)
 	if apiToken == "" {
@@ -166,7 +171,7 @@ func projectTeardown(c *Client) {
 	}
 }
 
-func skipUnlessAcceptanceTestsAllowed(t *testing.T) {
+func SkipUnlessAcceptanceTestsAllowed(t *testing.T) {
 	if os.Getenv(latitudeAccTestVar) == "" {
 		t.Skipf("%s is not set", latitudeAccTestVar)
 	}

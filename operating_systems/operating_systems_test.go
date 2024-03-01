@@ -1,12 +1,15 @@
-package latitude
+package operating_systems_test
 
 import (
 	"testing"
+
+	latitude "github.com/latitudesh/latitudesh-go"
+	opsys "github.com/latitudesh/latitudesh-go/operating_systems"
 )
 
 func TestAccOperatingSystemBasic(t *testing.T) {
-	skipUnlessAcceptanceTestsAllowed(t)
-	c, stopRecord := setup(t)
+	latitude.SkipUnlessAcceptanceTestsAllowed(t)
+	c, stopRecord := latitude.Setup(t)
 	defer stopRecord()
 
 	osl, _, err := c.OperatingSystems.List(nil)
@@ -18,7 +21,7 @@ func TestAccOperatingSystemBasic(t *testing.T) {
 		t.Fatalf("Operating System List should contain at least one OS")
 	}
 
-	osTest := OperatingSystem{
+	osTest := opsys.OperatingSystem{
 		ID:       "os_KgXQvNe3azpbP",
 		Type:     "operating_system",
 		Name:     "CentOS 7.4",

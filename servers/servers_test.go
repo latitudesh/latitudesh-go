@@ -1,36 +1,39 @@
-package latitude
+package servers_test
 
 import (
 	"testing"
+
+	latitude "github.com/latitudesh/latitudesh-go"
+	servers "github.com/latitudesh/latitudesh-go/servers"
 )
 
 const (
 	testServerType = "servers"
 )
 
-func deleteServer(t *testing.T, c *Client, id string) {
+func deleteServer(t *testing.T, c *latitude.Client, id string) {
 	if _, err := c.Servers.Delete(id); err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestAccServerBasic(t *testing.T) {
-	skipUnlessAcceptanceTestsAllowed(t)
+	latitude.SkipUnlessAcceptanceTestsAllowed(t)
 	t.Parallel()
 
-	c, projectID, teardown := setupWithProject(t)
+	c, projectID, teardown := latitude.SetupWithProject(t)
 	defer teardown()
 
 	// Create a new project
-	hn := randString8()
-	scr := ServerCreateRequest{
-		Data: ServerCreateData{
+	hn := latitude.RandString8()
+	scr := servers.ServerCreateRequest{
+		Data: servers.ServerCreateData{
 			Type: testServerType,
-			Attributes: ServerCreateAttributes{
+			Attributes: servers.ServerCreateAttributes{
 				Project:         projectID,
-				Plan:            testPlan(),
-				Site:            testSite(),
-				OperatingSystem: testOperatingSystem(),
+				Plan:            latitude.TestPlan(),
+				Site:            latitude.TestSite(),
+				OperatingSystem: latitude.TestOperatingSystem(),
 				Hostname:        hn,
 			},
 		},
@@ -43,12 +46,12 @@ func TestAccServerBasic(t *testing.T) {
 	defer deleteServer(t, c, s.ID)
 
 	// Update newly created server
-	rs := randString8()
-	sur := ServerUpdateRequest{
-		Data: ServerUpdateData{
+	rs := latitude.RandString8()
+	sur := servers.ServerUpdateRequest{
+		Data: servers.ServerUpdateData{
 			ID:   s.ID,
 			Type: "servers",
-			Attributes: ServerUpdateAttributes{
+			Attributes: servers.ServerUpdateAttributes{
 				Hostname: rs,
 			},
 		},

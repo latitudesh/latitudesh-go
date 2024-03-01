@@ -1,15 +1,21 @@
-package latitude
+package operating_systems
+
+import (
+	api "github.com/latitudesh/latitudesh-go/api_utils"
+	internal "github.com/latitudesh/latitudesh-go/internal"
+	types "github.com/latitudesh/latitudesh-go/types"
+)
 
 const operatingSystemBasePath = "/plans/operating_systems"
 
 // OperatingSystemService interface defines available Operating Systems methods
 type OperatingSystemService interface {
-	List(listOpt *ListOptions) ([]OperatingSystem, *Response, error)
+	List(listOpt *api.ListOptions) ([]OperatingSystem, *types.Response, error)
 }
 
 type OperatingSystemListResponse struct {
 	Data []OperatingSystemData `json:"data"`
-	Meta meta                  `json:"meta"`
+	Meta internal.Meta         `json:"meta"`
 }
 
 type OperatingSystemData struct {
@@ -55,7 +61,7 @@ type OperatingSystem struct {
 }
 
 type OperatingSystemServiceOp struct {
-	client requestDoer
+	Client internal.RequestDoer
 }
 
 func NewFlatOperatingSystem(osd OperatingSystemData) OperatingSystem {
@@ -83,20 +89,20 @@ func NewFlatOperatingSystemList(osd []OperatingSystemData) []OperatingSystem {
 }
 
 // List returns a list of Operating Systems
-func (os *OperatingSystemServiceOp) List(opts *ListOptions) (operatingSystems []OperatingSystem, resp *Response, err error) {
+func (os *OperatingSystemServiceOp) List(opts *api.ListOptions) (operatingSystems []OperatingSystem, resp *types.Response, err error) {
 	apiPathQuery := opts.WithQuery(operatingSystemBasePath)
 
 	for {
 		res := new(OperatingSystemListResponse)
 
-		resp, err = os.client.DoRequest("GET", apiPathQuery, nil, res)
+		resp, err = os.Client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
 
 		operatingSystems = append(operatingSystems, NewFlatOperatingSystemList(res.Data)...)
 
-		if apiPathQuery = nextPage(res.Meta, opts); apiPathQuery != "" {
+		if apiPathQuery = api.NextPage(res.Meta, opts); apiPathQuery != "" {
 			continue
 		}
 		return

@@ -1,10 +1,12 @@
-package latitude
+package api_utils
 
 import (
 	"fmt"
 	"net/url"
 	"strconv"
 	"strings"
+
+	internal "github.com/latitudesh/latitudesh-go/internal"
 )
 
 type ListSortDirection string
@@ -58,7 +60,7 @@ type GetOptions struct {
 	SortBy        string            `url:"sort_by,omitempty"`
 	SortDirection ListSortDirection `url:"sort_direction,omitempty"`
 
-	Meta meta `url:"-"`
+	Meta internal.Meta `url:"-"`
 }
 
 type ListOptions = GetOptions
@@ -130,7 +132,7 @@ func (g *GetOptions) AddParam(key, value string) *GetOptions {
 func (g *GetOptions) Including(refs ...string) *GetOptions {
 	ret := g.CopyOrNew()
 	for _, v := range refs {
-		if !contains(ret.Includes, v) {
+		if !internal.Contains(ret.Includes, v) {
 			ret.Includes = append(ret.Includes, v)
 		}
 	}
@@ -143,7 +145,7 @@ func (g *GetOptions) Including(refs ...string) *GetOptions {
 func (g *GetOptions) Excluding(refs ...string) *GetOptions {
 	ret := g.CopyOrNew()
 	for _, v := range refs {
-		if !contains(ret.Excludes, v) {
+		if !internal.Contains(ret.Excludes, v) {
 			ret.Excludes = append(ret.Excludes, v)
 		}
 	}
@@ -157,7 +159,7 @@ func stripQuery(inURL string) string {
 }
 
 // nextPage is common and extracted from all List functions
-func nextPage(meta meta, opts *GetOptions) (path string) {
+func NextPage(meta internal.Meta, opts *GetOptions) (path string) {
 	if meta.Next != nil && (opts.GetPage() == 0) {
 		optsCopy := opts.CopyOrNew()
 		optsCopy.Page = meta.CurrentPageNum + 1

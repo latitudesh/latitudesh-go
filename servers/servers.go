@@ -1,25 +1,30 @@
-package latitude
+package servers
 
 import (
 	"fmt"
 	"path"
 	"time"
+
+	api "github.com/latitudesh/latitudesh-go/api_utils"
+	internal "github.com/latitudesh/latitudesh-go/internal"
+	opsys "github.com/latitudesh/latitudesh-go/operating_systems"
+	types "github.com/latitudesh/latitudesh-go/types"
 )
 
 const serverBasePath = "/servers"
 
 type ServerService interface {
-	List(ProjectID string, opts *ListOptions) ([]Server, *Response, error)
-	Get(ServerID string, opts *GetOptions) (*Server, *Response, error)
-	Create(*ServerCreateRequest) (*Server, *Response, error)
-	Update(string, *ServerUpdateRequest) (*Server, *Response, error)
-	Delete(serverID string) (*Response, error)
-	Reinstall(serverID string, reinstallRequest *ServerReinstallRequest) (*Response, error)
+	List(ProjectID string, opts *api.ListOptions) ([]Server, *types.Response, error)
+	Get(ServerID string, opts *api.GetOptions) (*Server, *types.Response, error)
+	Create(*ServerCreateRequest) (*Server, *types.Response, error)
+	Update(string, *ServerUpdateRequest) (*Server, *types.Response, error)
+	Delete(serverID string) (*types.Response, error)
+	Reinstall(serverID string, reinstallRequest *ServerReinstallRequest) (*types.Response, error)
 }
 
 type ServerRoot struct {
-	Data ServerData `json:"data"`
-	Meta meta       `json:"meta"`
+	Data ServerData    `json:"data"`
+	Meta internal.Meta `json:"meta"`
 }
 
 type ServerData struct {
@@ -62,12 +67,12 @@ type TeamCurrency struct {
 
 type ServerListResponse struct {
 	Data []ServerGetData `json:"data"`
-	Meta meta            `json:"meta"`
+	Meta internal.Meta   `json:"meta"`
 }
 
 type ServerGetResponse struct {
 	Data ServerGetData `json:"data"`
-	Meta meta          `json:"meta"`
+	Meta internal.Meta `json:"meta"`
 }
 
 type ServerGetData struct {
@@ -151,7 +156,7 @@ type ServerReinstallAttributes struct {
 
 // ServerServiceOp implements ServerService
 type ServerServiceOp struct {
-	client requestDoer
+	Client internal.RequestDoer
 }
 
 type Server struct {
@@ -194,11 +199,11 @@ type ServerPlan struct {
 }
 
 type ServerOperatingSystem struct {
-	Name     string                  `json:"name"`
-	Slug     string                  `json:"slug"`
-	Version  string                  `json:"version"`
-	Features OperatingSystemFeatures `json:"features"`
-	Distro   OperatingSystemDistro   `json:"distro"`
+	Name     string                        `json:"name"`
+	Slug     string                        `json:"slug"`
+	Version  string                        `json:"version"`
+	Features opsys.OperatingSystemFeatures `json:"features"`
+	Distro   opsys.OperatingSystemDistro   `json:"distro"`
 }
 
 // Flatten latitude API data structures
@@ -248,7 +253,7 @@ func waitServerActive(s *ServerServiceOp, id string) (*Server, error) {
 }
 
 // List returns servers on a project
-func (s *ServerServiceOp) List(projectID string, opts *ListOptions) ([]Server, *Response, error) {
+func (s *ServerServiceOp) List(projectID string, opts *api.ListOptions) ([]Server, *types.Response, error) {
 	opts = opts.Filter("project", projectID)
 	apiPathQuery := opts.WithQuery(serverBasePath)
 	var servers []Server
@@ -256,14 +261,14 @@ func (s *ServerServiceOp) List(projectID string, opts *ListOptions) ([]Server, *
 	for {
 		res := new(ServerListResponse)
 
-		resp, err := s.client.DoRequest("GET", apiPathQuery, nil, res)
+		resp, err := s.Client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
 
 		servers = append(servers, NewFlatServerList(res.Data)...)
 
-		if apiPathQuery = nextPage(res.Meta, opts); apiPathQuery != "" {
+		if apiPathQuery = api.NextPage(res.Meta, opts); apiPathQuery != "" {
 			continue
 		}
 
@@ -272,11 +277,11 @@ func (s *ServerServiceOp) List(projectID string, opts *ListOptions) ([]Server, *
 }
 
 // Get returns a server by id
-func (s *ServerServiceOp) Get(serverID string, opts *GetOptions) (*Server, *Response, error) {
+func (s *ServerServiceOp) Get(serverID string, opts *api.GetOptions) (*Server, *types.Response, error) {
 	endpointPath := path.Join(serverBasePath, serverID)
 	apiPathQuery := opts.WithQuery(endpointPath)
 	server := new(ServerGetResponse)
-	resp, err := s.client.DoRequest("GET", apiPathQuery, nil, server)
+	resp, err := s.Client.DoRequest("GET", apiPathQuery, nil, server)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -286,10 +291,10 @@ func (s *ServerServiceOp) Get(serverID string, opts *GetOptions) (*Server, *Resp
 }
 
 // Create creates a new server
-func (s *ServerServiceOp) Create(createRequest *ServerCreateRequest) (*Server, *Response, error) {
+func (s *ServerServiceOp) Create(createRequest *ServerCreateRequest) (*Server, *types.Response, error) {
 	server := new(ServerGetResponse)
 
-	resp, err := s.client.DoRequest("POST", serverBasePath, createRequest, server)
+	resp, err := s.Client.DoRequest("POST", serverBasePath, createRequest, server)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -300,11 +305,11 @@ func (s *ServerServiceOp) Create(createRequest *ServerCreateRequest) (*Server, *
 }
 
 // Update updates a server
-func (s *ServerServiceOp) Update(serverID string, updateRequest *ServerUpdateRequest) (*Server, *Response, error) {
+func (s *ServerServiceOp) Update(serverID string, updateRequest *ServerUpdateRequest) (*Server, *types.Response, error) {
 	apiPath := path.Join(serverBasePath, serverID)
 	server := new(ServerGetResponse)
 
-	resp, err := s.client.DoRequest("PATCH", apiPath, updateRequest, server)
+	resp, err := s.Client.DoRequest("PATCH", apiPath, updateRequest, server)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -314,15 +319,15 @@ func (s *ServerServiceOp) Update(serverID string, updateRequest *ServerUpdateReq
 }
 
 // Delete deletes a server
-func (s *ServerServiceOp) Delete(serverID string) (*Response, error) {
+func (s *ServerServiceOp) Delete(serverID string) (*types.Response, error) {
 	apiPath := path.Join(serverBasePath, serverID)
 
-	return s.client.DoRequest("DELETE", apiPath, nil, nil)
+	return s.Client.DoRequest("DELETE", apiPath, nil, nil)
 }
 
 // Reinstall reinstalls an existing server
-func (s *ServerServiceOp) Reinstall(serverID string, reinstallRequest *ServerReinstallRequest) (*Response, error) {
+func (s *ServerServiceOp) Reinstall(serverID string, reinstallRequest *ServerReinstallRequest) (*types.Response, error) {
 	apiPath := path.Join(serverBasePath, serverID, "reinstall")
 
-	return s.client.DoRequest("POST", apiPath, reinstallRequest, nil)
+	return s.Client.DoRequest("POST", apiPath, reinstallRequest, nil)
 }
