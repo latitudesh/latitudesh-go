@@ -4,12 +4,18 @@ import (
 	"testing"
 )
 
+func deleteVirtualNetwork(t *testing.T, c *Client, id string) {
+	if _, err := c.VirtualNetworks.Delete(id); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestAccVirtualNetworkBasic(t *testing.T) {
 	skipUnlessAcceptanceTestsAllowed(t)
 	c, projectID, teardown := setupWithProject(t)
 	defer teardown()
 
-	var vnId string
+	var vnID string
 
 	t.Run("Create Virtual Network", func(t *testing.T) {
 		createRequest := VirtualNetworkCreateRequest{
@@ -27,14 +33,14 @@ func TestAccVirtualNetworkBasic(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		vnId = vnNew.ID
+		vnID = vnNew.ID
 	})
-	defer c.VirtualNetworks.Delete(vnId)
+	defer deleteVirtualNetwork(t, c, vnID)
 
 	t.Run("Update Virtual Network", func(t *testing.T) {
 		updateRequest := VirtualNetworkUpdateRequest{
 			Data: VirtualNetworkUpdateData{
-				ID:   vnId,
+				ID:   vnID,
 				Type: "virtual_networks",
 				Attributes: VirtualNetworkUpdateAttributes{
 					Description: "Updating Virtual Network via golang client",
@@ -42,14 +48,14 @@ func TestAccVirtualNetworkBasic(t *testing.T) {
 			},
 		}
 
-		_, _, err := c.VirtualNetworks.Update(vnId, &updateRequest)
+		_, _, err := c.VirtualNetworks.Update(vnID, &updateRequest)
 		if err != nil {
 			t.Fatal(err)
 		}
 	})
 
 	t.Run("Get and List Virtual Networks", func(t *testing.T) {
-		vnTest, _, err := c.VirtualNetworks.Get(vnId, nil)
+		vnTest, _, err := c.VirtualNetworks.Get(vnID, nil)
 		if err != nil {
 			t.Fatal(err)
 		}
