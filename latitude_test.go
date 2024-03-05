@@ -156,7 +156,6 @@ func projectTeardown(c *Client) {
 		panic(fmt.Errorf("while teardown: %s", err))
 	}
 	for _, p := range ps {
-		fmt.Println(p.ID)
 		if strings.HasPrefix(p.Name, testProjectPrefix) {
 			_, err := c.Projects.Delete(p.ID)
 			if err != nil {
