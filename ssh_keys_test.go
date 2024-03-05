@@ -56,7 +56,7 @@ func TestAccSSHKeyBasic(t *testing.T) {
 		}
 
 		if len(kList) == 0 {
-			t.Fatalf("Plan List should contain at least one plan")
+			t.Fatalf("SSH key List should contain at least one key")
 		}
 
 		// Get first listed SSHkey
@@ -67,13 +67,13 @@ func TestAccSSHKeyBasic(t *testing.T) {
 
 		// Check SSHKey data
 		if gotKey.ID != kList[0].ID {
-			t.Fatalf("Expected the id of the GOT plan to be %s, not %s", kList[0].ID, gotKey.ID)
+			t.Fatalf("Expected the id of the GOT key to be %s, not %s", kList[0].ID, gotKey.ID)
 		}
 		if gotKey.Name != kList[0].Name {
-			t.Fatalf("Expected the Name of the GOT plan to be %s, not %s", kList[0].Name, gotKey.Name)
+			t.Fatalf("Expected the Name of the GOT key to be %s, not %s", kList[0].Name, gotKey.Name)
 		}
 		if gotKey.PublicKey != kList[0].PublicKey {
-			t.Fatalf("Expected the name of the GOT plan to be %s, not %s", kList[0].PublicKey, gotKey.PublicKey)
+			t.Fatalf("Expected the name of the GOT key to be %s, not %s", kList[0].PublicKey, gotKey.PublicKey)
 		}
 	})
 
