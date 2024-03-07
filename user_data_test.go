@@ -44,9 +44,7 @@ func TestAccUserDataBasic(t *testing.T) {
 
 		udID = ud.ID
 
-		if ud.Content != content {
-			t.Fatalf("Expected new User Data content to be %s, not %s", content, ud.Content)
-		}
+		assertEqual(t, ud.Content, content, "User Data content")
 	})
 
 	defer deleteUserData(t, c, udID, projectID)
@@ -67,9 +65,7 @@ func TestAccUserDataBasic(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if ud.Description != description {
-			t.Fatalf("Expected the description of the updated User Data to be %s, not %s", description, ud.Description)
-		}
+		assertEqual(t, ud.Description, description, "User Data description")
 	})
 
 	t.Run("Get and List UserData", func(t *testing.T) {
@@ -77,17 +73,12 @@ func TestAccUserDataBasic(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-
-		if len(udl) != 1 {
-			t.Fatalf("User Data List should contain exactly one key, was: %v", udl)
-		}
+		assertEqual(t, len(udl), 1, "User Data List length")
 
 		ud, _, err := c.UserData.Get(udID, projectID, nil)
 		if err != nil {
 			t.Fatal(err)
 		}
-		if ud.ID != udl[0].ID {
-			t.Fatalf("Expected User Data ID to be %s, not %s", udl[0].ID, ud.ID)
-		}
+		assertEqual(t, ud.ID, udl[0].ID, "User Data ID")
 	})
 }

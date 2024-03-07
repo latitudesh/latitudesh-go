@@ -75,33 +75,16 @@ func TestAccVirtualNetworkBasic(t *testing.T) {
 				continue
 			}
 
-			if vnTest.Type != vn.Type {
-				t.Fatalf("Expected the type of the Virtual Network to be %s, not %s", vnTest.Type, vn.Type)
-			}
-			if vnTest.Vid != vn.Vid {
-				t.Fatalf("Expected the vid of the Virtual Network to be %d, not %d", vnTest.Vid, vn.Vid)
-			}
-			if vnTest.Description != vn.Description {
-				t.Fatalf("Expected the description of the Virtual Network to be %s, not %s", vnTest.Description, vn.Description)
-			}
-			if vnTest.City != vn.City {
-				t.Fatalf("Expected the region city of the Virtual Network to be %s, not %s", vnTest.City, vn.City)
-			}
-			if vnTest.Country != vn.Country {
-				t.Fatalf("Expected the region country of the Virtual Network to be %s, not %s", vnTest.Country, vn.Country)
-			}
-			if vnTest.SiteId != vn.SiteId {
-				t.Fatalf("Expected the site id of the Virtual Network to be %s, not %s", vnTest.SiteId, vn.SiteId)
-			}
-			if vnTest.SiteName != vn.SiteName {
-				t.Fatalf("Expected the site name of the Virtual Network to be %s, not %s", vnTest.SiteName, vn.SiteName)
-			}
-			if vnTest.SiteSlug != vn.SiteSlug {
-				t.Fatalf("Expected the site slug of the Virtual Network to be %s, not %s", vnTest.SiteSlug, vn.SiteSlug)
-			}
-			if vnTest.Facility != vn.Facility {
-				t.Fatalf("Expected the facility of the Virtual Network to be %s, not %s", vnTest.Facility, vn.Facility)
-			}
+            assertEqual(t, vn.Type, vnTest.Type, "Virtual Network Type")
+            assertEqual(t, vn.Vid, vnTest.Vid, "Virtual Network Vid")
+            assertEqual(t, vn.Description, vnTest.Description, "Virtual Network Description")
+            assertEqual(t, vn.City, vnTest.City, "Virtual Network City")
+            assertEqual(t, vn.Country, vnTest.Country, "Virtual Network Country")
+            assertEqual(t, vn.SiteId, vnTest.SiteId, "Virtual Network SiteId")
+            assertEqual(t, vn.SiteName, vnTest.SiteName, "Virtual Network SiteName")
+            assertEqual(t, vn.SiteSlug, vnTest.SiteSlug, "Virtual Network SiteSlug")
+            assertEqual(t, vn.Facility, vnTest.Facility, "Virtual Network Facility")
+
 			return
 		}
 		t.Fatalf("Virtual Network with id %s not found", vnTest.ID)

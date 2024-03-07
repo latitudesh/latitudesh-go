@@ -40,9 +40,7 @@ func TestAccSSHKeyBasic(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		if k.Name != keyName {
-			t.Fatalf("Expected new SSH key name to be %s, not %s", keyName, k.Name)
-		}
+		assertEqual(t, k.Name, keyName, "SSH Key Name")
 
 		keyID = k.ID
 	})
@@ -66,15 +64,9 @@ func TestAccSSHKeyBasic(t *testing.T) {
 		}
 
 		// Check SSHKey data
-		if gotKey.ID != kList[0].ID {
-			t.Fatalf("Expected the id of the GOT key to be %s, not %s", kList[0].ID, gotKey.ID)
-		}
-		if gotKey.Name != kList[0].Name {
-			t.Fatalf("Expected the Name of the GOT key to be %s, not %s", kList[0].Name, gotKey.Name)
-		}
-		if gotKey.PublicKey != kList[0].PublicKey {
-			t.Fatalf("Expected the name of the GOT key to be %s, not %s", kList[0].PublicKey, gotKey.PublicKey)
-		}
+		assertEqual(t, gotKey.ID, kList[0].ID, "SSH Key ID")
+		assertEqual(t, gotKey.Name, kList[0].Name, "SSH Key Name")
+		assertEqual(t, gotKey.PublicKey, kList[0].PublicKey, "SSH Key PublicKey")
 	})
 
 	t.Run("Update SSH Key", func(t *testing.T) {
@@ -92,17 +84,13 @@ func TestAccSSHKeyBasic(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if k.Name != keyName {
-			t.Fatalf("Expected the name of the updated SSH key to be %s, not %s", keyName, k.Name)
-		}
+		assertEqual(t, k.Name, keyName, "SSH Key Name")
 
 		kl, _, err := c.SSHKeys.List(projectID, nil)
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		if len(kl) != 1 {
-			t.Fatalf("SSH key List should contain exactly one key, was: %v", kl)
-		}
+		assertEqual(t, len(kl), 1, "SSH Key List length")
 	})
 }

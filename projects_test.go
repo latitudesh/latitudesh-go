@@ -41,9 +41,7 @@ func TestAccProjectBasic(t *testing.T) {
 
 		projectID = p.ID
 
-		if p.Name != rs {
-			t.Fatalf("Expected new project name to be %s, not %s", rs, p.Name)
-		}
+        assertEqual(t, p.Name, rs, "Project Name")
 	})
 
 	defer deleteProject(t, c, projectID)
@@ -68,10 +66,7 @@ func TestAccProjectBasic(t *testing.T) {
 		}
 
 		projectName = p.Name
-
-		if p.Name != rs {
-			t.Fatalf("Expected the name of the updated project to be %s, not %s", rs, p.Name)
-		}
+        assertEqual(t, projectName, rs, "Project Name")
 	})
 
 	t.Run("Get Project", func(t *testing.T) {
@@ -80,9 +75,7 @@ func TestAccProjectBasic(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		if gotProject.Name != projectName {
-			t.Fatalf("Expected the name of the GOT project to be %s, not %s", projectName, gotProject.Name)
-		}
+        assertEqual(t, gotProject.Name, projectName, "Project Name")
 	})
 
 	t.Run("List Project", func(t *testing.T) {

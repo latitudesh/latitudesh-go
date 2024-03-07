@@ -103,33 +103,16 @@ func TestAccVlanAssignmentBasic(t *testing.T) {
 				continue
 			}
 
-			if vaTest.Type != va.Type {
-				t.Fatalf("Expected the type of the Vlan Assignment to be %s, not %s", vaTest.Type, va.Type)
-			}
-			if vaTest.Vid != va.Vid {
-				t.Fatalf("Expected the vid of the Vlan Assignment to be %d, not %d", vaTest.Vid, va.Vid)
-			}
-			if vaTest.Description != va.Description {
-				t.Fatalf("Expected the description of the Vlan Assignment to be %s, not %s", vaTest.Description, va.Description)
-			}
-			if vaTest.VirtualNetworkID != va.VirtualNetworkID {
-				t.Fatalf("Expected the virtual network id of the Vlan Assignment to be %s, not %s", vaTest.VirtualNetworkID, va.VirtualNetworkID)
-			}
-			if vaTest.Status != va.Status {
-				t.Fatalf("Expected the status of the Vlan Assignment to be %s, not %s", vaTest.Status, va.Status)
-			}
-			if vaTest.ServerID != va.ServerID {
-				t.Fatalf("Expected the server id of the Vlan Assignment to be %s, not %s", vaTest.ServerID, va.ServerID)
-			}
-			if vaTest.ServerHostname != va.ServerHostname {
-				t.Fatalf("Expected the server hostname of the Vlan Assignment to be %s, not %s", vaTest.ServerHostname, va.ServerHostname)
-			}
-			if vaTest.ServerLabel != va.ServerLabel {
-				t.Fatalf("Expected the server label of the Vlan Assignment to be %s, not %s", vaTest.ServerLabel, va.ServerLabel)
-			}
-			if vaTest.ServerStatus != va.ServerStatus {
-				t.Fatalf("Expected the server status of the Vlan Assignment to be %s, not %s", vaTest.ServerStatus, va.ServerStatus)
-			}
+			assertEqual(t, va.Type, vaTest.Type, "Vlan Assignment Type")
+			assertEqual(t, va.Vid, vaTest.Vid, "Vlan Assignment Vid")
+			assertEqual(t, va.Description, vaTest.Description, "Vlan Assignment Description")
+			assertEqual(t, va.VirtualNetworkID, vaTest.VirtualNetworkID, "Vlan Assignment VirtualNetworkID")
+			assertEqual(t, va.Status, vaTest.Status, "Vlan Assignment Status")
+			assertEqual(t, va.ServerID, vaTest.ServerID, "Vlan Assignment ServerID")
+			assertEqual(t, va.ServerHostname, vaTest.ServerHostname, "Vlan Assignment ServerHostname")
+			assertEqual(t, va.ServerLabel, vaTest.ServerLabel, "Vlan Assignment ServerLabel")
+			assertEqual(t, va.ServerStatus, vaTest.ServerStatus, "Vlan Assignment ServerStatus")
+
 			return
 		}
 		t.Fatalf("Vlan Assignment with id %s not found", vaTest.ID)

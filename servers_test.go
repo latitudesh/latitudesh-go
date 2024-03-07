@@ -63,9 +63,7 @@ func TestAccServerBasic(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if s.Hostname != rs {
-			t.Fatalf("Expected the hostname of the updated server to be %s, not %s", rs, s.Hostname)
-		}
+        assertEqual(t, s.Hostname, rs, "Server hostname")
 	})
 
 	t.Run("Servers List test", func(t *testing.T) {
@@ -73,9 +71,6 @@ func TestAccServerBasic(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-
-		if len(dl) != 1 {
-			t.Fatalf("Server List should contain exactly one server, was: %v", dl)
-		}
+        assertEqual(t, len(dl), 1, "Server List length")
 	})
 }

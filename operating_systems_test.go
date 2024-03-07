@@ -39,36 +39,17 @@ func TestAccOperatingSystemBasic(t *testing.T) {
 				continue
 			}
 
-			if osTest.Type != os.Type {
-				t.Fatalf("Expected the type of the Operating System to be %s, not %s", osTest.Type, os.Type)
-			}
-			if osTest.Name != os.Name {
-				t.Fatalf("Expected the name of the Operating System to be %s, not %s", osTest.Name, os.Name)
-			}
-			if osTest.Distro != os.Distro {
-				t.Fatalf("Expected the name of the Operating System to be %s, not %s", osTest.Distro, os.Distro)
-			}
-			if osTest.Slug != os.Slug {
-				t.Fatalf("Expected the name of the Operating System to be %s, not %s", osTest.Slug, os.Slug)
-			}
-			if osTest.Version != os.Version {
-				t.Fatalf("Expected the name of the Operating System to be %s, not %s", osTest.Version, os.Version)
-			}
-			if osTest.User != os.User {
-				t.Fatalf("Expected the name of the Operating System to be %s, not %s", osTest.User, os.User)
-			}
-			if osTest.Raid != os.Raid {
-				t.Fatalf("Expected the name of the Operating System to be %t, not %t", osTest.Raid, os.Raid)
-			}
-			if osTest.Rescue != os.Rescue {
-				t.Fatalf("Expected the name of the Operating System to be %t, not %t", osTest.Rescue, os.Rescue)
-			}
-			if osTest.SshKeys != os.SshKeys {
-				t.Fatalf("Expected the name of the Operating System to be %t, not %t", osTest.SshKeys, os.SshKeys)
-			}
-			if osTest.UserData != os.UserData {
-				t.Fatalf("Expected the name of the Operating System to be %t, not %t", osTest.UserData, os.UserData)
-			}
+			assertEqual(t, os.Type, osTest.Type, "Operating System Type")
+			assertEqual(t, os.Name, osTest.Name, "Operating System Name")
+			assertEqual(t, os.Distro, osTest.Distro, "Operating System Distro")
+			assertEqual(t, os.Slug, osTest.Slug, "Operating System Slug")
+			assertEqual(t, os.Version, osTest.Version, "Operating System Version")
+			assertEqual(t, os.User, osTest.User, "Operating System User")
+			assertEqual(t, os.Raid, osTest.Raid, "Operating System Raid")
+			assertEqual(t, os.Rescue, osTest.Rescue, "Operating System Rescue")
+			assertEqual(t, os.SshKeys, osTest.SshKeys, "Operating System SshKeys")
+			assertEqual(t, os.UserData, osTest.UserData, "Operating System UserData")
+
 			return
 		}
 		t.Fatalf("Operating System with id %s not found", osTest.ID)

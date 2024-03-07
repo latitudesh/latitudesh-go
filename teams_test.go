@@ -36,13 +36,11 @@ func TestAccTeamBasic(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		if team.Description != description {
-			t.Fatalf("Expected team description to be %s, not %s", description, team.Description)
-		}
+		assertEqual(t, team.Description, description, "Team Description")
 	})
 
 	t.Run("Get Team", func(t *testing.T) {
-        _, _, err := c.Teams.Get()
+		_, _, err := c.Teams.Get()
 		if err != nil {
 			t.Fatal(err)
 		}
