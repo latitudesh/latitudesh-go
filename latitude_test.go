@@ -211,3 +211,9 @@ func testRecorder(t *testing.T, name string, mode recorder.Mode) (*recorder.Reco
 		}
 	}
 }
+
+func assertEqual(t *testing.T, actual, expected interface{}, fieldName string) {
+	if actual != expected {
+		t.Fatalf("Expected %s to be %v, but got %v", fieldName, expected, actual)
+	}
+}
