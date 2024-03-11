@@ -35,15 +35,25 @@ type TagResponse struct {
 type TagData struct {
 	ID         string        `json:"id"`
 	Type       string        `json:"type"`
-	Attributes TagAttributes `json:"name"`
+	Attributes TagAttributes `json:"attributes"`
 }
 
 type TagAttributes struct {
-	Name        string     `json:"name"`
-	Slug        string     `json:"slug"`
-	Description string     `json:"description"`
-	Color       string     `json:"color"`
-	Team        ServerTeam `json:"team"`
+	Name        string  `json:"name"`
+	Slug        string  `json:"slug"`
+	Description string  `json:"description"`
+	Color       string  `json:"color"`
+	Team        TagTeam `json:"team"`
+}
+
+type TagTeam struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Slug        string `json:"slug"`
+	Description string `json:"description"`
+	Address     string `json:"address"`
+	Status      string `json:"status"`
+	Currency    string `json:"currency"`
 }
 
 type TagCreateRequest struct {

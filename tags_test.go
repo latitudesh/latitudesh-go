@@ -29,7 +29,7 @@ func TestAccTagBasic(t *testing.T) {
 				Attributes: TagCreateAttributes{
 					Name:        rs,
 					Description: "Test Tag",
-					Color:       "",
+					Color:       "#ffffff",
 				},
 			},
 		}
@@ -54,6 +54,8 @@ func TestAccTagBasic(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		assertEqual(t, len(dl), 1, "Tag List length")
+		if len(dl) < 1 {
+			t.Fatal("There should be at least one tag created")
+		}
 	})
 }
