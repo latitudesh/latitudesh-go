@@ -88,6 +88,7 @@ type Client struct {
 	VirtualNetworks  VirtualNetworkService
 	VlanAssignments  VlanAssignmentService
 	Regions          RegionService
+	Tags             TagsService
 	Teams            TeamService
 	Bandwidth        BandwidthService
 	Members          MemberService
@@ -328,6 +329,7 @@ func NewClientWithBaseURL(apiKey string, httpClient *http.Client, apiBaseURL str
 	c.Servers = &ServerServiceOp{client: c}
 	c.SSHKeys = &SSHKeyServiceOp{client: c}
 	c.UserData = &UserDataServiceOp{client: c}
+	c.Tags = &TagServiceOp{client: c}
 	c.Teams = &TeamServiceOp{client: c}
 	c.Bandwidth = &BandwidthServiceOp{client: c}
 	c.Plans = &PlanServiceOp{client: c}
