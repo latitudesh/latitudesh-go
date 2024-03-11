@@ -1,5 +1,7 @@
 package latitude
 
+import "path"
+
 const tagBasePath = "/tags"
 
 type TagsService interface {
@@ -43,7 +45,22 @@ type TagAttributes struct {
 	Color       string     `json:"color"`
 	Team        ServerTeam `json:"team"`
 }
-type TagCreateRequest struct{}
+
+type TagCreateRequest struct {
+	Data TagCreateData `json:"data"`
+}
+
+type TagCreateData struct {
+	Type       string              `json:"type"`
+	Attributes TagCreateAttributes `json:"attributes"`
+}
+
+type TagCreateAttributes struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Color       string `json:"color"`
+}
+
 type TagUpdateRequest struct{}
 
 type TagServiceOp struct {
@@ -94,11 +111,23 @@ func (t *TagServiceOp) List(opts *ListOptions) ([]Tag, *Response, error) {
 }
 
 func (t *TagServiceOp) Create(createRequest *TagCreateRequest) (*Tag, *Response, error) {
-	panic("")
+	tag := new(TagResponse)
+
+	resp, err := t.client.DoRequest("POST", tagBasePath, createRequest, tag)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	flatTag := NewFlatTag(tag.Data)
+	return &flatTag, resp, err
 }
+
 func (t *TagServiceOp) Update(tagID string, updateRequest *TagUpdateRequest) (*Tag, *Response, error) {
 	panic("")
 }
+
 func (t *TagServiceOp) Delete(tagID string) (*Response, error) {
-	panic("")
+	apiPath := path.Join(tagBasePath, tagID)
+
+	return t.client.DoRequest("DELETE", apiPath, nil, nil)
 }
