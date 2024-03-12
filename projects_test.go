@@ -17,9 +17,13 @@ func deleteProject(t *testing.T, c *Client, id string) {
 
 func TestAccProjectBasic(t *testing.T) {
 	skipUnlessAcceptanceTestsAllowed(t)
+
 	c, stopRecord := setup(t)
 	defer stopRecord()
 	defer projectTeardown(c)
+
+	tagIDs, deleteTags := setupTestTags(t, c)
+	defer deleteTags()
 
 	var projectID string
 	t.Run("Create Project", func(t *testing.T) {
@@ -41,7 +45,7 @@ func TestAccProjectBasic(t *testing.T) {
 
 		projectID = p.ID
 
-        assertEqual(t, p.Name, rs, "Project Name")
+		assertEqual(t, p.Name, rs, "Project Name")
 	})
 
 	defer deleteProject(t, c, projectID)
@@ -53,9 +57,10 @@ func TestAccProjectBasic(t *testing.T) {
 			Data: ProjectUpdateData{
 				ID:   projectID,
 				Type: testProjectType,
-				Attributes: ProjectCreateAttributes{
+				Attributes: ProjectUpdateAttributes{
 					Name:        rs,
 					Environment: testProjectEnvironment,
+					Tags:        tagIDs,
 				},
 			},
 		}
@@ -66,7 +71,8 @@ func TestAccProjectBasic(t *testing.T) {
 		}
 
 		projectName = p.Name
-        assertEqual(t, projectName, rs, "Project Name")
+		assertEqual(t, projectName, rs, "Project Name")
+		assertEqual(t, len(p.Tags), 2, "Project Tags")
 	})
 
 	t.Run("Get Project", func(t *testing.T) {
@@ -75,7 +81,7 @@ func TestAccProjectBasic(t *testing.T) {
 			t.Fatal(err)
 		}
 
-        assertEqual(t, gotProject.Name, projectName, "Project Name")
+		assertEqual(t, gotProject.Name, projectName, "Project Name")
 	})
 
 	t.Run("List Project", func(t *testing.T) {
