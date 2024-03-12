@@ -22,6 +22,13 @@ type Tag struct {
 	TeamSlug    string
 }
 
+type EmbedTag struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Color       string `json:"color"`
+}
+
 type TagListResponse struct {
 	Data []TagData `json:"data"`
 	Meta meta      `json:"meta"`
@@ -76,7 +83,7 @@ type TagUpdateRequest struct {
 }
 
 type TagUpdateData struct {
-	ID string `json:"id"`
+	ID         string              `json:"id"`
 	Type       string              `json:"type"`
 	Attributes TagCreateAttributes `json:"attributes"`
 }

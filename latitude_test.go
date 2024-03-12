@@ -94,6 +94,50 @@ func randString8() string {
 	return string(b)
 }
 
+func setupTestTags(t *testing.T, c *Client) ([]string, func()) {
+	tcr1 := TagCreateRequest{
+		Data: TagCreateData{
+			Type: testTagsType,
+			Attributes: TagCreateAttributes{
+				Name:        "tag_test1",
+				Description: "Test Tag 1",
+				Color:       "#ff0000",
+			},
+		},
+	}
+	tag1, _, err := c.Tags.Create(&tcr1)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	tcr2 := TagCreateRequest{
+		Data: TagCreateData{
+			Type: testTagsType,
+			Attributes: TagCreateAttributes{
+				Name:        "tag_test2",
+				Description: "Test Tag 2",
+				Color:       "#0400ff",
+			},
+		},
+	}
+	tag2, _, err := c.Tags.Create(&tcr2)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	tagIDs := []string{tag1.ID, tag2.ID}
+
+	deleteTags := func() {
+		for _, tag := range tagIDs {
+			if _, err := c.Tags.Delete(tag); err != nil {
+				t.Fatal(err)
+			}
+		}
+	}
+
+	return tagIDs, deleteTags
+}
+
 // setupWithProject returns a client, project id, and teardown function
 // configured for a new project with a test recorder for the named test
 func setupWithProject(t *testing.T) (*Client, string, func()) {

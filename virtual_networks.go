@@ -27,6 +27,7 @@ type VirtualNetworkAttributes struct {
 	Description      string               `json:"description"`
 	Region           VirtualNetworkRegion `json:"region"`
 	AssignmentsCount int                  `json:"assignments_count"`
+	Tags             []EmbedTag           `json:"tags"`
 }
 
 type VirtualNetworkRegion struct {
@@ -43,17 +44,18 @@ type VirtualNetworkSite struct {
 }
 
 type VirtualNetwork struct {
-	ID               string `json:"id"`
-	Type             string `json:"type"`
-	Vid              int    `json:"vid"`
-	Description      string `json:"description"`
-	City             string `json:"city"`
-	Country          string `json:"country"`
-	SiteId           string `json:"site_id"`
-	SiteName         string `json:"site_name"`
-	SiteSlug         string `json:"site_slug"`
-	Facility         string `json:"facility"`
-	AssignmentsCount int    `json:"assignments_count"`
+	ID               string     `json:"id"`
+	Type             string     `json:"type"`
+	Vid              int        `json:"vid"`
+	Description      string     `json:"description"`
+	City             string     `json:"city"`
+	Country          string     `json:"country"`
+	SiteId           string     `json:"site_id"`
+	SiteName         string     `json:"site_name"`
+	SiteSlug         string     `json:"site_slug"`
+	Facility         string     `json:"facility"`
+	AssignmentsCount int        `json:"assignments_count"`
+	Tags             []EmbedTag `json:"tags"`
 }
 
 type VirtualNetworkListResponse struct {
@@ -92,7 +94,8 @@ type VirtualNetworkUpdateData struct {
 }
 
 type VirtualNetworkUpdateAttributes struct {
-	Description string `json:"description"`
+	Description string   `json:"description"`
+	Tags        []string `json:"tags,omitempty"`
 }
 
 func NewFlatVirtualNetwork(vnd VirtualNetworkData) VirtualNetwork {
@@ -108,6 +111,7 @@ func NewFlatVirtualNetwork(vnd VirtualNetworkData) VirtualNetwork {
 		vnd.Attributes.Region.Site.Slug,
 		vnd.Attributes.Region.Site.Facility,
 		vnd.Attributes.AssignmentsCount,
+		vnd.Attributes.Tags,
 	}
 }
 
