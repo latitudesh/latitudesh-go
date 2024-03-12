@@ -47,6 +47,25 @@ func TestAccTagBasic(t *testing.T) {
 	defer deleteTag(t, c, tagID)
 
 	t.Run("Tags Update test", func(t *testing.T) {
+		rs := randString8()
+		tur := TagUpdateRequest{
+			Data: TagUpdateData{
+				ID:   tagID,
+				Type: testTagsType,
+				Attributes: TagCreateAttributes{
+					Name:        rs,
+					Description: "updated tag",
+					Color:       "#fafadc",
+				},
+			},
+		}
+
+		tag, _, err := c.Tags.Update(tagID, &tur)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		assertEqual(t, tag.Name, rs, "Project Name")
 	})
 
 	t.Run("Tags List test", func(t *testing.T) {

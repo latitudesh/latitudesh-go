@@ -71,7 +71,15 @@ type TagCreateAttributes struct {
 	Color       string `json:"color"`
 }
 
-type TagUpdateRequest struct{}
+type TagUpdateRequest struct {
+	Data TagUpdateData `json:"data"`
+}
+
+type TagUpdateData struct {
+	ID string `json:"id"`
+	Type       string              `json:"type"`
+	Attributes TagCreateAttributes `json:"attributes"`
+}
 
 type TagServiceOp struct {
 	client requestDoer
@@ -133,7 +141,16 @@ func (t *TagServiceOp) Create(createRequest *TagCreateRequest) (*Tag, *Response,
 }
 
 func (t *TagServiceOp) Update(tagID string, updateRequest *TagUpdateRequest) (*Tag, *Response, error) {
-	panic("")
+	apiPath := path.Join(tagBasePath, tagID)
+	tag := new(TagResponse)
+
+	resp, err := t.client.DoRequest("PATCH", apiPath, updateRequest, tag)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	flatTag := NewFlatTag(tag.Data)
+	return &flatTag, resp, err
 }
 
 func (t *TagServiceOp) Delete(tagID string) (*Response, error) {
