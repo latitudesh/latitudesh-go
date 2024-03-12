@@ -93,6 +93,7 @@ type ServerGetAttributes struct {
 	Plan            ServerPlan            `json:"plan"`
 	Region          ServerRegion          `json:"region"`
 	Team            ServerTeam            `json:"team"`
+	Tags            []EmbedTag            `json:"tags"`
 }
 
 // ServerCreateRequest type used to create a Latitude server
@@ -129,7 +130,8 @@ type ServerUpdateData struct {
 }
 
 type ServerUpdateAttributes struct {
-	Hostname string `json:"hostname"`
+	Hostname string   `json:"hostname"`
+	Tags     []string `json:"tags,omitempty"`
 }
 type ServerReinstallRequest struct {
 	Data ServerReinstallData `json:"data"`
@@ -168,6 +170,7 @@ type Server struct {
 	OperatingSystem ServerOperatingSystem `json:"operating_system"`
 	Plan            ServerPlan            `json:"plan"`
 	Region          ServerRegion          `json:"region"`
+	Tags            []EmbedTag            `json:"tags"`
 }
 
 type ServerProject struct {
@@ -217,6 +220,7 @@ func NewFlatServer(sd ServerGetData) Server {
 		sd.Attributes.OperatingSystem,
 		sd.Attributes.Plan,
 		sd.Attributes.Region,
+		sd.Attributes.Tags,
 	}
 }
 
