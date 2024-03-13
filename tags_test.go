@@ -52,7 +52,7 @@ func TestAccTagBasic(t *testing.T) {
 			Data: TagUpdateData{
 				ID:   tagID,
 				Type: testTagsType,
-				Attributes: TagCreateAttributes{
+				Attributes: TagUpdateAttributes{
 					Name:        rs,
 					Description: "updated tag",
 					Color:       "#fafadc",

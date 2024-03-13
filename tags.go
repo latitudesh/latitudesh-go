@@ -73,9 +73,9 @@ type TagCreateData struct {
 }
 
 type TagCreateAttributes struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Color       string `json:"color"`
+	Name        string `json:"name,omitempty"`
+	Description string `json:"description,omitempty"`
+	Color       string `json:"color,omitempty"`
 }
 
 type TagUpdateRequest struct {
@@ -85,8 +85,10 @@ type TagUpdateRequest struct {
 type TagUpdateData struct {
 	ID         string              `json:"id"`
 	Type       string              `json:"type"`
-	Attributes TagCreateAttributes `json:"attributes"`
+	Attributes TagUpdateAttributes `json:"attributes"`
 }
+
+type TagUpdateAttributes TagCreateAttributes
 
 type TagServiceOp struct {
 	client requestDoer
