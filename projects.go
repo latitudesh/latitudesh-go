@@ -37,14 +37,15 @@ type ProjectGetResponse struct {
 }
 
 type ProjectGetAttributes struct {
-	Name          string `json:"name"`
-	Slug          string `json:"slug"`
-	Description   string `json:"description"`
-	BillingType   string `json:"billing_type"`
-	BillingMethod string `json:"billing_method"`
-	Environment   string `json:"environment"`
-	CreatedAt     string `json:"created_at"`
-	UpdatedAt     string `json:"updated_at"`
+	Name          string     `json:"name"`
+	Slug          string     `json:"slug"`
+	Description   string     `json:"description"`
+	BillingType   string     `json:"billing_type"`
+	BillingMethod string     `json:"billing_method"`
+	Environment   string     `json:"environment"`
+	CreatedAt     string     `json:"created_at"`
+	UpdatedAt     string     `json:"updated_at"`
+	Tags          []EmbedTag `json:"tags"`
 }
 
 // ProjectCreateRequest type used to create a Latitude project
@@ -71,7 +72,14 @@ type ProjectUpdateRequest struct {
 type ProjectUpdateData struct {
 	ID         string                  `json:"id"`
 	Type       string                  `json:"type"`
-	Attributes ProjectCreateAttributes `json:"attributes"`
+	Attributes ProjectUpdateAttributes `json:"attributes"`
+}
+
+type ProjectUpdateAttributes struct {
+	Name        string   `json:"name"`
+	Description string   `json:"description,omitempty"`
+	Environment string   `json:"environment"`
+	Tags        []string `json:"tags,omitempty"`
 }
 
 // ProjectServiceOp implements ProjectService
@@ -80,15 +88,16 @@ type ProjectServiceOp struct {
 }
 
 type Project struct {
-	ID            string `json:"id"`
-	Name          string `json:"name"`
-	Slug          string `json:"slug"`
-	Description   string `json:"description"`
-	BillingType   string `json:"billing_type"`
-	BillingMethod string `json:"billing_method"`
-	Environment   string `json:"environment"`
-	CreatedAt     string `json:"created_at"`
-	UpdatedAt     string `json:"updated_at"`
+	ID            string     `json:"id"`
+	Name          string     `json:"name"`
+	Slug          string     `json:"slug"`
+	Description   string     `json:"description"`
+	BillingType   string     `json:"billing_type"`
+	BillingMethod string     `json:"billing_method"`
+	Environment   string     `json:"environment"`
+	CreatedAt     string     `json:"created_at"`
+	UpdatedAt     string     `json:"updated_at"`
+	Tags          []EmbedTag `json:"tags"`
 }
 
 // Flatten latitude API data structures
@@ -103,6 +112,7 @@ func NewFlatProject(pd ProjectData) Project {
 		pd.Attributes.Environment,
 		pd.Attributes.CreatedAt,
 		pd.Attributes.UpdatedAt,
+		pd.Attributes.Tags,
 	}
 }
 

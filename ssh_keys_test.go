@@ -21,6 +21,9 @@ func TestAccSSHKeyBasic(t *testing.T) {
 	c, projectID, teardown := setupWithProject(t)
 	defer teardown()
 
+	tagIDs, deleteTags := setupTestTags(t, c)
+	defer deleteTags()
+
 	var keyID string
 
 	t.Run("Create SSH Key", func(t *testing.T) {
@@ -77,6 +80,7 @@ func TestAccSSHKeyBasic(t *testing.T) {
 				Type: testSSHKeyType,
 				Attributes: SSHKeyUpdateAttributes{
 					Name: keyName,
+					Tags: tagIDs,
 				},
 			},
 		}
@@ -92,5 +96,6 @@ func TestAccSSHKeyBasic(t *testing.T) {
 		}
 
 		assertEqual(t, len(kl), 1, "SSH Key List length")
+		assertEqual(t, len(k.Tags), 2, "SSH Key Tags")
 	})
 }

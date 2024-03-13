@@ -21,6 +21,9 @@ func TestAccServerBasic(t *testing.T) {
 	c, projectID, teardown := setupWithProject(t)
 	defer teardown()
 
+	tagIDs, deleteTags := setupTestTags(t, c)
+	defer deleteTags()
+
 	var serverId string
 
 	t.Run("Servers Create test", func(t *testing.T) {
@@ -56,6 +59,7 @@ func TestAccServerBasic(t *testing.T) {
 				Type: "servers",
 				Attributes: ServerUpdateAttributes{
 					Hostname: rs,
+					Tags:     tagIDs,
 				},
 			},
 		}
@@ -63,7 +67,8 @@ func TestAccServerBasic(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-        assertEqual(t, s.Hostname, rs, "Server hostname")
+		assertEqual(t, s.Hostname, rs, "Server hostname")
+		assertEqual(t, len(s.Tags), 2, "Virtual Network Tags")
 	})
 
 	t.Run("Servers List test", func(t *testing.T) {
@@ -71,6 +76,6 @@ func TestAccServerBasic(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-        assertEqual(t, len(dl), 1, "Server List length")
+		assertEqual(t, len(dl), 1, "Server List length")
 	})
 }

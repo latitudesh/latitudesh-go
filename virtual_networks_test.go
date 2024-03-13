@@ -12,8 +12,12 @@ func deleteVirtualNetwork(t *testing.T, c *Client, id string) {
 
 func TestAccVirtualNetworkBasic(t *testing.T) {
 	skipUnlessAcceptanceTestsAllowed(t)
+
 	c, projectID, teardown := setupWithProject(t)
 	defer teardown()
+
+	tagIDs, deleteTags := setupTestTags(t, c)
+	defer deleteTags()
 
 	var vnID string
 
@@ -44,6 +48,7 @@ func TestAccVirtualNetworkBasic(t *testing.T) {
 				Type: "virtual_networks",
 				Attributes: VirtualNetworkUpdateAttributes{
 					Description: "Updating Virtual Network via golang client",
+					Tags:        tagIDs,
 				},
 			},
 		}
@@ -75,15 +80,16 @@ func TestAccVirtualNetworkBasic(t *testing.T) {
 				continue
 			}
 
-            assertEqual(t, vn.Type, vnTest.Type, "Virtual Network Type")
-            assertEqual(t, vn.Vid, vnTest.Vid, "Virtual Network Vid")
-            assertEqual(t, vn.Description, vnTest.Description, "Virtual Network Description")
-            assertEqual(t, vn.City, vnTest.City, "Virtual Network City")
-            assertEqual(t, vn.Country, vnTest.Country, "Virtual Network Country")
-            assertEqual(t, vn.SiteId, vnTest.SiteId, "Virtual Network SiteId")
-            assertEqual(t, vn.SiteName, vnTest.SiteName, "Virtual Network SiteName")
-            assertEqual(t, vn.SiteSlug, vnTest.SiteSlug, "Virtual Network SiteSlug")
-            assertEqual(t, vn.Facility, vnTest.Facility, "Virtual Network Facility")
+			assertEqual(t, vn.Type, vnTest.Type, "Virtual Network Type")
+			assertEqual(t, vn.Vid, vnTest.Vid, "Virtual Network Vid")
+			assertEqual(t, vn.Description, vnTest.Description, "Virtual Network Description")
+			assertEqual(t, vn.City, vnTest.City, "Virtual Network City")
+			assertEqual(t, vn.Country, vnTest.Country, "Virtual Network Country")
+			assertEqual(t, vn.SiteId, vnTest.SiteId, "Virtual Network SiteId")
+			assertEqual(t, vn.SiteName, vnTest.SiteName, "Virtual Network SiteName")
+			assertEqual(t, vn.SiteSlug, vnTest.SiteSlug, "Virtual Network SiteSlug")
+			assertEqual(t, vn.Facility, vnTest.Facility, "Virtual Network Facility")
+			assertEqual(t, len(vn.Tags), 2, "Virtual Network Tags")
 
 			return
 		}
