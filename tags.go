@@ -1,11 +1,16 @@
 package latitude
 
-import "path"
+import (
+	"errors"
+	"net/http"
+	"path"
+)
 
 const tagBasePath = "/tags"
 
 type TagsService interface {
 	List(*ListOptions) ([]Tag, *Response, error)
+	Get(string) (*Tag, *Response, error)
 	Create(*TagCreateRequest) (*Tag, *Response, error)
 	Update(string, *TagUpdateRequest) (*Tag, *Response, error)
 	Delete(string) (*Response, error)
@@ -135,6 +140,26 @@ func (t *TagServiceOp) List(opts *ListOptions) ([]Tag, *Response, error) {
 
 		return tags, resp, err
 	}
+}
+
+func (t *TagServiceOp) Get(tagID string) (*Tag, *Response, error) {
+	tags, resp, err := t.List(nil)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	for _, tag := range tags {
+		if tag.ID == tagID {
+			return &tag, resp, nil
+		}
+	}
+
+	resp.Status = "404 Not Found"
+	resp.StatusCode = http.StatusNotFound
+
+	notFoundErr := errors.New("ERROR\nStatus: 404\nSpecified Record Not Found")
+
+	return nil, resp, notFoundErr
 }
 
 func (t *TagServiceOp) Create(createRequest *TagCreateRequest) (*Tag, *Response, error) {
