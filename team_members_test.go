@@ -4,8 +4,6 @@ import (
 	"testing"
 )
 
-const ()
-
 func deleteMember(t *testing.T, c *Client, id string) {
 	if _, err := c.Members.Delete(id); err != nil {
 		t.Fatal(err)
@@ -16,7 +14,6 @@ func TestAccMembersBasic(t *testing.T) {
 	skipUnlessAcceptanceTestsAllowed(t)
 	c, stopRecord := setup(t)
 	defer stopRecord()
-	defer projectTeardown(c)
 
 	t.Run("List Members", func(t *testing.T) {
 		// List Members

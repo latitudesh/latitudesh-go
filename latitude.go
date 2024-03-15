@@ -92,6 +92,8 @@ type Client struct {
 	Teams            TeamService
 	Bandwidth        BandwidthService
 	Members          MemberService
+	Roles            RoleService
+	Users            UserService
 }
 
 type requestDoer interface {
@@ -338,6 +340,8 @@ func NewClientWithBaseURL(apiKey string, httpClient *http.Client, apiBaseURL str
 	c.VirtualNetworks = &VirtualNetworkServiceOp{client: c}
 	c.VlanAssignments = &VlanAssignmentServiceOp{client: c}
 	c.Members = &MemberServiceOp{client: c}
+	c.Roles = &RoleServiceOp{client: c}
+	c.Users = &UserServiceOp{client: c}
 	c.debug = os.Getenv(debugEnvVar) != ""
 
 	return c, nil
