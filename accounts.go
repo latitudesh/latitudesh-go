@@ -1,12 +1,13 @@
 package latitude
 
 const userBasePath = "/user/profile"
+const userTeamsPath = "/user/teams"
 
 // UserService interface defines available Account methods
 type UserService interface {
 	Get(*GetOptions) (*User, *Response, error)
 	Update(string, *UserUpdateRequest) (*User, *Response, error)
-	ListTeams(listOpt *ListOptions) ([]Team, *Response, error)
+	List(listOpt *ListOptions) ([]Team, *Response, error)
 }
 
 // UserServiceOp implements UserService
@@ -83,6 +84,7 @@ func NewFlatUser(md UserGetData) User {
 	}
 }
 
+// Get the current User profile
 func (s *UserServiceOp) Get(opts *GetOptions) (*User, *Response, error) {
 	endpointPath := userBasePath
 	apiPathQuery := opts.WithQuery(endpointPath)
@@ -96,6 +98,7 @@ func (s *UserServiceOp) Get(opts *GetOptions) (*User, *Response, error) {
 	return &flatUser, resp, err
 }
 
+// Update the User profile
 func (s *UserServiceOp) Update(id string, updateRequest *UserUpdateRequest) (*User, *Response, error) {
 	apiPath := userBasePath
 	user := new(UserGetResponse)
@@ -109,14 +112,15 @@ func (s *UserServiceOp) Update(id string, updateRequest *UserUpdateRequest) (*Us
 	return &flatUser, resp, err
 }
 
-func (s *UserServiceOp) ListTeams(opts *ListOptions) ([]Team, *Response, error) {
-	apiPathQuery := userBasePath
+// List the current User teams
+func (s *UserServiceOp) List(opts *ListOptions) ([]Team, *Response, error) {
+	apiPathQuery := userTeamsPath
 	teams := []Team{}
 
 	for {
 		res := new(TeamGetResponse)
 
-		resp, err := s.client.DoRequest("GET", apiPathQuery, nil, teams)
+		resp, err := s.client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
