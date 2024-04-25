@@ -212,11 +212,3 @@ func (g *GetOptions) Encode() string {
 	}
 	return v.Encode()
 }
-
-/*
-// Encode generates a URL query string ("?foo=bar")
-func (g *GetOptions) Encode() string {
-	urlValues, _ := query.Values(g)
-	return urlValues.Encode()
-}
-*/

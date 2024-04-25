@@ -21,53 +21,61 @@ func TestAccServerBasic(t *testing.T) {
 	c, projectID, teardown := setupWithProject(t)
 	defer teardown()
 
-	// Create a new project
-	hn := randString8()
-	scr := ServerCreateRequest{
-		Data: ServerCreateData{
-			Type: testServerType,
-			Attributes: ServerCreateAttributes{
-				Project:         projectID,
-				Plan:            testPlan(),
-				Site:            testSite(),
-				OperatingSystem: testOperatingSystem(),
-				Hostname:        hn,
+	tagIDs, deleteTags := setupTestTags(t, c)
+	defer deleteTags()
+
+	var serverId string
+
+	t.Run("Servers Create test", func(t *testing.T) {
+		hn := randString8()
+		scr := ServerCreateRequest{
+			Data: ServerCreateData{
+				Type: testServerType,
+				Attributes: ServerCreateAttributes{
+					Project:         projectID,
+					Plan:            testPlan(),
+					Site:            testSite(),
+					OperatingSystem: testOperatingSystem(),
+					Hostname:        hn,
+				},
 			},
-		},
-	}
+		}
 
-	s, _, err := c.Servers.Create(&scr)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer deleteServer(t, c, s.ID)
+		s, _, err := c.Servers.Create(&scr)
+		if err != nil {
+			t.Fatal(err)
+		}
+		serverId = s.ID
+	})
 
-	// TODO: API endpoint for server update currently not working
-	// Update newly created server
-	rs := randString8()
-	sur := ServerUpdateRequest{
-		Data: ServerUpdateData{
-			ID:   s.ID,
-			Type: "servers",
-			Attributes: ServerUpdateAttributes{
-				Hostname: rs,
+	// delete the server at the end of the tests
+	defer deleteServer(t, c, serverId)
+
+	t.Run("Servers Update test", func(t *testing.T) {
+		rs := randString8()
+		sur := ServerUpdateRequest{
+			Data: ServerUpdateData{
+				ID:   serverId,
+				Type: "servers",
+				Attributes: ServerUpdateAttributes{
+					Hostname: rs,
+					Tags:     tagIDs,
+				},
 			},
-		},
-	}
-	s, _, err = c.Servers.Update(s.ID, &sur)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if s.Hostname != rs {
-		t.Fatalf("Expected the hostname of the updated server to be %s, not %s", rs, s.Hostname)
-	}
+		}
+		s, _, err := c.Servers.Update(serverId, &sur)
+		if err != nil {
+			t.Fatal(err)
+		}
+		assertEqual(t, s.Hostname, rs, "Server hostname")
+		assertEqual(t, len(s.Tags), 2, "Virtual Network Tags")
+	})
 
-	dl, _, err := c.Servers.List(projectID, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if len(dl) != 1 {
-		t.Fatalf("Server List should contain exactly one server, was: %v", dl)
-	}
+	t.Run("Servers List test", func(t *testing.T) {
+		dl, _, err := c.Servers.List(projectID, nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		assertEqual(t, len(dl), 1, "Server List length")
+	})
 }

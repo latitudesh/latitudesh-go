@@ -8,7 +8,6 @@ import (
 	"path"
 	"strings"
 	"testing"
-	"time"
 
 	"gopkg.in/dnaeon/go-vcr.v3/cassette"
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
@@ -31,9 +30,9 @@ const (
 	recorderDefaultMode  = recorder.ModePassthrough
 
 	// defaults should be available to most users
-	testSiteDefault            = "ASH"
+	testSiteDefault            = "SAO"
 	testPlanDefault            = "c2-small-x86"
-	testRegionDefault          = "ASH"
+	testRegionDefault          = "SAO"
 	testSSHKeyDefault          = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQZtz6DPH4Y04vYLdOch5xOzDY7cdGWpYjBFx5H7ZzieVoRwartZAVTGX4qFT9aoyCuuE6qXYcTj6G1CdO5fb8iOtU6K3FdzVyw/WQ/c4sCehEL+wbYrOnXJSYMhLsUAFhZ69tTdmQSgctbv44yP32Z4xiE4zc/Bk465F3u4Zi1Jj883fyAgzahTWXOxpmvYAEuS6Qv6w4yJc6giiGFVYmu+N6h9j348UgbpToYiCSnSM4iNa9fs7sBGufOa9FuXtggPfXtpyk9f05AhkKEjPlCXcDNAq0GsvN2QEx3tYw6i5ze0qehv6EBAtwx3PLrj636O6IgSh0DgrZBih9NBov"
 	testUserDataContentDefault = "bGF0aXR1ZGVzaCB1c2VyIGRhdGEgZXhhbXBsZQ=="
 	testOperatingSystemDefault = "ubuntu_22_04_x64_lts"
@@ -87,13 +86,56 @@ func randString8() string {
 	}
 
 	n := 8
-	rand.Seed(time.Now().UnixNano())
 	letterRunes := []rune("acdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	b := make([]rune, n)
 	for i := range b {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
 	}
 	return string(b)
+}
+
+func setupTestTags(t *testing.T, c *Client) ([]string, func()) {
+	tcr1 := TagCreateRequest{
+		Data: TagCreateData{
+			Type: testTagsType,
+			Attributes: TagCreateAttributes{
+				Name:        "tag_test1",
+				Description: "Test Tag 1",
+				Color:       "#ff0000",
+			},
+		},
+	}
+	tag1, _, err := c.Tags.Create(&tcr1)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	tcr2 := TagCreateRequest{
+		Data: TagCreateData{
+			Type: testTagsType,
+			Attributes: TagCreateAttributes{
+				Name:        "tag_test2",
+				Description: "Test Tag 2",
+				Color:       "#0400ff",
+			},
+		},
+	}
+	tag2, _, err := c.Tags.Create(&tcr2)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	tagIDs := []string{tag1.ID, tag2.ID}
+
+	deleteTags := func() {
+		for _, tag := range tagIDs {
+			if _, err := c.Tags.Delete(tag); err != nil {
+				t.Fatal(err)
+			}
+		}
+	}
+
+	return tagIDs, deleteTags
 }
 
 // setupWithProject returns a client, project id, and teardown function
@@ -156,7 +198,6 @@ func projectTeardown(c *Client) {
 		panic(fmt.Errorf("while teardown: %s", err))
 	}
 	for _, p := range ps {
-		fmt.Println(p.ID)
 		if strings.HasPrefix(p.Name, testProjectPrefix) {
 			_, err := c.Projects.Delete(p.ID)
 			if err != nil {
@@ -212,5 +253,11 @@ func testRecorder(t *testing.T, name string, mode recorder.Mode) (*recorder.Reco
 		if err := r.Stop(); err != nil {
 			t.Fatal(err)
 		}
+	}
+}
+
+func assertEqual(t *testing.T, actual, expected interface{}, fieldName string) {
+	if actual != expected {
+		t.Fatalf("Expected %s to be %v, but got %v", fieldName, expected, actual)
 	}
 }

@@ -36,11 +36,12 @@ type SSHKeyGetResponse struct {
 }
 
 type SSHKeyGetAttributes struct {
-	Name        string `json:"name"`
-	PublicKey   string `json:"public_key"`
-	Fingerprint string `json:"fingerprint"`
-	CreatedAt   string `json:"created_at"`
-	UpdatedAt   string `json:"updated_at"`
+	Name        string     `json:"name"`
+	PublicKey   string     `json:"public_key"`
+	Fingerprint string     `json:"fingerprint"`
+	CreatedAt   string     `json:"created_at"`
+	UpdatedAt   string     `json:"updated_at"`
+	Tags        []EmbedTag `json:"tags"`
 }
 
 // SSHKeyCreateRequest type used to create a Latitude SSH key
@@ -70,7 +71,8 @@ type SSHKeyUpdateData struct {
 }
 
 type SSHKeyUpdateAttributes struct {
-	Name string `json:"name"`
+	Name string   `json:"name"`
+	Tags []string `json:"tags,omitempty"`
 }
 
 // SSHKeyServiceOp implements SSHKeyService
@@ -80,12 +82,13 @@ type SSHKeyServiceOp struct {
 
 // SSHKey represents a Latitude SSH key
 type SSHKey struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	PublicKey   string `json:"public_key"`
-	Fingerprint string `json:"fingerprint"`
-	CreatedAt   string `json:"created_at"`
-	UpdatedAt   string `json:"updated_at"`
+	ID          string     `json:"id"`
+	Name        string     `json:"name"`
+	PublicKey   string     `json:"public_key"`
+	Fingerprint string     `json:"fingerprint"`
+	CreatedAt   string     `json:"created_at"`
+	UpdatedAt   string     `json:"updated_at"`
+	Tags        []EmbedTag `json:"tags"`
 }
 
 // Flatten latitude API data structures
@@ -97,6 +100,7 @@ func NewFlatSSHKey(sd SSHKeyData) SSHKey {
 		sd.Attributes.Fingerprint,
 		sd.Attributes.CreatedAt,
 		sd.Attributes.UpdatedAt,
+		sd.Attributes.Tags,
 	}
 }
 

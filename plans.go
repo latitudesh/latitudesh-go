@@ -34,16 +34,16 @@ type PlanData struct {
 type PlanAttributes struct {
 	Name          string             `json:"name"`
 	Slug          string             `json:"slug"`
-	Line          string             `json:"line"`
 	Features      PlanFeatures       `json:"features"`
 	Specs         PlanSpecs          `json:"specs"`
+	Regions       PlanRegions        `json:"regions"`
 	Availablility []PlanAvailability `json:"available_in"`
 }
 
 type PlanFeatures []string
 
 type PlanSpecs struct {
-	CPUs   []PlanCPU   `json:"cpus"`
+	CPU    PlanCPU     `json:"cpu"`
 	Memory PlanMemory  `json:"memory"`
 	Drives []PlanDrive `json:"drives"`
 	NICs   []PlanNIC   `json:"nics"`
@@ -102,9 +102,18 @@ type PlanAvailability struct {
 	Pricing Pricing    `json:"pricing"`
 }
 
+type PlanRegions []PlanRegion
+
 type PlanRegion struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+	Name             string       `json:"name"`
+	DeploysInstantly []string     `json:"deploys_instantly"`
+	Locations        PlanLocation `json:"locations"`
+	PlanPricing      Pricing      `json:"pricing"`
+}
+
+type PlanLocation struct {
+	Available []string `json:"available"`
+	InStock   []string `json:"in_stock"`
 }
 
 type Site struct {
@@ -116,31 +125,42 @@ type Site struct {
 
 type Pricing struct {
 	USD PricingUSD `json:"USD"`
-	BRL PricingBRL `json:"name"`
+	BRL PricingBRL `json:"BRL"`
 }
 
 type PricingUSD struct {
+	Hour  float64 `json:"hour"`
 	Month float64 `json:"month"`
+	Year  float64 `json:"year"`
 }
 
 type PricingBRL struct {
+	Hour  float64 `json:"hour"`
 	Month float64 `json:"month"`
+	Year  float64 `json:"year"`
 }
 
 type Plan struct {
-	ID           string             `json:"id"`
-	Type         string             `json:"type"`
-	Name         string             `json:"name"`
-	Slug         string             `json:"slug"`
-	Line         string             `json:"line"`
-	Features     PlanFeatures       `json:"features"`
-	Specs        PlanSpecs          `json:"specs"`
-	Availibility []PlanAvailability `json:"availibility"`
+	ID       string       `json:"id"`
+	Type     string       `json:"type"`
+	Name     string       `json:"name"`
+	Slug     string       `json:"slug"`
+	Features PlanFeatures `json:"features"`
+	Specs    PlanSpecs    `json:"specs"`
+	InStock  []string     `json:"in_stock"`
 }
 
 // PlanServiceOp implements PlanService
 type PlanServiceOp struct {
 	client requestDoer
+}
+
+func (pd *PlanData) allStock() []string {
+	stock := []string{}
+	for _, region := range pd.Attributes.Regions {
+		stock = append(stock, region.Locations.InStock...)
+	}
+	return stock
 }
 
 // Flatten latitude API data structures
@@ -150,10 +170,9 @@ func NewFlatPlan(pd PlanData) Plan {
 		pd.Type,
 		pd.Attributes.Name,
 		pd.Attributes.Slug,
-		pd.Attributes.Line,
 		pd.Attributes.Features,
 		pd.Attributes.Specs,
-		pd.Attributes.Availablility,
+		pd.allStock(),
 	}
 }
 
@@ -166,13 +185,14 @@ func NewFlatPlanList(pd []PlanData) []Plan {
 }
 
 // List returns a list of plans
-func (s *PlanServiceOp) List(opts *ListOptions) (plans []Plan, resp *Response, err error) {
+func (s *PlanServiceOp) List(opts *ListOptions) ([]Plan, *Response, error) {
 	apiPathQuery := opts.WithQuery(planBasePath)
 
+	plans := []Plan{}
 	for {
 		res := new(PlanListResponse)
 
-		resp, err = s.client.DoRequest("GET", apiPathQuery, nil, res)
+		resp, err := s.client.DoRequest("GET", apiPathQuery, nil, res)
 		if err != nil {
 			return nil, resp, err
 		}
@@ -183,7 +203,7 @@ func (s *PlanServiceOp) List(opts *ListOptions) (plans []Plan, resp *Response, e
 			continue
 		}
 
-		return
+		return plans, resp, err
 	}
 }
 

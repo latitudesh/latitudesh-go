@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/httputil"
@@ -25,7 +24,7 @@ const (
 	userAgentForProvider = "Latitude-Terraform-Provider"
 )
 
-var currentVersion = "0.3.1"
+var currentVersion = "0.3.2"
 
 // meta contains pagination information
 type meta struct {
@@ -89,6 +88,7 @@ type Client struct {
 	VirtualNetworks  VirtualNetworkService
 	VlanAssignments  VlanAssignmentService
 	Regions          RegionService
+	Tags             TagsService
 	Teams            TeamService
 	Bandwidth        BandwidthService
 	Members          MemberService
@@ -262,7 +262,7 @@ func dumpRequest(req *http.Request) {
 	defer r.Body.Close()
 
 	o, _ := httputil.DumpRequestOut(r, false)
-	bbs, _ := ioutil.ReadAll(r.Body)
+	bbs, _ := io.ReadAll(r.Body)
 	reqBodyStr := prettyPrintJsonLines(bbs)
 	strReq := prettyPrintJsonLines(o)
 	log.Printf("\n=======[REQUEST]=============\n%s%s\n", string(strReq), reqBodyStr)
@@ -331,6 +331,7 @@ func NewClientWithBaseURL(apiKey string, httpClient *http.Client, apiBaseURL str
 	c.Servers = &ServerServiceOp{client: c}
 	c.SSHKeys = &SSHKeyServiceOp{client: c}
 	c.UserData = &UserDataServiceOp{client: c}
+	c.Tags = &TagServiceOp{client: c}
 	c.Teams = &TeamServiceOp{client: c}
 	c.Bandwidth = &BandwidthServiceOp{client: c}
 	c.Plans = &PlanServiceOp{client: c}
@@ -354,17 +355,11 @@ func checkResponse(r *http.Response) error {
 	}
 
 	errorResponse := &ErrorResponse{Response: r}
-	data, err := ioutil.ReadAll(r.Body)
+	data, err := io.ReadAll(r.Body)
 	// if the response has a body, populate the message in errorResponse
 	if err != nil {
 		return err
 	}
-
-	// ct := r.Header.Get("Content-Type")
-	// if !strings.HasPrefix(ct, expectedAPIContentTypePrefix) {
-	// 	errorResponse.SingleError = fmt.Sprintf("Unexpected Content-Type %s with status %s", ct, r.Status)
-	// 	return errorResponse
-	// }
 
 	if len(data) > 0 {
 		err = json.Unmarshal(data, errorResponse)
