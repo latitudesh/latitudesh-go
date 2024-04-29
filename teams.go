@@ -115,6 +115,14 @@ func NewFlatTeam(t TeamData) Team {
 	}
 }
 
+func NewFlatTeamList(td []TeamData) []Team {
+	var res []Team
+	for _, team := range td {
+		res = append(res, NewFlatTeam(team))
+	}
+	return res
+}
+
 // Get returns a Team by id
 func (u *TeamServiceOp) Get() (*Team, *Response, error) {
 	var flatTeam Team

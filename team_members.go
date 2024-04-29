@@ -37,11 +37,6 @@ type MemberListAttributes struct {
 	Role       Role   `json:"role"`
 }
 
-type Role struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-}
-
 type MemberResponse struct {
 	Data MemberData `json:"data"`
 	Meta meta       `json:"meta"`
@@ -73,20 +68,11 @@ type MemberCreateData struct {
 }
 
 type MemberCreateAttributes struct {
-	FirstName string     `json:"first_name"`
-	LastName  string     `json:"last_name"`
-	Email     string     `json:"email"`
-	Role      MemberRole `json:"role"`
+	FirstName string        `json:"first_name"`
+	LastName  string        `json:"last_name"`
+	Email     string        `json:"email"`
+	Role      AvailableRole `json:"role"`
 }
-
-type MemberRole string
-
-const (
-	Owner         MemberRole = "owner"
-	Administrator MemberRole = "administrator"
-	Collaborator  MemberRole = "collaborator"
-	Billing       MemberRole = "billing"
-)
 
 type Member struct {
 	ID         string `json:"id"`
