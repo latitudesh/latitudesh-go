@@ -63,6 +63,25 @@ type VlanAssignmentGetResponse struct {
 	Meta meta               `json:"meta"`
 }
 
+type VlanAssignmentCreateResponse struct {
+	Data VlanAssignmentCreateData `json:"data"`
+	Meta meta                     `json:"meta"`
+}
+
+type VlanAssignmentCreateData struct {
+	ID         string                         `json:"id"`
+	Type       string                         `json:"type"`
+	Attributes VlanAssignmentCreateAttributes `json:"attributes"`
+}
+
+type VlanAssignmentCreateAttributes struct {
+	VirtualNetworkID string `json:"virtual_network_id"`
+	Vid              int    `json:"vid"`
+	Description      string `json:"description"`
+	Status           string `json:"status"`
+	ServerId         string `json:"server_id"`
+}
+
 type VlanAssignRequest struct {
 	Data VlanAssignData `json:"data"`
 }
@@ -89,6 +108,18 @@ func NewFlatVlanAssignment(vnd VlanAssignmentData) VlanAssignment {
 		vnd.Attributes.Server.Hostname,
 		vnd.Attributes.Server.Status,
 		vnd.Attributes.Server.Label,
+	}
+}
+
+func NewCreateFlatVlanAssignment(vnd VlanAssignmentCreateData) VlanAssignment {
+	return VlanAssignment{
+		ID:               vnd.ID,
+		Type:             vnd.Type,
+		VirtualNetworkID: vnd.Attributes.VirtualNetworkID,
+		Vid:              vnd.Attributes.Vid,
+		Description:      vnd.Attributes.Description,
+		Status:           vnd.Attributes.Status,
+		ServerID:         vnd.Attributes.ServerId,
 	}
 }
 
@@ -141,14 +172,14 @@ func (s *VlanAssignmentServiceOp) Get(vlanAssignmentID string) (*VlanAssignment,
 }
 
 func (s *VlanAssignmentServiceOp) Assign(assignRequest *VlanAssignRequest) (*VlanAssignment, *Response, error) {
-	vLan := new(VlanAssignmentGetResponse)
+	vLan := new(VlanAssignmentCreateResponse)
 
 	resp, err := s.client.DoRequest("POST", vlanAssignmentBasePath, assignRequest, vLan)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	flatVlanAssignment := NewFlatVlanAssignment(vLan.Data)
+	flatVlanAssignment := NewCreateFlatVlanAssignment(vLan.Data)
 	return &flatVlanAssignment, resp, err
 }
 
