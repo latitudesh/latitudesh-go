@@ -1,6 +1,6 @@
 module github.com/latitudesh/latitudesh-go
 
-go 1.17
+go 1.22.4
 
 require gopkg.in/dnaeon/go-vcr.v3 v3.1.2
 
