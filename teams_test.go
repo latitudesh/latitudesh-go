@@ -15,7 +15,6 @@ func TestAccTeamBasic(t *testing.T) {
 	defer teardown()
 
 	t.Run("Create Team", func(t *testing.T) {
-		description := randString8()
 		name := randString8()
 		address := randString8()
 
@@ -23,10 +22,9 @@ func TestAccTeamBasic(t *testing.T) {
 			Data: TeamCreateData{
 				Type: testTeamType,
 				Attributes: TeamCreateAttributes{
-					Description: description,
-					Name:        name,
-					Currency:    "USD",
-					Address:     address,
+					Name:     name,
+					Currency: "USD",
+					Address:  address,
 				},
 			},
 		}
@@ -36,7 +34,8 @@ func TestAccTeamBasic(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		assertEqual(t, team.Description, description, "Team Description")
+		assertEqual(t, team.Name, name, "Team Name")
+		assertEqual(t, *team.Address, address, "Team Address")
 	})
 
 	t.Run("Get Team", func(t *testing.T) {
