@@ -1,0 +1,821 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 143
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"data":{"type":"projects","attributes":{"name":"LATITUDE_TEST_PROJECT_testrand","provisioning_type":"reserved","environment":"Development"}}}
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            Content-Type:
+                - application/json
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/projects
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 816
+        uncompressed: false
+        body: '{"data":{"id":"proj_XDO7NYqdeNPgw","type":"projects","attributes":{"tags":[],"name":"LATITUDE_TEST_PROJECT_testrand","slug":"latitude_test_project_testrand","description":"","bandwidth_alert":null,"environment":"Development","provisioning_type":"reserved","billing_type":"Normal","billing_method":"Normal","billing":{"subscription_id":"[REDACTED]","type":"Normal","method":"Normal"},"team":{"id":"team_KpGnxgwe3KS3ojrYVekYUXO22GQ","name":"SDK-Teams-test","slug":"sdk-teams-test","description":"SoHssZNy","address":"HzoVWLcu","currency":{"id":"cur_87vRENkgNdPyk","code":"USD","name":"United States Dollar"},"status":"verified"},"stats":{"ip_addresses":0,"prefixes":0,"servers":0,"containers":0,"vlans":0},"created_at":"2024-06-28T18:55:00+00:00","updated_at":"2024-06-28T18:55:00+00:00"}},"meta":{}}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afe3749aa57a8e-GIG
+            Content-Length:
+                - "816"
+            Content-Type:
+                - application/vnd.api+json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 18:55:02 GMT
+            Etag:
+                - W/"2439b8b3e6f4060a37be69ad066290fc"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=g62kgCiUMy2QHMOCmC%2FcXRbb7DeL1HMTu%2FVucBaRPyjXdac%2BIWQKUjQkb6EyoKsj0hp2%2BNqoOUZ%2BMSznJJjKDoCVNlWwS7mXpEg%2BhpfD%2FefTy%2F3mmzftOV45uWydnnkBnd35ybXVLkWTCARhNQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - 89e686ca-5222-4e43-bcda-4c0a3a812211
+            X-Runtime:
+                - "2.871575"
+            X-Xss-Protection:
+                - "0"
+        status: 201 Created
+        code: 201
+        duration: 3.70276775s
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 104
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"data":{"type":"tags","attributes":{"name":"tag_test1","description":"Test Tag 1","color":"#ff0000"}}}
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            Content-Type:
+                - application/json
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/tags
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 405
+        uncompressed: false
+        body: '{"data":{"id":"tag_mVJKz3DRAgtYrKldYoVosnpnKAq","type":"tags","attributes":{"name":"tag_test1","slug":"tag_test1","description":"Test Tag 1","color":"#ff0000","team":{"id":"team_KpGnxgwe3KS3ojrYVekYUXO22GQ","name":"SDK-Teams-test","slug":"sdk-teams-test","description":"SoHssZNy","address":"HzoVWLcu","status":"verified","currency":{"id":"cur_87vRENkgNdPyk","code":"USD","name":"United States Dollar"}}}}}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afe3a2af0164eb-GIG
+            Content-Length:
+                - "405"
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 18:55:07 GMT
+            Etag:
+                - W/"b13187678d831707083065a8c1e247e7"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=mKP4%2FjDVdbpFYCEkrtYYduXJycGYgNHg8YnvQFRMBuxIPLcb5vrpf4PALtnU1bw0EANOhM03GgVLWG1U0tPoS0TgzqH7%2BgTl%2FAPC%2Fo22NTFn1JOVmRr68TgTW8pSvylNt55ZxGs96nicSecZRw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - a59a2843-db5b-4fa4-9fa7-1a6dd1b2ee20
+            X-Runtime:
+                - "0.029423"
+            X-Xss-Protection:
+                - "0"
+        status: 201 Created
+        code: 201
+        duration: 942.585167ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 104
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"data":{"type":"tags","attributes":{"name":"tag_test2","description":"Test Tag 2","color":"#0400ff"}}}
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            Content-Type:
+                - application/json
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/tags
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 406
+        uncompressed: false
+        body: '{"data":{"id":"tag_6XY9931A2GtwogKyRGpOT68GkOZ3","type":"tags","attributes":{"name":"tag_test2","slug":"tag_test2","description":"Test Tag 2","color":"#0400ff","team":{"id":"team_KpGnxgwe3KS3ojrYVekYUXO22GQ","name":"SDK-Teams-test","slug":"sdk-teams-test","description":"SoHssZNy","address":"HzoVWLcu","status":"verified","currency":{"id":"cur_87vRENkgNdPyk","code":"USD","name":"United States Dollar"}}}}}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afe3b07ffd2603-GIG
+            Content-Length:
+                - "406"
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 18:55:09 GMT
+            Etag:
+                - W/"50e523b53472e5da2a37e71643272908"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=9ctc0fMfE%2Fpes%2FuDeRtdgKv2%2FZkltfrnK2S452YiEjTttRpIbWlZkH5TGSNhpuXD7Vcdb6y%2BxNZTFbBU7GW9yOlZaBI7tziW%2Blg%2BExBmB88AiXeeBBbL%2BCGhd4HYKHQjj7P7dRHxdAImhsYyZw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - c9881b42-16ae-46f5-a683-d48874f9fc1f
+            X-Runtime:
+                - "0.120654"
+            X-Xss-Protection:
+                - "0"
+        status: 201 Created
+        code: 201
+        duration: 1.278289917s
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 153
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"data":{"type":"virtual_network","attributes":{"description":"Testing Virtual Network via golang client","site":"SAO","project":"proj_XDO7NYqdeNPgw"}}}
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            Content-Type:
+                - application/json
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/virtual_networks
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 197
+        uncompressed: false
+        body: '{"data":{"id":"vlan_R82A0ydKLa6mM","type":"virtual_networks","attributes":{"tags":[],"vid":2085,"name":"SAO-2085","description":"Testing Virtual Network via golang client","site":"SAO"}},"meta":{}}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afe3bd1a18646c-GIG
+            Content-Length:
+                - "197"
+            Content-Type:
+                - application/vnd.api+json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 18:55:12 GMT
+            Etag:
+                - W/"7d24bb32557651caaaa2dc337cd36761"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=WsqJWdGQYJ3gUl8tl0iQFysZKEADSkUVR7x6vszoaEZEJwzM1MAWzTpQ3wdpZIyagUm3gCcNcNeDnTs66JA0i%2BSLDas5Z4oSkQPTzoRJdmDbDi8%2BtkFfHIep5ONF6BL5XA%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - 41e7c901-432b-4eb0-99e2-d03ffeda3701
+            X-Runtime:
+                - "0.914940"
+            X-Xss-Protection:
+                - "0"
+        status: 201 Created
+        code: 201
+        duration: 1.376402916s
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 215
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"data":{"id":"vlan_R82A0ydKLa6mM","type":"virtual_networks","attributes":{"description":"Updating Virtual Network via golang client","tags":["tag_mVJKz3DRAgtYrKldYoVosnpnKAq","tag_6XY9931A2GtwogKyRGpOT68GkOZ3"]}}}
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            Content-Type:
+                - application/json
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/virtual_networks/vlan_R82A0ydKLa6mM
+        method: PATCH
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"data":{"id":"vlan_R82A0ydKLa6mM","type":"virtual_networks","attributes":{"tags":[{"id":"tag_mVJKz3DRAgtYrKldYoVosnpnKAq","name":"tag_test1","description":"Test Tag 1","color":"#ff0000"},{"id":"tag_6XY9931A2GtwogKyRGpOT68GkOZ3","name":"tag_test2","description":"Test Tag 2","color":"#0400ff"}],"vid":2085,"name":"SAO-2085","description":"Updating Virtual Network via golang client","site":"SAO"}},"meta":{}}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afe3ce2ebf7aa6-GIG
+            Content-Type:
+                - application/vnd.api+json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 18:55:14 GMT
+            Etag:
+                - W/"d155316af58911a91dcb4cd5130ba756"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=DsT94IytvucYYP9VBYV0sirsIeDcBdnDzgwJXIvSREocSxyqSDZbPlCrC%2F1SbkDYYgF%2FYDY1TI10HMYQiH8Ncsd%2BcgPVYUemcE0g6yCyoTOGbGcEOjxoq%2B%2F96ESnaXPVqw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - 94a354c0-2a4e-4068-a2d6-1762905bebdf
+            X-Runtime:
+                - "0.878214"
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 1.313722917s
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/virtual_networks/vlan_R82A0ydKLa6mM
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"data":{"id":"vlan_R82A0ydKLa6mM","type":"virtual_networks","attributes":{"tags":[{"id":"tag_mVJKz3DRAgtYrKldYoVosnpnKAq","name":"tag_test1","description":"Test Tag 1","color":"#ff0000"},{"id":"tag_6XY9931A2GtwogKyRGpOT68GkOZ3","name":"tag_test2","description":"Test Tag 2","color":"#0400ff"}],"vid":2085,"description":"Updating Virtual Network via golang client","region":{"city":"São Paulo","country":"Brazil","site":{"id":"loc_87vRENkgNdPyk","name":"São Paulo","slug":"SAO","facility":"Latitude.sh SP1"}},"assignments_count":0}},"meta":{}}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afe3e05c3d254f-GIG
+            Content-Type:
+                - application/vnd.api+json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 18:55:16 GMT
+            Etag:
+                - W/"4c23e9554958c6d372db35787bc20e32"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=26VekszCdiNj2aBPxI%2B%2FQRUI3t%2FSbek98UFIpMy%2Fywxu81pKpff1kra1A%2BfeiN5x9zpKEhPgofyKJ1QxKvlyu6k65zYzB69a8zt3n%2FUh0StCObKWhtKpFJJF3aTMP7EsYqznz8O1nQQRLRB68Q%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - a3e9e317-d431-4fc2-9fa3-140f0097a9f6
+            X-Runtime:
+                - "0.073343"
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 670.171209ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/virtual_networks
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"data":[{"id":"vlan_R82A0ydKLa6mM","type":"virtual_networks","attributes":{"tags":[{"id":"tag_mVJKz3DRAgtYrKldYoVosnpnKAq","name":"tag_test1","description":"Test Tag 1","color":"#ff0000"},{"id":"tag_6XY9931A2GtwogKyRGpOT68GkOZ3","name":"tag_test2","description":"Test Tag 2","color":"#0400ff"}],"vid":2085,"description":"Updating Virtual Network via golang client","region":{"city":"São Paulo","country":"Brazil","site":{"id":"loc_87vRENkgNdPyk","name":"São Paulo","slug":"SAO","facility":"Latitude.sh SP1"}},"assignments_count":0}}],"meta":{}}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afe3e87cda118a-GIG
+            Content-Type:
+                - application/vnd.api+json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 18:55:18 GMT
+            Etag:
+                - W/"319288dbd8393c0872bfedc7f4621968"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=i9E0WFfyB%2F%2BGMWR95z8NFA32ONO7Nglt752Sfe%2FkVK11QDFqKniCdUD91%2BpRYDvnOe7KBNn3RSEHskeb73xEfX1bU4OsaNPQ0jElEoAhqK9yePt55NRluhYArNVamB%2F3CEUYqU91vt5Xd378xQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - bf0b5d96-4679-44e8-94a9-1edc41263f7a
+            X-Runtime:
+                - "0.112629"
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 915.343041ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            Content-Type:
+                - application/json
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/virtual_networks/vlan_R82A0ydKLa6mM
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Cache-Control:
+                - no-cache
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afe3f41ce164b1-GIG
+            Date:
+                - Fri, 28 Jun 2024 18:55:21 GMT
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=x45MlPyfzqCC0tHeMDwNv0NrXE2RxunB1Z50sCYP2rQrXNdS7eaFVRoZrF2NcfK%2BU0NpesXsVaeDUxCLpc0i6Ll0WqjLjIruKQyRmbWV90x1XpV0wV4mIor2tUFd%2FDqJPHP8mbkj1vcnkXjzgQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - 28a0a030-3dfe-4b83-850c-c20533764d7a
+            X-Runtime:
+                - "1.565396"
+            X-Xss-Protection:
+                - "0"
+        status: 204 No Content
+        code: 204
+        duration: 2.444690583s
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            Content-Type:
+                - application/json
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/tags/tag_mVJKz3DRAgtYrKldYoVosnpnKAq
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Cache-Control:
+                - no-cache
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afe4129b841cd3-GIG
+            Date:
+                - Fri, 28 Jun 2024 18:55:25 GMT
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=mrTseWDPIxjcdIE1v9BzF42VG2iXdVtikUPs5AuAemBsl0Kmnxo3aInOcroA%2FUTTirnwdu39%2BMR2DM6SB7WExZ8GWj1M31dVs3etQwSEiSRcC604Eo25IqRTmTSP6OgQDz9vB4um%2Fc%2BA7EtUDw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - 7a190053-207d-48b3-8f38-7edc649c7b08
+            X-Runtime:
+                - "0.086638"
+            X-Xss-Protection:
+                - "0"
+        status: 204 No Content
+        code: 204
+        duration: 949.298375ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            Content-Type:
+                - application/json
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/tags/tag_6XY9931A2GtwogKyRGpOT68GkOZ3
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Cache-Control:
+                - no-cache
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afe41e498a1d3b-GIG
+            Date:
+                - Fri, 28 Jun 2024 18:55:26 GMT
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=z70MFYSo0QGni%2B%2BHiKKNUNRVAO2kKMy%2FPu6eSWJAf6YyyCDuPD7HdHpuXiP4%2Fpdq7pAmgMewTN%2FR4I3mevKU%2B%2Fsq82%2FzFcvhXOW72pum8TjvfnpZpqaU4PG7t5k1EzaUcUswq%2FAoLgMcntPn2A%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - c589903a-624d-41b6-80a8-f7a9a5f90219
+            X-Runtime:
+                - "0.119002"
+            X-Xss-Protection:
+                - "0"
+        status: 204 No Content
+        code: 204
+        duration: 902.397875ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            Content-Type:
+                - application/json
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/projects/proj_XDO7NYqdeNPgw
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Cache-Control:
+                - no-cache
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afe429bf821d60-GIG
+            Date:
+                - Fri, 28 Jun 2024 18:55:29 GMT
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=vR6hWBoOaCHttsRs9yyid%2B7%2BF1rU4hxOBZewtOXE9V4YZuPBoBC5xFN%2BZXivc63lFlQLhSaveGMYhAzzb6WrtChGmAifBLxOE%2B0WI8sp3UqgHxolTL9IPf5ZSiXm%2F96a2YCan4z6vY4nnuaPog%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - 78349f3a-62e9-4a0c-bc31-f139e89461eb
+            X-Runtime:
+                - "0.988638"
+            X-Xss-Protection:
+                - "0"
+        status: 204 No Content
+        code: 204
+        duration: 1.778389708s

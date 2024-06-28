@@ -1,0 +1,301 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 101
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"data":{"type":"tags","attributes":{"name":"testrand","description":"Test Tag","color":"#ffffff"}}}
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            Content-Type:
+                - application/json
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/tags
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 401
+        uncompressed: false
+        body: '{"data":{"id":"tag_mKEbvjebBXTY3Kxwq2xpUMvQK7y","type":"tags","attributes":{"name":"testrand","slug":"testrand","description":"Test Tag","color":"#ffffff","team":{"id":"team_KpGnxgwe3KS3ojrYVekYUXO22GQ","name":"SDK-Teams-test","slug":"sdk-teams-test","description":"SoHssZNy","address":"HzoVWLcu","status":"verified","currency":{"id":"cur_87vRENkgNdPyk","code":"USD","name":"United States Dollar"}}}}}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afdcce2f01648b-GIG
+            Content-Length:
+                - "401"
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 18:50:27 GMT
+            Etag:
+                - W/"ef07badbc6bea7b613c0013b7de04f0d"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=eLXVSXkuRDT%2FRRDdGcYfCHWIxbeXi6S9zPgFFxPBN8q2q8UCCL0Y%2Fk%2B8QKE5pAcbtUdkmZzFHPDaXKXcWYv0dLZ6Pta8aUenx%2BiO59%2BgLW0ZC7YB9lDQBI3HiQhsLmY39WaTGtF8Hj4XhGpwOQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - 181e467e-f382-40b9-9322-a99b544677f0
+            X-Runtime:
+                - "0.030373"
+            X-Xss-Protection:
+                - "0"
+        status: 201 Created
+        code: 201
+        duration: 1.117609833s
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 143
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"data":{"id":"tag_mKEbvjebBXTY3Kxwq2xpUMvQK7y","type":"tags","attributes":{"name":"testrand","description":"updated tag","color":"#fafadc"}}}
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            Content-Type:
+                - application/json
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/tags/tag_mKEbvjebBXTY3Kxwq2xpUMvQK7y
+        method: PATCH
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"data":{"id":"tag_mKEbvjebBXTY3Kxwq2xpUMvQK7y","type":"tags","attributes":{"name":"testrand","slug":"testrand","description":"updated tag","color":"#fafadc","team":{"id":"team_KpGnxgwe3KS3ojrYVekYUXO22GQ","name":"SDK-Teams-test","slug":"sdk-teams-test","description":"SoHssZNy","address":"HzoVWLcu","status":"verified","currency":{"id":"cur_87vRENkgNdPyk","code":"USD","name":"United States Dollar"}}}}}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afdcdb2c4e1d4b-GIG
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 18:50:29 GMT
+            Etag:
+                - W/"7f7de74cbf8f20ee7a17e021b73cb15b"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=3Xz1xOfinNYpGfxfsgDFvDknouaLm3CBEuJmrjg43NChOBfZOYAiCAvwQKJpfuDC2n3HJiq3X9gPBo8OUQxhtaET7vgabVBUlhiPonpK8OQkoeoI%2FJh8uDwKL3KdkUBtFAs%2FNi8TEaetSk%2FEHQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - 3b3f8936-39bf-45e0-9478-850db4b9fbaa
+            X-Runtime:
+                - "0.074704"
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 965.285916ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/tags
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"data":[{"id":"tag_mKEbvjebBXTY3Kxwq2xpUMvQK7y","type":"tags","attributes":{"name":"testrand","slug":"testrand","description":"updated tag","color":"#fafadc","team":{"id":"team_KpGnxgwe3KS3ojrYVekYUXO22GQ","name":"SDK-Teams-test","slug":"sdk-teams-test","description":"SoHssZNy","address":"HzoVWLcu","status":"verified","currency":{"id":"cur_87vRENkgNdPyk","code":"USD","name":"United States Dollar"}}}}]}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afdce70cf56d76-GIG
+            Content-Type:
+                - application/json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 18:50:31 GMT
+            Etag:
+                - W/"c401504476db80ee524bbf4b03953a77"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=dT3ZeAPFkFAe2S9W2Vry6DqLbBRIujIj%2F6YQxFXWsVwXJDMwSbhIQJFK2Qbq6OFCMMVEZp95Gkay9B0xbiUZS356OTPgyI3Po8UTxRFJx0J4YA85Z6N8PDopmZAjzJD%2B%2F9QyKDgw6WBcYfLKnw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - 6418da52-91b7-4651-b9af-5757b6bdaae4
+            X-Runtime:
+                - "0.016736"
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 916.33225ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            Content-Type:
+                - application/json
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/tags/tag_mKEbvjebBXTY3Kxwq2xpUMvQK7y
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Cache-Control:
+                - no-cache
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afdcf11ceb2567-GIG
+            Date:
+                - Fri, 28 Jun 2024 18:50:33 GMT
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=Ua6fgy6R2uJMDX%2BswOoGQC1UlWp9JQtoC2KTv1qsKHvdKpk2dcajDON6KzeV8NzEhwNXzVrFFT0BYU6wT9%2Figg2rUhP%2FPaYEGwQVvogc8tSpI4MjxVXC6ijzZVOK8GBn0g%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - de4f1505-bcf8-49a7-a6b4-a8d15445ee77
+            X-Runtime:
+                - "0.043421"
+            X-Xss-Protection:
+                - "0"
+        status: 204 No Content
+        code: 204
+        duration: 590.377292ms

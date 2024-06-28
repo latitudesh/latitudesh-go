@@ -1,0 +1,76 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/plans/operating_systems
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"data":[{"id":"os_KgXQvNe3azpbP","type":"operating_system","attributes":{"name":"CentOS 7.4","distro":"centos","slug":"centos_7_4_x64","version":"7.4","user":"centos","features":{"raid":true,"rescue":true,"ssh_keys":true,"user_data":true},"provisionable_on":["g3.h100.large","t3.spot","t4.spot","c3.small.x86","c2.medium.x86","c2.large.x86","c1.medium.x86","g3.h100.medium","g3.a100.large","c1.small.x86","s3.large.x86","m3.large.x86","s2.small.x86","c2.small.x86","g3.l40s.large","g3.h100.small","c3.large.x86","c1.tiny.x86","m4.metal.small","m4.metal.medium","rs4.metal.large","m4.metal.large","rs4.metal.xlarge","t2.spot"]}},{"id":"os_Vy3ZXaDW5p2ml","type":"operating_system","attributes":{"name":"CentOS 8","distro":"centos","slug":"centos_8_x64","version":"8","user":"cloud-user","features":{"raid":true,"rescue":true,"ssh_keys":true,"user_data":true},"provisionable_on":["g3.h100.large","t3.spot","t4.spot","c3.small.x86","c2.medium.x86","c2.large.x86","c1.medium.x86","g3.h100.medium","g3.a100.large","c1.small.x86","s3.large.x86","m3.large.x86","s2.small.x86","c2.small.x86","g3.l40s.large","g3.h100.small","c3.large.x86","c1.tiny.x86","m4.metal.small","m4.metal.medium","rs4.metal.large","m4.metal.large","rs4.metal.xlarge","t2.spot"]}},{"id":"os_Z1Gjbano0L2wl","type":"operating_system","attributes":{"name":"Custom image (iPXE)","distro":"iPXE","slug":"ipxe","version":"(iPXE)","user":"ubuntu","features":{"raid":false,"rescue":false,"ssh_keys":false,"user_data":false},"provisionable_on":["g3.h100.large","t3.spot","t4.spot","c3.small.x86","c2.medium.x86","c2.large.x86","c1.medium.x86","g3.h100.medium","g3.a100.large","c1.small.x86","s3.large.x86","m3.large.x86","s2.small.x86","c2.small.x86","g3.l40s.large","g3.h100.small","c3.large.x86","c1.tiny.x86","m4.metal.small","m4.metal.medium","rs4.metal.large","m4.metal.large","rs4.metal.xlarge","t2.spot"]}},{"id":"os_D6B9VaLRN7vrk","type":"operating_system","attributes":{"name":"Debian 11","distro":"debian","slug":"debian_11","version":"11","user":"debian","features":{"raid":true,"rescue":true,"ssh_keys":true,"user_data":true},"provisionable_on":["g3.h100.large","t3.spot","t4.spot","c3.small.x86","c2.medium.x86","c2.large.x86","c1.medium.x86","g3.h100.medium","g3.a100.large","c1.small.x86","s3.large.x86","m3.large.x86","s2.small.x86","c2.small.x86","g3.l40s.large","g3.h100.small","c3.large.x86","c1.tiny.x86","m4.metal.small","m4.metal.medium","rs4.metal.large","m4.metal.large","rs4.metal.xlarge","t2.spot"]}},{"id":"os_JLqG158d5BOgv","type":"operating_system","attributes":{"name":"Debian 12","distro":"debian","slug":"debian_12","version":"12","user":"debian","features":{"raid":true,"rescue":true,"ssh_keys":true,"user_data":true},"provisionable_on":["g3.h100.large","t3.spot","t4.spot","c3.small.x86","c2.medium.x86","c2.large.x86","c1.medium.x86","g3.h100.medium","g3.a100.large","c1.small.x86","s3.large.x86","m3.large.x86","s2.small.x86","c2.small.x86","g3.l40s.large","g3.h100.small","c3.large.x86","c1.tiny.x86","m4.metal.small","m4.metal.medium","rs4.metal.large","m4.metal.large","rs4.metal.xlarge","t2.spot"]}},{"id":"os_zdexA0q8alQVv","type":"operating_system","attributes":{"name":"Red Hat Enterprise Linux 8.4","distro":"rhel","slug":"rhel8","version":"8.4","user":"cloud-user","features":{"raid":true,"rescue":true,"ssh_keys":true,"user_data":false},"provisionable_on":["g3.h100.large","t3.spot","t4.spot","c3.small.x86","c2.medium.x86","c2.large.x86","c1.medium.x86","g3.h100.medium","g3.a100.large","c1.small.x86","s3.large.x86","m3.large.x86","s2.small.x86","c2.small.x86","g3.l40s.large","g3.h100.small","c3.large.x86","c1.tiny.x86","m4.metal.small","m4.metal.medium","rs4.metal.large","m4.metal.large","rs4.metal.xlarge","t2.spot"]}},{"id":"os_PogXka9d5JdBA","type":"operating_system","attributes":{"name":"Rocky Linux 8","distro":"rocky","slug":"rockylinux_8","version":"8","user":"cloud-user","features":{"raid":true,"rescue":true,"ssh_keys":true,"user_data":false},"provisionable_on":["g3.h100.large","t3.spot","t4.spot","c3.small.x86","c2.medium.x86","c2.large.x86","c1.medium.x86","g3.h100.medium","g3.a100.large","c1.small.x86","s3.large.x86","m3.large.x86","s2.small.x86","c2.small.x86","g3.l40s.large","g3.h100.small","c3.large.x86","c1.tiny.x86","m4.metal.small","m4.metal.medium","rs4.metal.large","m4.metal.large","rs4.metal.xlarge","t2.spot"]}},{"id":"os_qewOM5GbNp8ER","type":"operating_system","attributes":{"name":"Ubuntu 24.04","distro":"ubuntu","slug":"ubuntu_24_04_x64_lts","version":"24.04","user":"ubuntu","features":{"raid":true,"rescue":true,"ssh_keys":true,"user_data":true},"provisionable_on":["g3.h100.large","t3.spot","t4.spot","c3.small.x86","c2.medium.x86","c2.large.x86","c1.medium.x86","g3.h100.medium","g3.a100.large","c1.small.x86","s3.large.x86","m3.large.x86","s2.small.x86","c2.small.x86","g3.l40s.large","g3.h100.small","c3.large.x86","c1.tiny.x86","m4.metal.small","m4.metal.medium","m4.metal.large","t2.spot"]}},{"id":"os_bXDO7NYP0Pgw8","type":"operating_system","attributes":{"name":"Ubuntu 22.04","distro":"ubuntu","slug":"ubuntu_22_04_x64_lts","version":"22.04","user":"ubuntu","features":{"raid":true,"rescue":true,"ssh_keys":true,"user_data":true},"provisionable_on":["g3.h100.large","t3.spot","t4.spot","c3.small.x86","c2.medium.x86","c2.large.x86","c1.medium.x86","g3.h100.medium","g3.a100.large","c1.small.x86","s3.large.x86","m3.large.x86","s2.small.x86","c2.small.x86","g3.l40s.large","g3.h100.small","c3.large.x86","c1.tiny.x86","m4.metal.small","m4.metal.medium","rs4.metal.large","m4.metal.large","rs4.metal.xlarge","t2.spot","g3.gh200"]}},{"id":"os_87vRENkgNdPyk","type":"operating_system","attributes":{"name":"Ubuntu 20.04","distro":"ubuntu","slug":"ubuntu_20_04_x64_lts","version":"20.04","user":"ubuntu","features":{"raid":true,"rescue":true,"ssh_keys":true,"user_data":true},"provisionable_on":["g3.h100.large","t3.spot","t4.spot","c3.small.x86","c2.medium.x86","c2.large.x86","c1.medium.x86","g3.h100.medium","g3.a100.large","c1.small.x86","s3.large.x86","m3.large.x86","s2.small.x86","c2.small.x86","g3.l40s.large","g3.h100.small","c3.large.x86","c1.tiny.x86","m4.metal.small","m4.metal.medium","rs4.metal.large","m4.metal.large","rs4.metal.xlarge","t2.spot"]}},{"id":"os_28mop5gvNjxvn","type":"operating_system","attributes":{"name":"Ubuntu 22 ML-in-a-Box","distro":"ubuntu","slug":"ubuntu22_ml_in_a_box","version":"22 ML-in-a-Box","user":"ubuntu","features":{"raid":true,"rescue":true,"ssh_keys":true,"accelerate":true},"provisionable_on":["g3.h100.large","t3.spot","t4.spot","c3.small.x86","c2.medium.x86","c2.large.x86","c1.medium.x86","g3.h100.medium","g3.a100.large","c1.small.x86","s3.large.x86","m3.large.x86","s2.small.x86","c2.small.x86","g3.l40s.large","g3.h100.small","c3.large.x86","c1.tiny.x86","m4.metal.small","m4.metal.medium","rs4.metal.large","m4.metal.large","rs4.metal.xlarge","t2.spot"]}},{"id":"os_nzZOo0leNKQYb","type":"operating_system","attributes":{"name":"Windows 22 Standard","distro":"windows","slug":"windows_2022_std","version":"22 Standard","user":"Admin","features":{"raid":false,"rescue":false,"ssh_keys":false,"user_data":true},"provisionable_on":["g3.h100.large","t3.spot","t4.spot","c3.small.x86","c2.medium.x86","c2.large.x86","c1.medium.x86","g3.h100.medium","g3.a100.large","c1.small.x86","s3.large.x86","m3.large.x86","s2.small.x86","c2.small.x86","g3.l40s.large","g3.h100.small","c3.large.x86","c1.tiny.x86","m4.metal.small","m4.metal.medium","rs4.metal.large","m4.metal.large","rs4.metal.xlarge","t2.spot"]}},{"id":"os_GdmkONWoNjL1b","type":"operating_system","attributes":{"name":"Windows Server 2019 Standard","distro":"windows","slug":"windows_server_2019_std_v1","version":"2019 Standard","user":"Admin","features":{"raid":false,"rescue":false,"ssh_keys":false,"user_data":true},"provisionable_on":["g3.h100.large","t3.spot","t4.spot","c3.small.x86","c2.medium.x86","c2.large.x86","c1.medium.x86","g3.h100.medium","g3.a100.large","c1.small.x86","s3.large.x86","m3.large.x86","s2.small.x86","c2.small.x86","g3.l40s.large","g3.h100.small","c3.large.x86","c1.tiny.x86","m4.metal.small","m4.metal.medium","rs4.metal.large","m4.metal.large","rs4.metal.xlarge","t2.spot"]}}],"meta":{}}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89adaf81681e1d3e-GIG
+            Content-Type:
+                - application/vnd.api+json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 12:30:00 GMT
+            Etag:
+                - W/"eba0e9f481254cd55d50a953b810359f"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=yyg4dQp2Q%2FrlRPGjP3U5KrqDIwd20HCmcT2SMytwXfo6RgyJGLMmK%2Bqu0n4Rh03mDbEs0rShcU3lJxZEhciPiXbVBj2%2FGSBbItL4%2FgIhbnjvA2kimR3OeMMGhfA999SaXLL7b8gnLPxHyPLQqA%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - 5fdeb502-151c-4e14-bc9c-d202f5d59df9
+            X-Runtime:
+                - "0.042553"
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 1.000571875s

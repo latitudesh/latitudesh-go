@@ -1,0 +1,149 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/roles
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"data":[{"id":"role_vrWpnDB17xFevgx19XOnT7JjYPX","type":"roles","attributes":{"name":"administrator"}},{"id":"role_VyV9MYdZqdhoE1dwmxdJsM49Z9D","type":"roles","attributes":{"name":"owner"}},{"id":"role_GXwKmmR11xUrRGRlvq19iBwopdAX","type":"roles","attributes":{"name":"collaborator"}},{"id":"role_QzLe47jDAQH34V4OzZGws6EDVXO","type":"roles","attributes":{"name":"billing"}}],"meta":{}}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afa7ab0b3c7a44-GIG
+            Content-Type:
+                - application/vnd.api+json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 18:14:10 GMT
+            Etag:
+                - W/"92c4fb986883409e8d744662c30d05b6"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=G1KWfp20CT1j7lo1XCi7NX1ew37Y3I0zaxNWw2AUfsdoUMe9k9JjFLxK%2FlfD0bCt%2FDNFfWY%2F9W60S8QX2JpOC2Xu1%2FiH7qZCKaTn0pA3CV7ulIJvXFx%2B4Z5saz7QUhRe4Z8Jc3tLqQjso%2FW7fA%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - 15d58b31-0a99-4f11-bf42-c7fd9fe3003a
+            X-Runtime:
+                - "0.035554"
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 1.113620458s
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/roles/role_vrWpnDB17xFevgx19XOnT7JjYPX
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"data":{"id":"role_vrWpnDB17xFevgx19XOnT7JjYPX","type":"roles","attributes":{"name":"administrator"}},"meta":{}}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89afa7b82da87a85-GIG
+            Content-Type:
+                - application/vnd.api+json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 18:14:13 GMT
+            Etag:
+                - W/"72b4b2247323e5d365bb87aa34713994"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=lCNXlnd4yMAnMjmYX%2BPC9sih%2BkB6eIX5vpIH8jmDk2y57brdA3zM5nYv%2Bf7Et6ki3fig8i1Fc7wBHEXE2LoyNB%2BWyHs8k7nT3FVmTnoZuXhrc0I042h2lEmC8WeOT0bMA%2F%2BmiTxiarUEpXLDVg%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - 7eb27f51-9271-4950-b2ba-d6810c95fa30
+            X-Runtime:
+                - "0.032487"
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 987.548ms

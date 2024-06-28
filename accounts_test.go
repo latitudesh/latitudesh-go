@@ -27,7 +27,7 @@ func TestAccAccountsBasic(t *testing.T) {
 		}
 
 		if len(teams) < 1 {
-			t.Fatal("Team must have at least a owner")
+			t.Fatal("The account will be assigned to at least one team")
 		}
 	})
 
