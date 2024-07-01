@@ -12,19 +12,18 @@ type TeamService interface {
 
 // Team represents a Latitude Team record
 type Team struct {
-	ID          string        `json:"id"`
-	Description string        `json:"description"`
-	Name        string        `json:"name"`
-	Slug        string        `json:"slug"`
-	Currency    string        `json:"currency"`
-	Address     *string       `json:"address"`
-	Status      *string       `json:"status"`
-	Projects    []interface{} `json:"projects"`
-	Users       []interface{} `json:"users"`
-	Owner       interface{}   `json:"owner"`
-	Billing     interface{}   `json:"billing"`
-	CreatedAt   string        `json:"created_at"`
-	UpdatedAt   string        `json:"updated_at"`
+	ID        string        `json:"id"`
+	Name      string        `json:"name"`
+	Slug      string        `json:"slug"`
+	Currency  string        `json:"currency"`
+	Address   *string       `json:"address"`
+	Status    *string       `json:"status"`
+	Projects  []interface{} `json:"projects"`
+	Users     []interface{} `json:"users"`
+	Owner     interface{}   `json:"owner"`
+	Billing   interface{}   `json:"billing"`
+	CreatedAt string        `json:"created_at"`
+	UpdatedAt string        `json:"updated_at"`
 }
 
 // TeamServiceOp implements TeamService
@@ -43,10 +42,9 @@ type TeamCreateData struct {
 }
 
 type TeamCreateAttributes struct {
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name"`
-	Currency    string `json:"currency"`
-	Address     string `json:"address,omitempty"`
+	Name     string `json:"name"`
+	Currency string `json:"currency"`
+	Address  string `json:"address,omitempty"`
 }
 
 type TeamUpdateRequest struct {
@@ -60,9 +58,8 @@ type TeamUpdateData struct {
 }
 
 type TeamUpdateAttributes struct {
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
-	Address     string `json:"address,omitempty"`
+	Name    string `json:"name,omitempty"`
+	Address string `json:"address,omitempty"`
 }
 
 type TeamGetResponse struct {
@@ -82,25 +79,23 @@ type TeamData struct {
 }
 
 type TeamGetAttributes struct {
-	Description string        `json:"description"`
-	Name        string        `json:"name"`
-	Slug        string        `json:"slug"`
-	Currency    string        `json:"currency"`
-	Address     *string       `json:"address"`
-	Status      *string       `json:"status"`
-	Projects    []interface{} `json:"projects"`
-	Users       []interface{} `json:"users"`
-	Owner       interface{}   `json:"owner"`
-	Billing     interface{}   `json:"billing"`
-	CreatedAt   string        `json:"created_at"`
-	UpdatedAt   string        `json:"updated_at"`
+	Name      string        `json:"name"`
+	Slug      string        `json:"slug"`
+	Currency  string        `json:"currency"`
+	Address   *string       `json:"address"`
+	Status    *string       `json:"status"`
+	Projects  []interface{} `json:"projects"`
+	Users     []interface{} `json:"users"`
+	Owner     interface{}   `json:"owner"`
+	Billing   interface{}   `json:"billing"`
+	CreatedAt string        `json:"created_at"`
+	UpdatedAt string        `json:"updated_at"`
 }
 
 // Flatten latitude API data structures
 func NewFlatTeam(t TeamData) Team {
 	return Team{
 		t.ID,
-		t.Attributes.Description,
 		t.Attributes.Name,
 		t.Attributes.Slug,
 		t.Attributes.Currency,

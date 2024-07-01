@@ -54,13 +54,19 @@ type TagAttributes struct {
 }
 
 type TagTeam struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	Slug        string `json:"slug"`
-	Description string `json:"description"`
-	Address     string `json:"address"`
-	Status      string `json:"status"`
-	Currency    string `json:"currency"`
+	ID          string   `json:"id"`
+	Name        string   `json:"name"`
+	Slug        string   `json:"slug"`
+	Description string   `json:"description"`
+	Address     string   `json:"address"`
+	Status      string   `json:"status"`
+	Currency    Currency `json:"currency"`
+}
+
+type Currency struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	Code string `json:"code"`
 }
 
 type TagCreateRequest struct {

@@ -245,9 +245,12 @@ func testRecorder(t *testing.T, name string, mode recorder.Mode) (*recorder.Reco
 	}
 
 	r.AddHook(func(i *cassette.Interaction) error {
-		delete(i.Request.Headers, "X-Auth-Token")
+		if i.Request.Headers.Get("Authorization") != "" {
+			i.Request.Headers.Set("Authorization", "[REDACTED]")
+		}
+
 		return nil
-	}, recorder.HookKind(1))
+	}, recorder.BeforeSaveHook)
 
 	return r, func() {
 		if err := r.Stop(); err != nil {

@@ -1,0 +1,149 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/regions
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"data":[{"id":"loc_OmJyo0vL5Dkw9","type":"regions","attributes":{"name":"Sydney 2","slug":"SYD2","facility":"Equinix SY5","country":{"name":"Australia","slug":"australia"},"type":"Core"}},{"id":"loc_4g3PYaR30yozM","type":"regions","attributes":{"name":"Singapore","slug":"SGP","facility":"Equinix SG2","country":{"name":"Singapore","slug":"singapore"},"type":"Core"}},{"id":"loc_nzZOo0leNKQYb","type":"regions","attributes":{"name":"Tokyo 3","slug":"TYO3","facility":"Equinix TY10","country":{"name":"Japan","slug":"japan"},"type":"Core"}},{"id":"loc_28mop5gvNjxvn","type":"regions","attributes":{"name":"London 2","slug":"LON2","facility":"Telehouse Docklands South","country":{"name":"United Kingdom","slug":"united-kingdom"},"type":"Core"}},{"id":"loc_JLqG158d5BOgv","type":"regions","attributes":{"name":"Miami 2","slug":"MIA2","facility":"Colohouse - Miami","country":{"name":"United States","slug":"united-states"},"type":"Core"}},{"id":"loc_D6B9VaLRN7vrk","type":"regions","attributes":{"name":"Santiago 3","slug":"SAN3","facility":"Ascenty  Chile 2","country":{"name":"Chile","slug":"chile"},"type":"Core"}},{"id":"loc_PogXka9d5JdBA","type":"regions","attributes":{"name":"Frankfurt","slug":"FRA","facility":"Leaseweb Germany GmbH","country":{"name":"Germany","slug":"germany"},"type":"Core"}},{"id":"loc_Ylnow0Ow09x1q","type":"regions","attributes":{"name":"Mexico City 2","slug":"MEX2","facility":"Ascenty MEX1","country":{"name":"Mexico","slug":"mexico"},"type":"Core"}},{"id":"loc_l3xMV0xKamQp7","type":"regions","attributes":{"name":"Bogota","slug":"BGT","facility":"Odata","country":{"name":"Colombia","slug":"colombia"},"type":"Core"}},{"id":"loc_zdexA0q8alQVv","type":"regions","attributes":{"name":"Ashburn","slug":"ASH","facility":"DEFT IAD","country":{"name":"United States","slug":"united-states"},"type":"Core"}},{"id":"loc_wmgWeN6O5Yd7k","type":"regions","attributes":{"name":"Chicago","slug":"CHI","facility":"Deft CH1","country":{"name":"United States","slug":"united-states"},"type":"Core"}},{"id":"loc_rx3egaQx546Q8","type":"regions","attributes":{"name":"Buenos Aires","slug":"BUE","facility":"SYT","country":{"name":"Argentina","slug":"argentina"},"type":"Core"}},{"id":"loc_ZnPRbajK0koM1","type":"regions","attributes":{"name":"São Paulo 2","slug":"SAO2","facility":"Scala SP2","country":{"name":"Brazil","slug":"brazil"},"type":"Core"}},{"id":"loc_ndYjv5rwaqp7l","type":"regions","attributes":{"name":"London","slug":"LON","facility":"LDEX1","country":{"name":"United Kingdom","slug":"united-kingdom"},"type":"Core"}},{"id":"loc_mYx2za1KNVrLO","type":"regions","attributes":{"name":"Tokyo","slug":"TYO","facility":"Equinix TY8","country":{"name":"Japan","slug":"japan"},"type":"Core"}},{"id":"loc_dM3Beabm5LnbE","type":"regions","attributes":{"name":"Tokyo 2","slug":"TYO2","facility":"Equinix TY6","country":{"name":"Japan","slug":"japan"},"type":"Core"}},{"id":"loc_kjv6m5JD0LPeE","type":"regions","attributes":{"name":"Santiago","slug":"SAN","facility":"GTD","country":{"name":"Chile","slug":"chile"},"type":"Core"}},{"id":"loc_Dy9815Xx5vEkd","type":"regions","attributes":{"name":"Sydney","slug":"SYD","facility":"Global Switch SYD","country":{"name":"Australia","slug":"australia"},"type":"Core"}},{"id":"loc_Vy3ZXaDW5p2ml","type":"regions","attributes":{"name":"New York","slug":"NYC","facility":"NYI NY2","country":{"name":"United States","slug":"united-states"},"type":"Core"}},{"id":"loc_vYGwn0Vqa63JD","type":"regions","attributes":{"name":"Miami","slug":"MIA","facility":"Equinix MI1","country":{"name":"United States","slug":"united-states"},"type":"Core"}}],"meta":{}}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89af63791e242565-GIG
+            Content-Type:
+                - application/vnd.api+json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 17:27:37 GMT
+            Etag:
+                - W/"96193099f527392d61913f7e86170d65"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=ipI%2BSc3zgq16mX4I9ZW8J5Z5stvtPyJEue5RN94PMDxoE%2FvwrpYmlYYz%2F5vlbjSkaKybOpusy%2BM%2BkFmzo8ztkyGK3%2BwQ%2FrFF4BKhj%2BRf0WZu%2ByljEKkQ3Y8%2BAg92R%2F5vHSGWgsyd51CRdJkiYw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - 3183c0fe-0d09-4b81-9adb-418012e2148c
+            X-Runtime:
+                - "0.097296"
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 2.587787541s
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/regions/loc_OmJyo0vL5Dkw9
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"data":{"id":"loc_OmJyo0vL5Dkw9","type":"regions","attributes":{"name":"Sydney 2","slug":"SYD2","facility":"Equinix SY5","country":{"name":"Australia","slug":"australia"},"type":"Core"}},"meta":{}}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89af638f1b2f6d57-GIG
+            Content-Type:
+                - application/vnd.api+json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 17:27:41 GMT
+            Etag:
+                - W/"e529ad7e065f50465ccffb0bdc60e9a9"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=BQwiaTOQuU1gFGClaF6IOgjYdtk2Yqm8iLZGPmJvPqwGe%2BEkQM6lBSRCj02Liyh4EiNnlaJzGtUIfSJRLw8APWmI5weMaAHfOnVIx1YCEnmjHaBPGGFDmrRNgNgg%2BYEVW58Z2itjh8i8GoqvDQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - 1a9bee84-2d16-4d89-9a0a-5cae71ad1611
+            X-Runtime:
+                - "0.042989"
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 918.458ms

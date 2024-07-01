@@ -1,0 +1,76 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.latitude.sh
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Api-Version:
+                - "2023-06-01"
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - Latitude-Go-SDK/0.4.2
+        url: https://api.latitude.sh/regions?filter%5Bslug%5D=SAO
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"data":[{"id":"loc_87vRENkgNdPyk","type":"regions","attributes":{"name":"São Paulo","slug":"SAO","facility":"Latitude.sh SP1","country":{"name":"Brazil","slug":"brazil"},"type":"Core"}}],"meta":{}}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 89af639abd417a7f-GIG
+            Content-Type:
+                - application/vnd.api+json; charset=utf-8
+            Date:
+                - Fri, 28 Jun 2024 17:27:43 GMT
+            Etag:
+                - W/"2bcdc180c60c7966943da0bf2c11de35"
+            Nel:
+                - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Referrer-Policy:
+                - strict-origin-when-cross-origin
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=TeUg1tJPpaxWgxR6C7WHi6Kq3craYth7c0Yg264Qh%2BbNspvssPX1K6VvckCw3qT40OM9IajErGfAKyDynJ4oPS%2BF9IrNo3vayqTHjGaCMQi71TQEYJH4NVAS6%2FAuomrSw1zgpQ6gwElIwxV%2Fqw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=63072000; includeSubDomains
+            Vary:
+                - Origin
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+                - none
+            X-Powered-By:
+                - cloud66
+            X-Request-Id:
+                - 8473de2d-a692-4ef5-86f8-3b5fa3f11fdd
+            X-Runtime:
+                - "0.029481"
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 923.895666ms
