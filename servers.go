@@ -116,6 +116,7 @@ type ServerCreateAttributes struct {
 	UserData        string   `json:"user_data,omitempty"`
 	Raid            string   `json:"raid,omitempty"`
 	IpxeUrl         string   `json:"ipxe_url,omitempty"`
+	Billing         string   `json:"billing,omitempty"`
 }
 
 // ServerUpdateRequest type used to update a Latitude server
@@ -131,6 +132,7 @@ type ServerUpdateData struct {
 
 type ServerUpdateAttributes struct {
 	Hostname string   `json:"hostname"`
+	Billing  string   `json:"billing,omitempty"`
 	Tags     []string `json:"tags,omitempty"`
 }
 type ServerReinstallRequest struct {
