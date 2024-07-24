@@ -78,4 +78,50 @@ func TestAccServerBasic(t *testing.T) {
 		}
 		assertEqual(t, len(dl), 1, "Server List length")
 	})
+
+	t.Run("Servers lock test", func(t *testing.T) {
+		_, err := c.Servers.Lock(serverId)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		sur := ServerUpdateRequest{
+			Data: ServerUpdateData{
+				ID:   serverId,
+				Type: "servers",
+				Attributes: ServerUpdateAttributes{
+					Hostname: "should-not-update",
+				},
+			},
+		}
+		_, res, err := c.Servers.Update(serverId, &sur)
+		if err == nil {
+			t.Fatal(err)
+		}
+		assertEqual(t, res.StatusCode, 423, "Server lock status code")
+	})
+
+	t.Run("Servers unlock test", func(t *testing.T) {
+		_, err := c.Servers.Unlock(serverId)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		sur := ServerUpdateRequest{
+			Data: ServerUpdateData{
+				ID:   serverId,
+				Type: "servers",
+				Attributes: ServerUpdateAttributes{
+					Hostname: "should-update",
+				},
+			},
+		}
+		s, res, err := c.Servers.Update(serverId, &sur)
+		if err != nil {
+			t.Fatal(err)
+		}
+		assertEqual(t, res.StatusCode, 200, "Server unlock status code")
+		assertEqual(t, s.Hostname, "should-update", "Server unlock status code")
+		assertEqual(t, s.Locked, false, "Server unlock status code")
+	})
 }
