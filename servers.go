@@ -15,8 +15,8 @@ type ServerService interface {
 	Update(string, *ServerUpdateRequest) (*Server, *Response, error)
 	Delete(serverID string) (*Response, error)
 	Reinstall(serverID string, reinstallRequest *ServerReinstallRequest) (*Response, error)
-	Lock(serverID string) (*Response, error)
-	Unlock(serverID string) (*Response, error)
+	Lock(serverID string) (*Server, *Response, error)
+	Unlock(serverID string) (*Server, *Response, error)
 }
 
 type ServerRoot struct {
@@ -339,14 +339,23 @@ func (s *ServerServiceOp) Reinstall(serverID string, reinstallRequest *ServerRei
 }
 
 // Lock locks the server. A locked server cannot be deleted or modified and no actions can be performed on it.
-func (s *ServerServiceOp) Lock(serverID string) (*Response, error) {
+func (s *ServerServiceOp) Lock(serverID string) (*Server, *Response, error) {
+	server := new(ServerGetResponse)
 	apiPath := path.Join(serverBasePath, serverID, "lock")
 
-	return s.client.DoRequest("POST", apiPath, nil, nil)
+	resp, err := s.client.DoRequest("POST", apiPath, nil, server)
+	flatServer := NewFlatServer(server.Data)
+	return &flatServer, resp, err
+
 }
 
-func (s *ServerServiceOp) Unlock(serverID string) (*Response, error) {
+// Unlock unlocks the server. An unlocked server can be deleted or modified.
+func (s *ServerServiceOp) Unlock(serverID string) (*Server, *Response, error) {
+	server := new(ServerGetResponse)
 	apiPath := path.Join(serverBasePath, serverID, "unlock")
 
-	return s.client.DoRequest("POST", apiPath, nil, nil)
+	resp, err := s.client.DoRequest("POST", apiPath, nil, server)
+	flatServer := NewFlatServer(server.Data)
+	return &flatServer, resp, err
+
 }
