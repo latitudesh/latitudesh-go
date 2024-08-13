@@ -182,9 +182,9 @@ func setup(t *testing.T) (*Client, func()) {
 		apiURL = baseURL
 	}
 	r, stopRecord := testRecorder(t, name, mode)
-	httpClient := http.DefaultClient
+	httpClient := *http.DefaultClient
 	httpClient.Transport = r
-	c, err := NewClientWithBaseURL(apiToken, httpClient, apiURL)
+	c, err := NewClientWithBaseURL(apiToken, &httpClient, apiURL)
 	if err != nil {
 		t.Fatal(err)
 	}
