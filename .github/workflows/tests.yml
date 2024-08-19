@@ -2,7 +2,7 @@ name: "Run go test"
 on:
   pull_request:
     branches:
-      - master
+      - main
     types:
       - opened
       - synchronize
